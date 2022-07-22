@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="67">
+	<author>Bodzio528</author>
+	<version>1.0.0.0</version>
+	<title>
+		<en>Crop Rotation</en>
+		<de>Fruchtfolge</de>
+		<fr>Alternance Des Récoltes</fr>
+		<pl>Płodozmian</pl>
+	</title>
+	<description>
+		<en><![CDATA[
+		TODO: add description EN
+]]></en>
+		<de><![CDATA[
+		TODO: add description DE
+]]></de>
+		<fr><![CDATA[
+		TODO: add description FR
+]]></fr>
+		<pl><![CDATA[
+		TODO: add description PL
+]]></pl>
+	</description>
+	<iconFilename>modIcon.dds</iconFilename>
+	<multiplayer supported="true"/>
+	<extraSourceFiles>
+		<sourceFile filename="main.lua"/>
+	</extraSourceFiles>
+	<l10n>
+		<text name="CropRotation_Planner">
+			<en>Crop rotation planner</en>
+			<de>Fruchtfolgeplaner</de>
+			<fr>Planificateur de rotation des cultures</fr>
+			<pl>Planer płodozmianu</pl>
+		</text>
+	</l10n>
+</modDesc>
