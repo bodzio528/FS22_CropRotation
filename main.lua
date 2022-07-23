@@ -37,17 +37,18 @@ end
 ---Initialize the mod. This code is run once for the lifetime of the program.
 function init()
 	print(string.format("FS22_CropRotation:init(): %s", "mod initialized, yay"))
+    FSBaseMission.delete = Utils.appendedFunction(FSBaseMission.delete, cr_unload)
+    FSBaseMission.initTerrain = Utils.appendedFunction(FSBaseMission.initTerrain, cr_initTerrain)
+    FSBaseMission.loadMapFinished = Utils.prependedFunction(FSBaseMission.loadMapFinished, cr_loadMapFinished)
 	
-    FSBaseMission.delete = Utils.appendedFunction(FSBaseMission.delete, unload)
-    FSBaseMission.initTerrain = Utils.appendedFunction(FSBaseMission.initTerrain, initTerrain)
-    FSBaseMission.loadMapFinished = Utils.prependedFunction(FSBaseMission.loadMapFinished, loadMapFinished)
-	
-	Mission00.load = Utils.prependedFunction(Mission00.load, load)
-    Mission00.loadMission00Finished = Utils.overwrittenFunction(Mission00.loadMission00Finished, loadMissionFinished)
+	FSCareerMissionInfo.saveToXMLFile = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile, cr_saveToXMLFile)
+
+	Mission00.load = Utils.prependedFunction(Mission00.load, cr_loadMission)
+    Mission00.loadMission00Finished = Utils.overwrittenFunction(Mission00.loadMission00Finished, cr_loadMissionFinished)
 end
 
-function load(mission)
-	print(string.format("FS22_CropRotation:load(mission): %s, isActive = %s", "mission loaded, yay", tostring(isActive())))
+function cr_loadMission(mission)
+	print(string.format("FS22_CropRotation:cr_load(mission): %s, isActive = %s", "mission loaded, yay", tostring(isActive())))
 	
     if not isActive() then return end
     assert(g_seasons == nil)
@@ -68,16 +69,18 @@ function load(mission)
 end
 
 -- Map object is loaded but not configured into the game
-function loadMapFinished(mission, node) -- loadedMap
-    if not isActive() then return end
-
+function cr_loadMapFinished(mission, node) -- loadedMap
+	print(string.format("FS22_CropRotation:cr_loadMapFinished(): %s, isActive = %s", "loadMapFinished, yay", tostring(isActive())))
+	
+	if not isActive() then return end
+	
     if node ~= 0 then
         cropRotation:onMapLoaded(mission, node)
     end
 end
 
-function unload()
-	print(string.format("FS22_CropRotation:unload(): %s, isActive = %s", "mission unloaded, yay", tostring(isActive())))
+function cr_unload()
+	print(string.format("FS22_CropRotation:cr_unload(): %s, isActive = %s", "mission unloaded, yay", tostring(isActive())))
 	
     if not isActive() then return end
 	
@@ -91,7 +94,9 @@ function unload()
 end
 
 --sets terrain root node.set lod, culling, audio culing, creates fruit updaters, sets fruit types to menu, installs weed, DM syncing
-function initTerrain(mission, terrainId, filename)
+function cr_initTerrain(mission, terrainId, filename)
+	print(string.format("FS22_CropRotation:cr_initTerrain(): %s, isActive = %s", "terrain initialized", tostring(isActive())))
+	
     if not isActive() then return end
 
     cropRotation:onTerrainLoaded(mission, terrainId, filename)
@@ -99,7 +104,10 @@ end
 
 
 -- called after the map is async loaded from :load. has :loadMapData calls. NOTE: self.xmlFile is also deleted here. (Is map.xml)
-function loadMissionFinished(mission, superFunc, node) -- loadedMission
+function cr_loadMissionFinished(mission, superFunc, node) -- loadedMission
+	print(string.format("FS22_CropRotation:cr_loadMissionFinished(): %s, isActive = %s", "mission loaded called", tostring(isActive())))
+
+
     if not isActive() then
         return superFunc(mission, node)
     end
@@ -147,9 +155,31 @@ function loadMissionFinished(mission, superFunc, node) -- loadedMission
         return
     end
 
+--[[
     g_deferredLoadingManager:addTask(function()
         cropRotation:onMissionLoaded(mission)
     end)
+--]]
+    return
+end
+
+-- Calling saveToXML (after saving)
+-- cropRotation.xml is place where crop rotation planner will store their data
+function cr_saveToXMLFile(missionInfo)
+	print(string.format("FS22_CropRotation:saveToXMLFile(): %s, isActive = %s", "called on save to XML", tostring(isActive())))
+
+    if not isActive() then return end
+
+    if missionInfo.isValid then
+        local xmlFile = createXMLFile("CropRotationXML", missionInfo.savegameDirectory .. "/cropRotation.xml", "cropRotation")
+        if xmlFile ~= nil then
+            cropRotation:onMissionSaveToSavegame(g_currentMission, xmlFile)
+
+            saveXMLFile(xmlFile)
+            delete(xmlFile)
+        end
+    end
 end
 
 init()
+
