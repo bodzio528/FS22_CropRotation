@@ -200,6 +200,23 @@ function CropRotation:onYearChanged(newYear)
    -- and reset harvest state of all fields
 
    -- we should do it asynchronously, as the entire map needs to be scanned
+
+    local startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ
+
+    local size = self.mission.terrainSize
+
+    startWorldX = 0 - size / 2
+    startWorldZ = 0 - size / 2
+
+    widthWorldX = size / 2
+    widthWorldZ = startWorldZ
+
+    heightWorldX = startWorldX
+    heightWorldZ = size / 2
+
+    print("start(%d; %d) width(%d; %d), height(%d; %d)", startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
+
+    self:updateFallow(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
 end
 
 function CropRotation:onPeriodChanged(newPeriod)
@@ -215,6 +232,63 @@ end
 function CropRotation:onHourChanged(newHour)
     if newHour == nil then newHour = 0 end
     print(string.format("CropRotation:onHourChanged(hour = %s): %s", tostring(newHour), "called!"))
+
+    local startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ
+    local size = self.mission.terrainSize
+
+    startWorldX = 0 - size / 2
+    startWorldZ = 0 - size / 2
+
+    widthWorldX = size / 2
+    widthWorldZ = startWorldZ
+
+    heightWorldX = startWorldX
+    heightWorldZ = size / 2
+
+    print("UPDATE FELLOW: start(%d; %d) width(%d; %d) height(%d; %d)", startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
+
+    self:updateFallow(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
+end
+
+
+function CropRotation:updateFallow(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
+    local terrainSize = self.terrainSize
+    local mapModifiers = self.modifiers.map
+
+    mapModifiers.modifierN1:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
+                                                     startWorldZ / terrainSize + 0.5,
+                                                     widthWorldX / terrainSize + 0.5,
+                                                     widthWorldZ / terrainSize + 0.5,
+                                                     heightWorldX / terrainSize + 0.5,
+                                                     heightWorldZ / terrainSize + 0.5,
+                                                     DensityCoordType.POINT_POINT_POINT)
+    mapModifiers.modifierN2:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
+                                                     startWorldZ / terrainSize + 0.5,
+                                                     widthWorldX / terrainSize + 0.5,
+                                                     widthWorldZ / terrainSize + 0.5,
+                                                     heightWorldX / terrainSize + 0.5,
+                                                     heightWorldZ / terrainSize + 0.5,
+                                                     DensityCoordType.POINT_POINT_POINT)
+
+    for i = 0, 6 do
+        mapModifiers.filterN1:setValueCompareParams(DensityValueCompareType.EQUAL, i)
+
+        -- Set [n2]=[n1]
+        mapModifiers.modifierN2:executeSet(i, mapModifiers.filterF, mapModifiers.filterN1)
+
+        -- Set [n1]=fallow
+        mapModifiers.modifierN1:executeSet(CropRotation.CATEGORIES.FALLOW, mapModifiers.filterF, mapModifiers.filterN1)
+    end
+
+    -- Reset fallow map
+    mapModifiers.modifierF:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
+                                                    startWorldZ / terrainSize + 0.5,
+                                                    widthWorldX / terrainSize + 0.5,
+                                                    widthWorldZ / terrainSize + 0.5,
+                                                    heightWorldX / terrainSize + 0.5,
+                                                    heightWorldZ / terrainSize + 0.5,
+                                                    DensityCoordType.POINT_POINT_POINT)
+    mapModifiers.modifierF:executeSet(0)
 end
 
 ----------------------
@@ -247,11 +321,6 @@ end
 
 ---Update the rotation map on harvest (or forage... perhaps foraging should be more damaging to the ground)
 function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
-    -- Oilseed ignores crop rotation
---     if fruitIndex == FruitType.OILSEEDRADISH then
---         return superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
---     end
-
     local cropRotation = g_cropRotation
 
     -- Get fruit info
@@ -264,6 +333,7 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
     local fruitFilter = cropRotation.modifiers.filter
     local minState = useMinForageState and desc.minForageGrowthState or desc.minHarvestingGrowthState
     fruitFilter:resetDensityMapAndChannels(desc.terrainDataPlaneId, desc.startStateChannel, desc.numStateChannels)
+    fruitFilter:setValueCompareParams(DensityValueCompareType.BETWEEN, minState + 1, desc.maxHarvestingGrowthState + 1)
 
     -- Read CR data
     local n2, n1, mapModifier = cropRotation:readFromMap(startWorldX,
@@ -294,7 +364,7 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
         mapModifier:executeSet(bits, fruitFilter, cropRotation.modifiers.map.harvestFilter)
     end
 
-    print(string.format("currently cutting %s -> crop rotation yield multiplier %d", desc.name, yieldMultiplier))
+    print(string.format("currently cutting %s -> crop rotation yield multiplier = %d", desc.name, yieldMultiplier))
 
     local numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeFactor, growthState, maxArea, terrainDetailPixelsSum =
         superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
@@ -473,18 +543,36 @@ end
 
 ---Get the translated name of the given category
 function CropRotation:getCategoryName(category)
+    if category == CropRotation.CATEGORIES.OILSEED then
+        return "OILSEED"
+    elseif category == CropRotation.CATEGORIES.CEREAL then
+        return "CEREAL"
+    elseif category == CropRotation.CATEGORIES.LEGUME then
+        return "LEGUME"
+    elseif category == CropRotation.CATEGORIES.ROOT then
+        return "ROOT"
+    elseif category == CropRotation.CATEGORIES.NIGHTSHADE then
+        return "NIGHTSHADE"
+    elseif category == CropRotation.CATEGORIES.GRASS then
+        return "GRASS"
+    else
+        return "FELLOW"
+    end
+
 --     return self.i18n:getText(string.format("CropRotation_Category_%d", category))
-    return string.format("category_%d", category)
 end
 
 function CropRotation:commandGetInfo()
     local x, _, z = getWorldTranslation(getCamera(0))
 
-    local n2, n1 = self:getInfoAtWorldCoords(x, z)
+    local n2, n1, f, h = self:getInfoAtWorldCoords(x, z)
 
-    log(self:getCategoryName(n2), self:getCategoryName(n1))
-
-    self:visualize()
+    log(string.format("(n2)%s -> (n1)%s CRV: %d [F: %s] [H: %s]",
+                      self:getCategoryName(n2),
+                      self:getCategoryName(n1),
+                      self.data:getRotationCategoryValue(n2, n1),
+                      tostring(f),
+                      tostring(h)))
 end
 
 ----------------------
