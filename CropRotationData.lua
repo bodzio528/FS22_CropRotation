@@ -46,7 +46,7 @@ end
 
 function CropRotationData:load()
     self:loadDataFromFiles()
-    self:addCustomFruits()
+--    self:addCustomFruits()
 end
 
 -----------------------------------
@@ -54,13 +54,13 @@ end
 -----------------------------------
 
 function CropRotationData:loadDataFromFiles()
---     for _, path in ipairs(self.paths) do
---         local xmlFile = loadXMLFile("xml", path.file)
---         if xmlFile then
---             self:loadDataFromFile(xmlFile)
---             delete(xmlFile)
---         end
---     end
+    for _, path in ipairs(self.paths) do
+        local xmlFile = loadXMLFile("xml", path.file)
+        if xmlFile then
+            self:loadDataFromFile(xmlFile)
+            delete(xmlFile)
+        end
+    end
 end
 
 function CropRotationData:loadDataFromFile(xmlFile)
@@ -168,6 +168,12 @@ function CropRotationData:loadFruitTypesData(xmlFile)
 
         -- Fruit type is nil if a fruit is not in the map but is in the GEO.
         if fruitType ~= nil then -- and self.mission.fruits[fruitType.index] ~= nil then
+            if fruitType.rotation == nil then
+                fruitType.rotation = {}
+                fruitType.rotation.category = CropRotation.CATEGORIES.CEREAL
+                fruitType.rotation.returnPeriod = 1
+            end
+
             local category = getXMLString(xmlFile, key .. ".rotation#category")
             if category ~= nil and CropRotation.CATEGORIES[category] ~= nil then
                 fruitType.rotation.category = CropRotation.CATEGORIES[category]
@@ -181,22 +187,20 @@ end
 
 -- check for new fruits and update
 function CropRotationData:addCustomFruits()
---     for index, fruit in pairs(self.mission.fruits) do
---         local fruitType = self.fruitTypeManager:getFruitTypeByIndex(index)
---         local fruitName = fruitType.name
---
---         if self.defaultFruits[fruitName] == nil then -- new fruit found
---             print("CropRotationData:addCustomFruits(): new fruit found: %s", fruitName)
---             self:updateFruitTypesDataWithNewFruit(fruitName)
---         end
---     end
+    for fruitType in self.fruitTypeManager:getFruitTypes() do
+        local fruitName = fruitType.name
+
+        if self.defaultFruits[fruitName] == nil then -- new fruit found
+            print("CropRotationData:addCustomFruits(): new fruit found: %s", fruitName)
+            self:updateFruitTypesDataWithNewFruit(fruitName)
+        end
+    end
 end
---
--- function CropRotationData:updateFruitTypesDataWithNewFruit(fruitName)
---     local fruitType = self.fruitTypeManager:getFruitTypeByName(fruitName)
---
---     fruitType.rotation = {}
---     fruitType.rotation.category = CropRotation.CATEGORIES.CEREAL
---     fruitType.rotation.returnPeriod = 1
--- end
---
+
+function CropRotationData:updateFruitTypesDataWithNewFruit(fruitName)
+    local fruitType = self.fruitTypeManager:getFruitTypeByName(fruitName)
+
+    fruitType.rotation = {}
+    fruitType.rotation.category = CropRotation.CATEGORIES.CEREAL
+    fruitType.rotation.returnPeriod = 1
+end

@@ -29,6 +29,12 @@ CropRotation.CATEGORIES_MAX = 6
 
 CropRotation.debug = true -- false --
 
+function overwrittenStaticFunction(target, name, newFunc)
+    local oldFunc = target[name]
+    target[name] = function (...)
+        return newFunc(oldFunc, ...)
+    end
+end
 
 function CropRotation:new(mission, messageCenter, fruitTypeManager, data) --environment, densityMapScanner, i18n)
     local self = setmetatable({}, CropRotation_mt)
@@ -45,11 +51,11 @@ function CropRotation:new(mission, messageCenter, fruitTypeManager, data) --envi
     self.densityMapScanner = densityMapScanner
     self.data = data
     self.i18n = i18n
-
-    SeasonsModUtil.overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", SeasonsCropRotation.inj_densityMapUtil_updateSowingArea)
-    SeasonsModUtil.overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", SeasonsCropRotation.inj_densityMapUtil_updateSowingArea)
-    SeasonsModUtil.overwrittenStaticFunction(FSDensityMapUtil, "cutFruitArea", SeasonsCropRotation.inj_densityMapUtil_cutFruitArea)
 --]]
+
+    overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
+    overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
+    overwrittenStaticFunction(FSDensityMapUtil, "cutFruitArea", CropRotation.inj_densityMapUtil_cutFruitArea)
 
     addConsoleCommand("cropRotationInfo", "Get crop rotation info", "commandGetInfo", self)
 
@@ -231,7 +237,7 @@ function CropRotation.inj_densityMapUtil_updateSowingArea(superFunc, fruitIndex,
                                                                widthWorldZ / terrainSize + 0.5,
                                                                heightWorldX / terrainSize + 0.5,
                                                                heightWorldZ / terrainSize + 0.5,
-                                                               "ppp")
+                                                               DensityCoordType.POINT_POINT_POINT)
         modifiers.map.harvestModifier:executeSet(0)
     end
 
@@ -239,10 +245,7 @@ function CropRotation.inj_densityMapUtil_updateSowingArea(superFunc, fruitIndex,
     return superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, fieldGroundType, angle, growthState, blockedSprayTypeIndex)
 end
 
----Update the rotation map
---[[
-function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, destroySeedingWidth, useMinForageState, excludedSprayType, setsWeeds)
---]]
+---Update the rotation map on harvest (or forage... perhaps foraging should be more damaging to the ground)
 function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
     -- Oilseed ignores crop rotation
 --     if fruitIndex == FruitType.OILSEEDRADISH then
@@ -253,13 +256,7 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
 
     -- Get fruit info
     local desc = g_fruitTypeManager:getFruitTypeByIndex(fruitIndex)
-
     if desc.terrainDataPlaneId == nil then
-        return 0
-    end
-
-    local ids = g_currentMission.fruits[fruitIndex]
-    if ids == nil or ids.id == 0 then
         return 0
     end
 
@@ -267,14 +264,6 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
     local fruitFilter = cropRotation.modifiers.filter
     local minState = useMinForageState and desc.minForageGrowthState or desc.minHarvestingGrowthState
     fruitFilter:resetDensityMapAndChannels(desc.terrainDataPlaneId, desc.startStateChannel, desc.numStateChannels)
---     fruitFilter:setValueCompareParams(DensityValueCompareType.BETWEEN, minState + 1, desc.maxHarvestingGrowthState + 1)
-
-    print(string.format("CropRotation.inj_densityMapUtil_cutFruitArea(): fruitIndex = %d ids = %d desc.terrainDataPlaneId = %d",
-                        fruitIndex, ids, desc.terrainDataPlaneId))
-
-    if false then
-        return superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
-    end
 
     -- Read CR data
     local n2, n1, mapModifier = cropRotation:readFromMap(startWorldX,
@@ -305,12 +294,13 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
         mapModifier:executeSet(bits, fruitFilter, cropRotation.modifiers.map.harvestFilter)
     end
 
-    local numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, growthState, maxArea, terrainDetailPixelsSum =
---        superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, destroySeedingWidth, useMinForageState, excludedSprayType, setsWeeds)
+    print(string.format("currently cutting %s -> crop rotation yield multiplier %d", desc.name, yieldMultiplier))
+
+    local numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeFactor, growthState, maxArea, terrainDetailPixelsSum =
         superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
 
     -- Update yield
-    return numPixels * yieldMultiplier, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, growthState, maxArea, terrainDetailPixelsSum
+    return numPixels * yieldMultiplier, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeFactor, growthState, maxArea, terrainDetailPixelsSum
 end
 
 ----------------------
@@ -347,7 +337,7 @@ function CropRotation:readFromMap(startWorldX, startWorldZ, widthWorldX, widthWo
                                          widthWorldZ / terrainSize + 0.5,
                                          heightWorldX / terrainSize + 0.5,
                                          heightWorldZ / terrainSize + 0.5,
-                                         "ppp")
+                                         DensityCoordType.POINT_POINT_POINT)
     local mapHarvestFilter = mapModifiers.harvestFilter
 
     if not n1Only then
@@ -357,7 +347,7 @@ function CropRotation:readFromMap(startWorldX, startWorldZ, widthWorldX, widthWo
                                                          widthWorldZ / terrainSize + 0.5,
                                                          heightWorldX / terrainSize + 0.5,
                                                          heightWorldZ / terrainSize + 0.5,
-                                                         "ppp")
+                                                         DensityCoordType.POINT_POINT_POINT)
         local maxArea = 0
         for i = 0, 6 do -- iterate over categories
             mapModifiers.filterN2:setValueCompareParams(DensityValueCompareType.EQUAL, i)
@@ -387,7 +377,7 @@ function CropRotation:readFromMap(startWorldX, startWorldZ, widthWorldX, widthWo
                                                      widthWorldZ / terrainSize + 0.5,
                                                      heightWorldX / terrainSize + 0.5,
                                                      heightWorldZ / terrainSize + 0.5,
-                                                     "ppp")
+                                                     DensityCoordType.POINT_POINT_POINT)
     local maxArea = 0
     for i = 0, 6 do  -- iterate over categories
         mapModifiers.filterN1:setValueCompareParams(DensityValueCompareType.EQUAL, i)
