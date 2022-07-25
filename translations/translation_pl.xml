@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <translationContributors>Bodzio528</translationContributors>
+    <texts>
+        <text name="cropRotation_Category_0" text="Ugór" />
+        <text name="cropRotation_Category_1" text="Oleiste" />
+        <text name="cropRotation_Category_2" text="Zboża" />
+        <text name="cropRotation_Category_3" text="Strączkowe" />
+        <text name="cropRotation_Category_4" text="Okopowe" />
+        <text name="cropRotation_Category_5" text="Psiankowate" />
+        <text name="cropRotation_Category_6" text="Trawa" />
+        <text name="cropRotation_ui_Title" text="Płodozmian" />
+        <text name="cropRotation_ui_Explanation" text="Płodozmian rozpoczyna się na nowo po ostatnim zbiorze z listy." />
+        <text name="cropRotation_ui_Planner" text="Planer płodozmianu" />
+        <text name="cropRotation_ui_Planner_1" text="Płodozmian A" />
+        <text name="cropRotation_ui_Planner_2" text="Płodozmian B" />
+        <text name="cropRotation_ui_Planner_3" text="Płodozmian C" />
+        <text name="cropRotation_ui_Planner_4" text="Płodozmian D" />
+
+        <text name="cropRotation_helpTitle_01" text="Płodozmian" />
+        <text name="cropRotation_helpText_01_01" text="Rokroczne uprawianie tego samego rodzaju roślin na polu (monokultura) prowadzi do obniżenia plonów." />
+        <text name="cropRotation_helpText_01_02" text="W zależności od jakości gleby i uprawianej rośliny, straty mogą sięgać od 10% do nawet 25% plonu." />
+        <text name="cropRotation_helpText_01_03" text="Dzieje się tak, gdyż różne rośliny do rozwoju potrzebują różnych proporcji pierwiastków zawartych w glebie." />
+        <text name="cropRotation_helpText_01_04" text="Płodozmian polega na wprowadzaniu na stanowisko (pole) roślin o odmiennych wymaganiach, co daje glebie czas potrzebny na uzupełnienie tych brakujących - zwykle zawartych w szczątkach roślin z poprzednich zbiorów, ale w formie jeszcze nieprzyswajalnej przez rośliny." />
+        <text name="cropRotation_helpText_01_05" text="Ponadto dieta wielu szkodników jest ograniczona do konkretnego rodzaju roślin. Zmiana rodzaju uprawy przerywa cykl rozwojowy szkodników i pozwala glebie oczyścić się z patogenów związanych z roślinami." />
+        <text name="cropRotation_helpText_01_06" text="Idealnie poprowadzony płodozmian zapobiega zmiejszeniu plonu na skutek wyjałowienia gleby z pierwiastków potrzebnych roślinom do prawidłowego wzrostu, oraz znacznie ogranicza presję patogenów chorobotwórczych i szkodników w uprawie. Prowadzi to wprost do polepszenia jakości plonów w kolejnych latach." />
+        <text name="cropRotation_helpText_01_07" text="Jeśli chcesz osiągnąć największe zbiory, zmieniaj uprawy na danym polu co roku (płodozmian). Aby pomóc sobie w planowaniu upraw, możesz użyć planera płodozmianu." />
+        <text name="cropRotation_helpText_01_08" text="Niektóre rośliny mają wysokie wymagania glebowe (ziemniaki, buraki, zboża), inne zaś niskie (soja, trawa). Warto je siać naprzemian, aby utrzymać wielkość plonu z pola na dobrym poziomie." />
+        <text name="cropRotation_helpText_01_09" text="Uprawiane rośliny są podzielone na kategorie, takie jak zboża (kukurydza, przenica, owies), rośliny oleiste (rzepak, słonecznik) czy strączkowe (soja). Rośliny z jednej grupy mają podobne wymagania, toteż należy unikać uprawiania na polu roślin w obrębie kategorii bezpośrednio po sobie." />
+        <text name="cropRotation_helpText_01_10" text="Pole możesz także zostawić odłogiem, czyli nie obsiewać po zbiorach przez cały następny rok (ugór). Gleba odzyska wtedy żyzność i będzie gotowa na przyjęcie najbardziej nawet wymagających upraw." />
+    </texts>
+</l10n>

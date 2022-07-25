@@ -27,12 +27,6 @@
 	<extraSourceFiles>
 		<sourceFile filename="main.lua"/>
 	</extraSourceFiles>
-	<l10n>
-		<text name="CropRotation_Planner">
-			<en>Crop rotation planner</en>
-			<de>Fruchtfolgeplaner</de>
-			<fr>Planificateur de rotation des cultures</fr>
-			<pl>Planer płodozmianu</pl>
-		</text>
-	</l10n>
+
+	<l10n filenamePrefix="translations/translation" />
 </modDesc>
