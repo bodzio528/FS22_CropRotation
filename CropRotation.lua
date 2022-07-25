@@ -55,7 +55,13 @@ function CropRotation:new(mission, messageCenter, fruitTypeManager, data) --envi
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "cutFruitArea", CropRotation.inj_densityMapUtil_cutFruitArea)
 
-    addConsoleCommand("cropRotationInfo", "Get crop rotation info", "commandGetInfo", self)
+    addConsoleCommand("crInfo", "Get crop rotation info", "commandGetInfo", self)
+
+    if true then -- g_addCheatCommands -- cheats enabled
+        addConsoleCommand("crRunFallow", "Run yearly fallow", "commandRunFallow", self)
+        addConsoleCommand("crSetFallow", "Set fallow state", "commandSetFallow", self)
+        addConsoleCommand("crClearFallow", "Clear fallow state", "commandClearFallow", self)
+    end
 
     return self
 end
@@ -84,6 +90,8 @@ function CropRotation:load()
     self.messageCenter:subscribe(MessageType.PERIOD_CHANGED, self.onPeriodChanged, self)
     self.messageCenter:subscribe(MessageType.DAY_CHANGED, self.onDayChanged, self)
     self.messageCenter:subscribe(MessageType.HOUR_CHANGED, self.onHourChanged, self)
+
+	self.messageCenter:subscribe(MessageType.SLEEPING, self.onSleepChanged, self)
 end
 
 
@@ -133,7 +141,7 @@ function CropRotation:loadCropRotationMap()
     print(string.format("CropRotation:loadMap(): self.mapSize = %s", tostring(self.mapSize)))
 
     local firstChannel = 1
-    local numChannels 1
+    local numChannels = 1
     local minValue = 0
     local maxValue = 1
     self.fallowUpdater = createDensityMapUpdater("cropRotation", self.map, firstChannel, numChannels, minValue, maxValue, 0, 0, 0, 0, 0)
@@ -246,9 +254,7 @@ end
 
 function CropRotation:onPeriodChanged(newPeriod)
     if newPeriod == nil then newPeriod = 0 end
-    print(string.format("CropRotation:onPeriodChanged(period = %s): [DEBUG] run yearly fallow every period!!!", tostring(newPeriod))
-
-    self:startEngineFallow()
+    print(string.format("CropRotation:onPeriodChanged(period = %s): [DEBUG] run yearly fallow every period!!!", tostring(newPeriod)))
 end
 
 function CropRotation:onDayChanged(newDay)
@@ -262,9 +268,11 @@ function CropRotation:onHourChanged(newHour)
 end
 
 function CropRotation:onSleepChanged(isSleeping)
-	if self.fallowUpdater ~= nil and self.isServer then
-		setDensityMapUpdaterApplyMaxTimePerFrame(self.fallowUpdater, self:getMaxUpdateTime(isSleeping))
-	end
+    print(string.format("CropRotation:onSleepChanged(isSleeping = %s): isServer = %s", tostring(isSleeping), tostring(self.isServer)))
+
+    if self.fallowUpdater ~= nil and self.isServer then
+        setDensityMapUpdaterApplyMaxTimePerFrame(self.fallowUpdater, self:getMaxUpdateTime(isSleeping))
+    end
 end
 
 function CropRotation:updateFallow(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
@@ -594,6 +602,66 @@ end
 ----------------------
 -- Debugging
 ----------------------
+
+function CropRotation:commandRunFallow()
+    self:startEngineFallow()
+end
+
+function CropRotation:commandSetFallow()
+    local x, _, z = getWorldTranslation(getCamera(0))
+
+    local radius = 10
+    local terrainSize = self.mission.terrainSize
+
+    local mapModifiers = self.modifiers.map
+
+    local startWorldX = math.max(-terrainSize/2, x - radius)
+    local startWorldZ = math.max(-terrainSize/2, z - radius)
+
+    local widthWorldX = math.min(terrainSize/2, x + radius)
+    local widthWorldZ = startWorldZ
+
+    local heightWorldX = startWorldX
+    local heightWorldZ = math.min(terrainSize/2, z + radius)
+
+    -- Reset fallow map
+    mapModifiers.modifierF:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
+                                                    startWorldZ / terrainSize + 0.5,
+                                                    widthWorldX / terrainSize + 0.5,
+                                                    widthWorldZ / terrainSize + 0.5,
+                                                    heightWorldX / terrainSize + 0.5,
+                                                    heightWorldZ / terrainSize + 0.5,
+                                                    DensityCoordType.POINT_POINT_POINT)
+    mapModifiers.modifierF:executeSet(1)
+end
+
+function CropRotation:commandClearFallow()
+    local x, _, z = getWorldTranslation(getCamera(0))
+
+    local radius = 10
+    local terrainSize = self.mission.terrainSize
+
+    local mapModifiers = self.modifiers.map
+
+    local startWorldX = math.max(-terrainSize/2, x - radius)
+    local startWorldZ = math.max(-terrainSize/2, z - radius)
+
+    local widthWorldX = math.min(terrainSize/2, x + radius)
+    local widthWorldZ = startWorldZ
+
+    local heightWorldX = startWorldX
+    local heightWorldZ = math.min(terrainSize/2, z + radius)
+
+    -- Reset fallow map
+    mapModifiers.modifierF:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
+                                                    startWorldZ / terrainSize + 0.5,
+                                                    widthWorldX / terrainSize + 0.5,
+                                                    widthWorldZ / terrainSize + 0.5,
+                                                    heightWorldX / terrainSize + 0.5,
+                                                    heightWorldZ / terrainSize + 0.5,
+                                                    DensityCoordType.POINT_POINT_POINT)
+    mapModifiers.modifierF:executeSet(0)
+end
 
 -- borrowed from FS19_RM_Seasons mod :)
 function CropRotation:visualize()
