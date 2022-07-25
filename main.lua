@@ -113,6 +113,11 @@ function cr_initTerrain(mission, terrainId, filename)
     if not isActive() then return end
 
     cropRotation:onTerrainLoaded(mission, terrainId, filename)
+
+	local isMultiplayer = mission.missionDynamicInfo.isMultiplayer
+    if isMultiplayer then
+        cropRotation:addDensityMapSyncer(mission.densityMapSyncer)
+    end
 end
 
 function cr_loadMissionFinished(mission, superFunc, node) -- loadedMission
@@ -169,4 +174,3 @@ function getDataPaths(filename)
 end
 
 init()
-
