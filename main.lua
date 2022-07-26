@@ -47,6 +47,8 @@ function init()
 
     Mission00.load = Utils.prependedFunction(Mission00.load, cr_loadMission)
     Mission00.loadMission00Finished = Utils.overwrittenFunction(Mission00.loadMission00Finished, cr_loadMissionFinished)
+
+    HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, HelpLineManager.loadCropRotationHelpLine)
 end
 
 function cr_loadMission(mission)
@@ -171,6 +173,18 @@ function getDataPaths(filename)
     DebugUtil.printTableRecursively(paths, "", 0, 1)
 
     return paths
+end
+
+----------------------
+-- Help menu supplement
+----------------------
+function HelpLineManager:loadCropRotationHelpLine(superFunc, ...)
+	local ret = superFunc(self, ...)
+	if ret then
+		self:loadFromXML(Utils.getFilename("gui/helpLine.xml", modDirectory))
+		return true
+	end
+	return false
 end
 
 init()

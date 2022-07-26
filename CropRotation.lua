@@ -663,7 +663,7 @@ function CropRotation:commandClearFallow()
     mapModifiers.modifierF:executeSet(0)
 end
 
--- borrowed from FS19_RM_Seasons mod :)
+-- borrowed from FS19_RM_Seasons mod
 function CropRotation:visualize()
     local mapSize = getBitVectorMapSize(self.map)
     local terrainSize = self.mission.terrainSize

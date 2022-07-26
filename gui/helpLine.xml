@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<helpLines>
+    <category title="$l10n_cropRotation_helpHeader">
+        <page title="$l10n_cropRotation_helpTitle_01">
+            <!-- <paragraph> -->
+                <!-- <image filename="gui/helplineImages03.png" uvs="256px 170px 1536px 256px" size="2048 512" aspectRatio="0.16666"/> -->
+            <!-- </paragraph> -->
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_01" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_02" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_03" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_04" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_05" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_06" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_07" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_08" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_09" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_10" />
+            </paragraph>
+        </page>
+    </category>
+</helpLines>

@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
     <translationContributors>Bodzio528</translationContributors>
-    <texts>
-        <text name="cropRotation_Category_0" text="Fallow" />
-        <text name="cropRotation_Category_1" text="Oilseed" />
-        <text name="cropRotation_Category_2" text="Cereal" />
-        <text name="cropRotation_Category_3" text="Legumes" />
-        <text name="cropRotation_Category_4" text="Roots" />
-        <text name="cropRotation_Category_5" text="Nightshade" />
-        <text name="cropRotation_Category_6" text="Grass" />
-        <text name="cropRotation_ui_Title" text="Crop Rotation" />
-        <text name="cropRotation_ui_Explanation" text="Crop rotation starts over from the beginning after the last crop." />
-        <text name="cropRotation_ui_Planner" text="Crop Rotation Planner" />
-        <text name="cropRotation_ui_Planner_1" text="Rotation plan A" />
-        <text name="cropRotation_ui_Planner_2" text="Rotation plan B" />
-        <text name="cropRotation_ui_Planner_3" text="Rotation plan C" />
-        <text name="cropRotation_ui_Planner_4" text="Rotation plan D" />
-
-        <text name="cropRotation_helpTitle_01" text="Crop Rotation" />
-        <text name="cropRotation_helpText_01_01" text="Planting the same crop every year (monoculture) leads to reduce in yield." />
-        <text name="cropRotation_helpText_01_02" text="Depending on soil and crop, he amount lost varies between 10% and 25% of yield." />
-        <text name="cropRotation_helpText_01_03" text="Different crops reqiure different elements from soil to grow." />
-        <text name="cropRotation_helpText_01_04" text="Crop rotation is a technique to alternate types of plants with different requirements, which gives the soil time needed to supplement the missing one - usually contained within leftovers from previous harvest, but not yet in a form appropriate for plants to utilize." />
-        <text name="cropRotation_helpText_01_05" text="Moreover, lots of pests are adjusted to single kind of plants. Crop rotation severe their multiplication ability and soil is allowed to clean itself from pathogens specific to particular crop type." />
-        <text name="cropRotation_helpText_01_06" text="Crop rotation performed well, prevets soil from loosing elements plants require for growth, and greatly reduce diseases and pests presence. It leads directly to higher quality and quantity of yield in subsequent years." />
-
-        <text name="cropRotation_helpText_01_07" text="To create good soil, rotate the crops every year. To learn more about rotations you can use the planner in the menu." />
-        <text name="cropRotation_helpText_01_08" text="Some plants have higher soil requirements (potatoes, beets, wheat) than others (soybeans, grass). Planting them in alternate manner keeps yields at good level." />
-        <text name="cropRotation_helpText_01_09" text="Crops are grouped in several categories, such as cereals (corn, wheat, oats), oilseeds (canola, sunflower) or legumes (soybeans). Crops within single group have similar properties, thus you should avoid planting them one after another on the same field." />
-        <text name="cropRotation_helpText_01_10" text="You may also leave field without planting for full year (fallow). Soil will then regain the ability to support even the most demanding crops." />
-    </texts>
+    <elements>
+        <e k="cropRotation_Category_0" v="Fallow" />
+        <e k="cropRotation_Category_1" v="Oilseed" />
+        <e k="cropRotation_Category_2" v="Cereal" />
+        <e k="cropRotation_Category_3" v="Legumes" />
+        <e k="cropRotation_Category_4" v="Roots" />
+        <e k="cropRotation_Category_5" v="Nightshade" />
+        <e k="cropRotation_Category_6" v="Grass" />
+        <e k="cropRotation_ui_Title" v="Crop Rotation" />
+        <e k="cropRotation_ui_Explanation" v="Crop rotation starts over from the beginning after the last crop." />
+        <e k="cropRotation_ui_Planner" v="Crop Rotation Planner" />
+        <e k="cropRotation_ui_PlanNew" v="New Plan %d" />
+        <!-- help lines -->
+        <e k="cropRotation_helpHeader" v="Crop Rotation"/>
+        <e k="cropRotation_helpTitle_01" v="General information" />
+        <e k="cropRotation_helpText_01_01" v="Planting the same crop every year (monoculture) leads to reduce in yield." />
+        <e k="cropRotation_helpText_01_02" v="Depending on soil and crop, he amount lost varies between 10% and 25% of yield." />
+        <e k="cropRotation_helpText_01_03" v="Different crops reqiure different elements from soil to grow." />
+        <e k="cropRotation_helpText_01_04" v="Crop rotation is a technique to alternate types of plants with different requirements, which gives the soil time needed to supplement the missing one - usually contained within leftovers from previous harvest, but not yet in a form appropriate for plants to utilize." />
+        <e k="cropRotation_helpText_01_05" v="Moreover, lots of pests are adjusted to single kind of plants. Crop rotation severe their multiplication ability and soil is allowed to clean itself from pathogens specific to particular crop type." />
+        <e k="cropRotation_helpText_01_06" v="Crop rotation performed well, prevets soil from loosing elements plants require for growth, and greatly reduce diseases and pests presence. It leads directly to higher quality and quantity of yield in subsequent years." />
+        <e k="cropRotation_helpText_01_07" v="To create good soil, rotate the crops every year. To learn more about rotations you can use the planner in the menu." />
+        <e k="cropRotation_helpText_01_08" v="Some plants have higher soil requirements (potatoes, beets, wheat) than others (soybeans, grass). Planting them in alternate manner keeps yields at good level." />
+        <e k="cropRotation_helpText_01_09" v="Crops are grouped in several categories, such as cereals (corn, wheat, oats), oilseeds (canola, sunflower) or legumes (soybeans). Crops within single group have similar properties, thus you should avoid planting them one after another on the same field." />
+        <e k="cropRotation_helpText_01_10" v="You may also leave field without planting for full year (fallow). Soil will then regain the ability to support even the most demanding crops." />
+    </elements>
 </l10n>
