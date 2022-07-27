@@ -17,10 +17,12 @@ local modName = g_currentModName
 
 source(modDirectory .. "CropRotation.lua")
 source(modDirectory .. "CropRotationData.lua")
+source(modDirectory .. "misc/DensityMapScanner.lua")
+source(modDirectory .. "misc/Queue.lua")
+
 
 local cropRotation = nil -- localize
 local cropRotationData = nil
---local version = 1
 
 
 -- Active test: needed for console version where the code is always sourced.
@@ -35,63 +37,19 @@ function isActive()
     return g_modIsLoaded["FS22_CropRotation"]
 end
 
-
 ---Initialize the mod. This code is run once for the lifetime of the program.
 function init()
     print(string.format("FS22_CropRotation:init(): %s", "mod initialized, yay"))
+
     FSBaseMission.delete = Utils.appendedFunction(FSBaseMission.delete, cr_unload)
     FSBaseMission.initTerrain = Utils.appendedFunction(FSBaseMission.initTerrain, cr_initTerrain)
     FSBaseMission.loadMapFinished = Utils.prependedFunction(FSBaseMission.loadMapFinished, cr_loadMapFinished)
-
-    FSCareerMissionInfo.saveToXMLFile = Utils.appendedFunction(FSCareerMissionInfo.saveToXMLFile, cr_saveToXMLFile)
+	FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, CropRotation.saveSavegame)
 
     Mission00.load = Utils.prependedFunction(Mission00.load, cr_loadMission)
     Mission00.loadMission00Finished = Utils.overwrittenFunction(Mission00.loadMission00Finished, cr_loadMissionFinished)
 
     HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, HelpLineManager.loadCropRotationHelpLine)
-end
-
-function cr_loadMission(mission)
-    print(string.format("FS22_CropRotation:cr_load(mission): %s, isActive = %s", "mission loaded, yay", tostring(isActive())))
-
-    if not isActive() then return end
-    assert(g_seasons == nil)
-
-    cropRotationData = CropRotationData:new(mission, g_fruitTypeManager)
-
-    cropRotation = CropRotation:new(mission, g_messageCenter, g_fruitTypeManager, cropRotationData)
-    -- Available globals at this point:
-    -- g_i18n, modDirectory, modName, g_densityMapHeightManager, g_fillTypeManager,
-    -- g_modManager, g_gui, g_gui.inputManager,
-    -- g_specializationManager, g_vehicleTypeManager, g_onCreateUtil, g_treePlantManager, g_farmManager,
-    -- g_missionManager, g_sprayTypeManager, g_gameplayHintManager, g_helpLineManager, g_soundManager,
-    -- g_animalManager, g_animalFoodManager, g_workAreaTypeManager, g_dedicatedServerInfo, g_sleepManager,
-    -- g_settingsScreen.settingsModel, g_ambientSoundManager, g_depthOfFieldManager, g_server, g_fieldManager,
-    -- g_particleSystemManager, g_baleTypeManager, g_npcManager, g_farmlandManager
-
-    --cropRotation.version = version
-
-    getfenv(0)["g_cropRotation"] = cropRotation
-
-    addModEventListener(cropRotation)
-
-    --[[ HACKS
-    if not g_addTestCommands then
-        addConsoleCommand("gsToggleDebugFieldStatus", "Shows field status", "consoleCommandToggleDebugFieldStatus", mission)
-        addConsoleCommand("gsTakeEnvProbes", "Takes env. probes from current camera position", "consoleCommandTakeEnvProbes", mission)
-    end
-	--]]
-end
-
--- Map object is loaded but not configured into the game
-function cr_loadMapFinished(mission, node) -- loadedMap
-    print(string.format("FS22_CropRotation:cr_loadMapFinished(): %s, isActive = %s", "loadMapFinished, yay", tostring(isActive())))
-
-    if not isActive() then return end
-
-    if node ~= 0 then
-        cropRotation:onMapLoaded(mission, node)
-    end
 end
 
 function cr_unload()
@@ -114,7 +72,7 @@ function cr_initTerrain(mission, terrainId, filename)
 
     if not isActive() then return end
 
-    cropRotation:onTerrainLoaded(mission, terrainId, filename)
+    g_cropRotation:onTerrainLoaded(mission, terrainId, filename)
 
 	local isMultiplayer = mission.missionDynamicInfo.isMultiplayer
     if isMultiplayer then
@@ -122,7 +80,49 @@ function cr_initTerrain(mission, terrainId, filename)
     end
 end
 
-function cr_loadMissionFinished(mission, superFunc, node) -- loadedMission
+-- Map object is loaded but not configured into the game
+function cr_loadMapFinished(mission, node)
+    print(string.format("FS22_CropRotation:cr_loadMapFinished(): %s, isActive = %s", "loadMapFinished, yay", tostring(isActive())))
+
+    if not isActive() then return end
+
+    if node ~= 0 then
+        cropRotation:onMapLoaded(mission, node)
+    end
+end
+
+function cr_loadMission(mission)
+    print(string.format("FS22_CropRotation:cr_load(mission): %s, isActive = %s", "mission loaded, yay", tostring(isActive())))
+
+    if not isActive() then return end
+    assert(g_cropRotation == nil)
+
+    cropRotationData = CropRotationData:new(mission, g_fruitTypeManager)
+    densityMapScanner = SeasonsDensityMapScanner:new(mission, g_sleepManager, g_dedicatedServer ~= nil)
+
+    cropRotation = CropRotation:new(mission, g_messageCenter, g_fruitTypeManager, g_i18n, cropRotationData, densityMapScanner)
+    -- Available globals at this point:
+    -- modDirectory, modName, g_densityMapHeightManager, g_fillTypeManager,
+    -- g_modManager, g_gui, g_gui.inputManager,
+    -- g_specializationManager, g_vehicleTypeManager, g_onCreateUtil, g_treePlantManager, g_farmManager,
+    -- g_missionManager, g_sprayTypeManager, g_gameplayHintManager, g_helpLineManager, g_soundManager,
+    -- g_animalManager, g_animalFoodManager, g_workAreaTypeManager, g_dedicatedServerInfo, g_sleepManager,
+    -- g_settingsScreen.settingsModel, g_ambientSoundManager, g_depthOfFieldManager, g_server, g_fieldManager,
+    -- g_particleSystemManager, g_baleTypeManager, g_npcManager, g_farmlandManager
+
+    getfenv(0)["g_cropRotation"] = cropRotation
+
+    addModEventListener(cropRotation)
+
+    --[[ HACKS
+    if not g_addTestCommands then
+        addConsoleCommand("gsToggleDebugFieldStatus", "Shows field status", "consoleCommandToggleDebugFieldStatus", mission)
+        addConsoleCommand("gsTakeEnvProbes", "Takes env. probes from current camera position", "consoleCommandTakeEnvProbes", mission)
+    end
+	--]]
+end
+
+function cr_loadMissionFinished(mission, superFunc, node)
     print(string.format("FS22_CropRotation:cr_loadMissionFinished(): %s, isActive = %s", "mission loaded called", tostring(isActive())))
 
     if not isActive() then
@@ -143,40 +143,20 @@ function cr_loadMissionFinished(mission, superFunc, node) -- loadedMission
     return
 end
 
--- Calling saveToXML (after saving)
--- cropRotation.xml is place where crop rotation planner will store their data
-function cr_saveToXMLFile(missionInfo)
-    print(string.format("FS22_CropRotation:saveToXMLFile(): %s, isActive = %s", "called on save to XML", tostring(isActive())))
-
-    if not isActive() then return end
-
-    if missionInfo.isValid then
-        local xmlFile = createXMLFile("CropRotationXML", missionInfo.savegameDirectory .. "/cropRotation.xml", "cropRotation")
-        if xmlFile ~= nil then
-            cropRotation:onMissionSaveToSavegame(g_currentMission, xmlFile)
-
-            saveXMLFile(xmlFile)
-            delete(xmlFile)
-        end
-    end
-end
-
 function getDataPaths(filename)
-    local paths = {} -- self.thirdPartyMods:getDataPaths(filename)
+    local paths = {} -- self.thirdPartyMods:getDataPaths(filename) -- TODO(v.2): load custom crops.xml from GEOs
 
-    -- First add base seasons
+    -- First add base
     local path = Utils.getFilename("data/" .. filename, modDirectory)
     if fileExists(path) then
         table.insert(paths, 1, { file = path, modDir = modDirectory })
     end
 
-    DebugUtil.printTableRecursively(paths, "", 0, 1)
-
     return paths
 end
 
 ----------------------
--- Help menu supplement
+-- Help menu appendix
 ----------------------
 function HelpLineManager:loadCropRotationHelpLine(superFunc, ...)
 	local ret = superFunc(self, ...)

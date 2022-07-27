@@ -27,10 +27,6 @@ CropRotation.CATEGORIES = {
 }
 CropRotation.CATEGORIES_MAX = 6
 
--- engine performance
-CropRotation.MAX_MS_PER_FRAME = 0.5
-CropRotation.MAX_MS_PER_FRAME_SLEEPING = 1.5
-
 CropRotation.debug = true -- false --
 
 function overwrittenStaticFunction(target, name, newFunc)
@@ -40,7 +36,7 @@ function overwrittenStaticFunction(target, name, newFunc)
     end
 end
 
-function CropRotation:new(mission, messageCenter, fruitTypeManager, data) --environment, densityMapScanner, i18n)
+function CropRotation:new(mission, messageCenter, fruitTypeManager, i18n, data, dms)
     local self = setmetatable({}, CropRotation_mt)
 
 	self.isServer = mission:getIsServer()
@@ -48,8 +44,11 @@ function CropRotation:new(mission, messageCenter, fruitTypeManager, data) --envi
     self.mission = mission
     self.messageCenter = messageCenter
     self.fruitTypeManager = fruitTypeManager
+    self.i18n = i18n
 
     self.data = data
+
+    self.densityMapScanner = dms
 
     overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
@@ -71,27 +70,70 @@ function CropRotation:delete()
         delete(self.map)
     end
 
-    --self.densityMapScanner:unregisterCallback("UpdateFallow")
-	if self.fallowUpdater ~= nil then
-		delete(self.fallowUpdater)
-		self.fallowUpdater = nil
+    self.densityMapScanner:unregisterCallback("UpdateFallow")
+
+	if self.densityMapScanner ~= nil then
+		delete(self.densityMapScanner)
+		self.densityMapScanner = nil
 	end
 
-    self.messageCenter:unsubscribeAll(self)
+    removeConsoleCommand("crInfo")
+    if g_addCheatCommands then
+        removeConsoleCommand("crRunFallow")
+        removeConsoleCommand("crSetFallow")
+        removeConsoleCommand("crClearFallow")
+    end
 
+    self.messageCenter:unsubscribeAll(self)
+end
+
+------------------------------------------------
+--- Events from mod event handling
+------------------------------------------------
+
+-- called on map loaded from savegame
+function CropRotation:loadMap()
+    print(string.format("CropRotation:loadMap(): called"))
+
+    if self.mission:getIsServer() and self.mission.missionInfo.savegameDirectory ~= nil then
+        local path = self.mission.missionInfo.savegameDirectory .. "/cropRotation.xml"
+
+        if fileExists(path) then
+            local xmlFile = loadXMLFile("CropRotationXML", path)
+            print(string.format("CropRotation:loadMap(): CropRotationXML path = %s", path))
+
+            if xmlFile ~= nil then
+                print(string.format("CropRotation:loadMap(): CropRotationXML loading success"))
+                self.densityMapScanner:loadFromSavegame(xmlFile)
+
+                delete(xmlFile)
+            end
+        end
+    end
+end
+
+---Called every frame update
+function CropRotation:update(dt)
+    if self.densityMapScanner ~= nil then
+        self.densityMapScanner:update(dt)
+    end
 end
 
 function CropRotation:load()
-    print(string.format("CropRotation:load(): %s", "has been called 100"))
+    print(string.format("CropRotation:load(): %s", "has been called afer mission loading has finished"))
 
     self:loadModifiers()
 
-    self.messageCenter:subscribe(MessageType.YEAR_CHANGED, self.onYearChanged, self)
-    self.messageCenter:subscribe(MessageType.PERIOD_CHANGED, self.onPeriodChanged, self)
-    self.messageCenter:subscribe(MessageType.DAY_CHANGED, self.onDayChanged, self)
-    self.messageCenter:subscribe(MessageType.HOUR_CHANGED, self.onHourChanged, self)
+    local finalizer = function (target, parameters)
+        print(string.format("CropRotation:UpdateFellow:Finalizer(): target = %s parameters = %s", tostring(target), tostring(parameters)))
+    end
 
-	self.messageCenter:subscribe(MessageType.SLEEPING, self.onSleepChanged, self)
+    self.densityMapScanner:registerCallback("UpdateFallow", self.dms_updateFallow, self, finalizer, false)
+
+    self.messageCenter:subscribe(MessageType.YEAR_CHANGED, self.onYearChanged, self)
+--     self.messageCenter:subscribe(MessageType.PERIOD_CHANGED, self.onPeriodChanged, self)
+--     self.messageCenter:subscribe(MessageType.DAY_CHANGED, self.onDayChanged, self)
+--     self.messageCenter:subscribe(MessageType.HOUR_CHANGED, self.onHourChanged, self)
 end
 
 
@@ -108,23 +150,23 @@ function CropRotation:onTerrainLoaded(mission, terrainId, mapFilename)
     self:loadModifiers()
 end
 
--- this function will add synchronization between all clients in MP game
--- hopefully
+-- this function will add synchronization between all clients in MP game...
+-- ...hopefully
 function CropRotation:addDensityMapSyncer(densityMapSyncer)
 	if self.map ~= nil then
 		densityMapSyncer:addDensityMap(self.map)
 	end
 end
 
-function CropRotation:loadCropRotationMap()
-    print(string.format("CropRotation:loadMap(): %s", "has been called"))
+function CropRotation:loadCropRotationMap() -- loadCropRotationDensityMap
+    print(string.format("CropRotation:loadCropRotationMap(): %s", "has been called"))
 
     self.map = createBitVectorMap("cropRotation")
     local success = false
 
     if self.mission.missionInfo.isValid then
         local path = self.mission.missionInfo.savegameDirectory .. "/cropRotation.grle"
-        print(string.format("CropRotation:loadMap(): load from file - %s", tostring(path)))
+        print(string.format("CropRotation:loadCropRotationMap(): load from file - %s", tostring(path)))
 
         if fileExists(path) then
             success = loadBitVectorMapFromFile(self.map, path, CropRotation.MAP_NUM_CHANNELS)
@@ -132,27 +174,27 @@ function CropRotation:loadCropRotationMap()
     end
 
     if not success then
-        print(string.format("CropRotation:loadMap(): init new densityMap - mission: %s, tdId: %s", tostring(self.mission), tostring(self.mission.terrainDetailId)))
+        print(string.format("CropRotation:loadCropRotationMap(): init new densityMap - mission: %s, tdId: %s", tostring(self.mission), tostring(self.mission.terrainDetailId)))
         local size = getDensityMapSize(self.mission.terrainDetailId)
         loadBitVectorMapNew(self.map, size, size, CropRotation.MAP_NUM_CHANNELS, false)
     end
 
     self.mapSize = getBitVectorMapSize(self.map)
-    print(string.format("CropRotation:loadMap(): self.mapSize = %s", tostring(self.mapSize)))
+    print(string.format("CropRotation:loadCropRotationMap(): self.mapSize = %s", tostring(self.mapSize)))
 
-    local firstChannel = 1
-    local numChannels = 1
-    local minValue = 0
-    local maxValue = 1
-    self.fallowUpdater = createDensityMapUpdater("cropRotation", self.map, firstChannel, numChannels, minValue, maxValue, 0, 0, 0, 0, 0)
-    if self.fallowUpdater ~= nil then
-        setDensityMapUpdaterApplyFinishedCallback(self.fallowUpdater, "onEngineStepFinished", self)
-        setDensityMapUpdaterApplyMaxTimePerFrame(self.fallowUpdater, self:getMaxUpdateTime())
-
-        local groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels = self.mission.fieldGroundSystem:getDensityMapData(FieldDensityMap.GROUND_TYPE)
-        setDensityMapUpdaterMask(self.fallowUpdater, groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels)
-        setDensityMapUpdaterEnabled(self.fallowUpdater, true)
-    end
+--     local firstChannel = 1
+--     local numChannels = 1
+--     local minValue = 0
+--     local maxValue = 1
+--     self.fallowUpdater = createDensityMapUpdater("cropRotation", self.map, firstChannel, numChannels, minValue, maxValue, 0, 0, 0, 0, 0)
+--     if self.fallowUpdater ~= nil then
+--         setDensityMapUpdaterApplyFinishedCallback(self.fallowUpdater, "onEngineStepFinished", self)
+--         setDensityMapUpdaterApplyMaxTimePerFrame(self.fallowUpdater, self:getMaxUpdateTime())
+--
+--         local groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels = self.mission.fieldGroundSystem:getDensityMapData(FieldDensityMap.GROUND_TYPE)
+--         setDensityMapUpdaterMask(self.fallowUpdater, groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels)
+--         setDensityMapUpdaterEnabled(self.fallowUpdater, true)
+--     end
 end
 
 function CropRotation:onMissionLoaded()
@@ -196,60 +238,39 @@ function CropRotation:loadModifiers()
     self.modifiers = modifiers
 end
 
-function CropRotation:loadFromSavegame(xmlFile)
-end
+-- cropRotation.xml is place where crop rotation planner will store their data
+function CropRotation:saveSavegame()
+    print(string.format("FS22_CropRotation:saveSavegame(): called on save game!"))
 
----Called after the mission is saved to XML
-function CropRotation:onMissionSaveToSavegame(mission, xmlFile)
-    -- setXMLInt(xmlFile, "seasons#version", self.version)
+    local cropRotation = g_cropRotation
+    assert(cropRotation ~= nil)
 
-    self:saveToSavegame(xmlFile)
+    if self.missionInfo.isValid then
+        local xmlFile = createXMLFile("CropRotationXML", self.missionInfo.savegameDirectory .. "/cropRotation.xml", "cropRotation")
+        if xmlFile ~= nil then
+            cropRotation:saveToSavegame(xmlFile)
+
+            saveXMLFile(xmlFile)
+            delete(xmlFile)
+        end
+    end
 end
 
 function CropRotation:saveToSavegame(xmlFile)
+    self.densityMapScanner:saveToSavegame(xmlFile)
+
+    local mapFilePath = self.mission.missionInfo.savegameDirectory .. "/cropRotation.grle"
     if self.map ~= 0 then
-        saveBitVectorMapToFile(self.map, self.mission.missionInfo.savegameDirectory .. "/cropRotation.grle")
+        saveBitVectorMapToFile(self.map, mapFilePath)
     end
 end
 
 -- periodic event handlers (subscribed in constructor)
-
 function CropRotation:onYearChanged(newYear)
     if newYear == nil then newYear = 0 end
     print(string.format("CropRotation:onYearChanged(year = %s): %s", tostring(newYear),"called!"))
 
-    self:startEngineFallow()
-end
-
-function CropRotation:startEngineFallow()
-    print(string.format("CropRotation:startEngineFallow(): called!"))
-
-	if self.fallowUpdater ~= nil then
-        local from = 1
-        local to = 0
-
-        -- TODO: play with masks on self.map to queue jobs for each category and then reset F-bit
-        -- 1. global mask on ground type can be applied all the time
-
-		setDensityMapUpdaterNextValue(self.fallowUpdater, 0, from, to)
-    	applyDensityMapUpdater(self.fallowUpdater, "onEngineStepFinished", self, self:getMaxUpdateTime(g_sleepManager.isSleeping))
-	end
-end
-
-function CropRotation:getMaxUpdateTime(isSleeping)
-    if isSleeping then
-        return CropRotation.MAX_MS_PER_FRAME_SLEEPING
-    else
-        return CropRotation.MAX_MS_PER_FRAME
-    end
-end
-
-function CropRotation:onEngineFallowFinished()
-    print(string.format("CropRotation:onEngineFallowFinished(): finihed yearly fallow update!"))
-end
-
-function CropRotation:onEngineStepFinished()
-    print(string.format("CropRotation:onEngineStepFinished(): finished one step of yearly fallow update..."))
+    self.densityMapScanner:queueJob("UpdateFallow")
 end
 
 function CropRotation:onPeriodChanged(newPeriod)
@@ -267,15 +288,9 @@ function CropRotation:onHourChanged(newHour)
     print(string.format("CropRotation:onHourChanged(hour = %s): %s", tostring(newHour), "NOOP"))
 end
 
-function CropRotation:onSleepChanged(isSleeping)
-    print(string.format("CropRotation:onSleepChanged(isSleeping = %s): isServer = %s", tostring(isSleeping), tostring(self.isServer)))
+-- yearly fallow bit update on parallelogram(start, width, height)
 
-    if self.fallowUpdater ~= nil and self.isServer then
-        setDensityMapUpdaterApplyMaxTimePerFrame(self.fallowUpdater, self:getMaxUpdateTime(isSleeping))
-    end
-end
-
-function CropRotation:updateFallow(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
+function CropRotation:dms_updateFallow(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
     local terrainSize = self.terrainSize
     local mapModifiers = self.modifiers.map
 
@@ -567,23 +582,22 @@ end
 
 ---Get the translated name of the given category
 function CropRotation:getCategoryName(category)
-    if category == CropRotation.CATEGORIES.OILSEED then
-        return "OILSEED"
-    elseif category == CropRotation.CATEGORIES.CEREAL then
-        return "CEREAL"
-    elseif category == CropRotation.CATEGORIES.LEGUME then
-        return "LEGUME"
-    elseif category == CropRotation.CATEGORIES.ROOT then
-        return "ROOT"
-    elseif category == CropRotation.CATEGORIES.NIGHTSHADE then
-        return "NIGHTSHADE"
-    elseif category == CropRotation.CATEGORIES.GRASS then
-        return "GRASS"
-    else
-        return "FELLOW"
-    end
-
---     return self.i18n:getText(string.format("CropRotation_Category_%d", category))
+    return self.i18n:getText(string.format("cropRotation_Category_%d", category))
+--     if category == CropRotation.CATEGORIES.OILSEED then
+--         return "OILSEED"
+--     elseif category == CropRotation.CATEGORIES.CEREAL then
+--         return "CEREAL"
+--     elseif category == CropRotation.CATEGORIES.LEGUME then
+--         return "LEGUME"
+--     elseif category == CropRotation.CATEGORIES.ROOT then
+--         return "ROOT"
+--     elseif category == CropRotation.CATEGORIES.NIGHTSHADE then
+--         return "NIGHTSHADE"
+--     elseif category == CropRotation.CATEGORIES.GRASS then
+--         return "GRASS"
+--     else
+--         return "FALLOW"
+--     end
 end
 
 function CropRotation:commandGetInfo()
@@ -604,7 +618,7 @@ end
 ----------------------
 
 function CropRotation:commandRunFallow()
-    self:startEngineFallow()
+    self.densityMapScanner:queueJob("UpdateFallow")
 end
 
 function CropRotation:commandSetFallow()
