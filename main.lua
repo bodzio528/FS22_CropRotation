@@ -17,8 +17,11 @@ local modName = g_currentModName
 
 source(modDirectory .. "CropRotation.lua")
 source(modDirectory .. "CropRotationData.lua")
+source(modDirectory .. "CropRotationPlanner.lua")
 source(modDirectory .. "misc/DensityMapScanner.lua")
 source(modDirectory .. "misc/Queue.lua")
+
+source(modDirectory .. "gui/InGameMenuCropRotationPlanner.lua")
 
 
 local cropRotation = nil -- localize
@@ -44,7 +47,6 @@ function init()
     FSBaseMission.delete = Utils.appendedFunction(FSBaseMission.delete, cr_unload)
     FSBaseMission.initTerrain = Utils.appendedFunction(FSBaseMission.initTerrain, cr_initTerrain)
     FSBaseMission.loadMapFinished = Utils.prependedFunction(FSBaseMission.loadMapFinished, cr_loadMapFinished)
-	FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, CropRotation.saveSavegame)
 
     Mission00.load = Utils.prependedFunction(Mission00.load, cr_loadMission)
     Mission00.loadMission00Finished = Utils.overwrittenFunction(Mission00.loadMission00Finished, cr_loadMissionFinished)
@@ -98,9 +100,11 @@ function cr_loadMission(mission)
     assert(g_cropRotation == nil)
 
     cropRotationData = CropRotationData:new(mission, g_fruitTypeManager)
+    cropRotationPlanner = CropRotationPlanner:new(g_fruitTypeManager)
     densityMapScanner = SeasonsDensityMapScanner:new(mission, g_sleepManager, g_dedicatedServer ~= nil)
 
-    cropRotation = CropRotation:new(mission, g_messageCenter, g_fruitTypeManager, g_i18n, cropRotationData, densityMapScanner)
+    cropRotation = CropRotation:new(modDirectory, mission, g_messageCenter, g_fruitTypeManager, g_i18n, cropRotationData, densityMapScanner, cropRotationPlanner)
+
     -- Available globals at this point:
     -- modDirectory, modName, g_densityMapHeightManager, g_fillTypeManager,
     -- g_modManager, g_gui, g_gui.inputManager,

@@ -36,8 +36,10 @@ function overwrittenStaticFunction(target, name, newFunc)
     end
 end
 
-function CropRotation:new(mission, messageCenter, fruitTypeManager, i18n, data, dms)
+function CropRotation:new(modDirectory, mission, messageCenter, fruitTypeManager, i18n, data, dms, planner)
     local self = setmetatable({}, CropRotation_mt)
+
+    CropRotation.modDirectory = modDirectory
 
 	self.isServer = mission:getIsServer()
 
@@ -50,13 +52,14 @@ function CropRotation:new(mission, messageCenter, fruitTypeManager, i18n, data, 
 
     self.densityMapScanner = dms
 
+    self.cropRotationPlanner = planner
+
     overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "cutFruitArea", CropRotation.inj_densityMapUtil_cutFruitArea)
 
     addConsoleCommand("crInfo", "Get crop rotation info", "commandGetInfo", self)
-
-    if true then -- g_addCheatCommands -- cheats enabled
+    if g_addCheatCommands then -- cheats enabled
         addConsoleCommand("crRunFallow", "Run yearly fallow", "commandRunFallow", self)
         addConsoleCommand("crSetFallow", "Set fallow state", "commandSetFallow", self)
         addConsoleCommand("crClearFallow", "Clear fallow state", "commandClearFallow", self)
@@ -91,7 +94,11 @@ end
 --- Events from mod event handling
 ------------------------------------------------
 
--- called on map loaded from savegame
+function CropRotation:makeIsCropRotationPlannerEnabledPredicate()
+    return function () return true end
+end
+
+-- called on map loaded, eg. from savegame
 function CropRotation:loadMap()
     print(string.format("CropRotation:loadMap(): called"))
 
@@ -105,10 +112,63 @@ function CropRotation:loadMap()
             if xmlFile ~= nil then
                 print(string.format("CropRotation:loadMap(): CropRotationXML loading success"))
                 self.densityMapScanner:loadFromSavegame(xmlFile)
+                self.cropRotationPlanner:loadFromSavegame(xmlFile)
 
                 delete(xmlFile)
             end
         end
+    end
+
+    -- ok, we got loading, now add savegame event handler
+	FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, CropRotation.saveSavegame)
+
+    -- load GUI
+    g_gui:loadProfiles(CropRotation.modDirectory .. "gui/guiProfiles.xml")
+
+    -- MVC - self.cropRotationPlanner is model, GUI is view and controller
+	local guiCropRotationPlanner = InGameMenuCropRotationPlanner.new(g_i18n, self, self.cropRotationPlanner)
+
+    local pathToGuiXml = CropRotation.modDirectory .. "gui/InGameMenuCropRotationPlanner.xml"
+    print(string.format("CropRotation:loadMap(): guiXml = %s", pathToGuiXml))
+	g_gui:loadGui(pathToGuiXml,
+                  "ingameMenuCropRotationPlanner",
+                  guiCropRotationPlanner,
+                  true)
+
+	CropRotation.fixInGameMenu(guiCropRotationPlanner,
+                               "ingameMenuCropRotationPlanner",
+                               {0,0,1024,1024},
+                               2,
+                               CropRotation:makeIsCropRotationPlannerEnabledPredicate())
+
+-- 	g_currentMission.cropRotation = self -- unneeded, alredy set g_cropRotation
+end
+
+-- cropRotation.xml is place where crop rotation planner will store their data
+function CropRotation:saveSavegame()
+    print(string.format("FS22_CropRotation:saveSavegame(): called on save game!"))
+
+    local cropRotation = g_cropRotation
+    assert(cropRotation ~= nil)
+
+    if self.missionInfo.isValid then
+        local xmlFile = createXMLFile("CropRotationXML", self.missionInfo.savegameDirectory .. "/cropRotation.xml", "cropRotation")
+        if xmlFile ~= nil then
+            cropRotation:saveToSavegame(xmlFile)
+
+            saveXMLFile(xmlFile)
+            delete(xmlFile)
+        end
+    end
+end
+
+function CropRotation:saveToSavegame(xmlFile)
+    self.densityMapScanner:saveToSavegame(xmlFile)
+    self.cropRotationPlanner:saveToSavegame(xmlFile)
+
+    local mapFilePath = self.mission.missionInfo.savegameDirectory .. "/cropRotation.grle"
+    if self.map ~= 0 then
+        saveBitVectorMapToFile(self.map, mapFilePath)
     end
 end
 
@@ -238,33 +298,6 @@ function CropRotation:loadModifiers()
     self.modifiers = modifiers
 end
 
--- cropRotation.xml is place where crop rotation planner will store their data
-function CropRotation:saveSavegame()
-    print(string.format("FS22_CropRotation:saveSavegame(): called on save game!"))
-
-    local cropRotation = g_cropRotation
-    assert(cropRotation ~= nil)
-
-    if self.missionInfo.isValid then
-        local xmlFile = createXMLFile("CropRotationXML", self.missionInfo.savegameDirectory .. "/cropRotation.xml", "cropRotation")
-        if xmlFile ~= nil then
-            cropRotation:saveToSavegame(xmlFile)
-
-            saveXMLFile(xmlFile)
-            delete(xmlFile)
-        end
-    end
-end
-
-function CropRotation:saveToSavegame(xmlFile)
-    self.densityMapScanner:saveToSavegame(xmlFile)
-
-    local mapFilePath = self.mission.missionInfo.savegameDirectory .. "/cropRotation.grle"
-    if self.map ~= 0 then
-        saveBitVectorMapToFile(self.map, mapFilePath)
-    end
-end
-
 -- periodic event handlers (subscribed in constructor)
 function CropRotation:onYearChanged(newYear)
     if newYear == nil then newYear = 0 end
@@ -328,6 +361,65 @@ function CropRotation:dms_updateFallow(startWorldX, startWorldZ, widthWorldX, wi
                                                     heightWorldZ / terrainSize + 0.5,
                                                     DensityCoordType.POINT_POINT_POINT)
     mapModifiers.modifierF:executeSet(0)
+end
+
+----------------------
+-- Install Crop Rotation Planner Menu
+----------------------
+-- from Courseplay
+function CropRotation.fixInGameMenu(frame, pageName, uvs, position, predicateFunc)
+	local inGameMenu = g_gui.screenControllers[InGameMenu]
+
+	-- remove all to avoid warnings
+	for k, v in pairs({pageName}) do
+		inGameMenu.controlIDs[v] = nil
+	end
+
+	inGameMenu:registerControls({pageName})
+
+	
+	inGameMenu[pageName] = frame
+	inGameMenu.pagingElement:addElement(inGameMenu[pageName])
+
+	inGameMenu:exposeControlsAsFields(pageName)
+
+	for i = 1, #inGameMenu.pagingElement.elements do
+		local child = inGameMenu.pagingElement.elements[i]
+		if child == inGameMenu[pageName] then
+			table.remove(inGameMenu.pagingElement.elements, i)
+			table.insert(inGameMenu.pagingElement.elements, position, child)
+			break
+		end
+	end
+
+	for i = 1, #inGameMenu.pagingElement.pages do
+		local child = inGameMenu.pagingElement.pages[i]
+		if child.element == inGameMenu[pageName] then
+			table.remove(inGameMenu.pagingElement.pages, i)
+			table.insert(inGameMenu.pagingElement.pages, position, child)
+			break
+		end
+	end
+
+	inGameMenu.pagingElement:updateAbsolutePosition()
+	inGameMenu.pagingElement:updatePageMapping()
+	
+	inGameMenu:registerPage(inGameMenu[pageName], position, predicateFunc)
+	local iconFileName = Utils.getFilename('images/menuIcon.dds', CropRotation.modDirectory) -- g_currentModDirectory is invalid at this point
+	inGameMenu:addPageTab(inGameMenu[pageName],iconFileName, GuiUtils.getUVs(uvs))
+	inGameMenu[pageName]:applyScreenAlignment()
+	inGameMenu[pageName]:updateAbsolutePosition()
+
+	for i = 1, #inGameMenu.pageFrames do
+		local child = inGameMenu.pageFrames[i]
+		if child == inGameMenu[pageName] then
+			table.remove(inGameMenu.pageFrames, i)
+			table.insert(inGameMenu.pageFrames, position, child)
+			break
+		end
+	end
+
+	inGameMenu:rebuildTabList()
 end
 
 ----------------------
@@ -583,21 +675,6 @@ end
 ---Get the translated name of the given category
 function CropRotation:getCategoryName(category)
     return self.i18n:getText(string.format("cropRotation_Category_%d", category))
---     if category == CropRotation.CATEGORIES.OILSEED then
---         return "OILSEED"
---     elseif category == CropRotation.CATEGORIES.CEREAL then
---         return "CEREAL"
---     elseif category == CropRotation.CATEGORIES.LEGUME then
---         return "LEGUME"
---     elseif category == CropRotation.CATEGORIES.ROOT then
---         return "ROOT"
---     elseif category == CropRotation.CATEGORIES.NIGHTSHADE then
---         return "NIGHTSHADE"
---     elseif category == CropRotation.CATEGORIES.GRASS then
---         return "GRASS"
---     else
---         return "FALLOW"
---     end
 end
 
 function CropRotation:commandGetInfo()

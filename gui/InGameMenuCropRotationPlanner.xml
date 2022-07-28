@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUI name="ingameMenuCropRotationPlanner">
+   <GuiElement type="empty" profile="uiInGameMenuFrame">
+        <GuiElement type="empty" profile="ingameMenuFrameHeaderPanel">
+            <GuiElement type="bitmap" profile="ingameMenuWeatherHeaderIcon" />
+            <GuiElement type="text" profile="ingameMenuFrameHeaderText" text="$l10n_cropRotation_ui_Planner"/>
+        </GuiElement>
+        <GuiElement type="empty" profile="ingameMenuCenterBox" id="cropRotationPlannerContainer">
+            <GuiElement type="empty" profile="ingameMenuContractsListBox" id="cropRotaionPlannerListBox">
+                <GuiElement  type="smoothList" profile="ingameMenuContractsList" id="cropRotaionPlannerList" focusInit="onOpen" listSectionHeader="section">
+                    <GuiElement type="listItem" profile="ingameMenuContractsListItem">
+                        <GuiElement type="text" profile="ingameMenuContractsListItemReward" name="planLength" text="3" />
+                        <GuiElement type="text" profile="ingameMenuContractsListItemField" name="planName" text="New plan 7"/>
+                    </GuiElement>
+                </GuiElement>
+
+                <GuiElement type="threePartBitmap" profile="verticalListSliderRightDocked">
+                    <GuiElement type="slider" profile="verticalListSliderBar" dataElementId="cropRotaionPlannerList" handleFocus="false" />
+                </GuiElement>
+            </GuiElement>
+
+            <GuiElement type="bitmap" profile="ingameMenuCropRotationPlanerDetailsBox" id="detailsBox">
+                <GuiElement type="scrollLayout" profile="ingameMenuCropRotationPlanerLayout" id="boxLayout" >
+
+                    <GuiElement type="multiTextOption" profile="multiTextOptionCrop" onClick="onClickMultiOption" id="multiCrop_1">
+                        <GuiElement type="button" profile="multiTextOptionCropLeft" />
+                        <GuiElement type="button" profile="multiTextOptionCropRight"/>
+                        <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
+                        <GuiElement type="text"   profile="multiTextOptionCropText" text="Crop.X" />
+                        <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.A" />
+                        <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="115%" />
+                    </GuiElement>
+
+                    <GuiElement type="multiTextOption" profile="multiTextOptionCrop" onClick="onClickMultiOption" id="multiCrop_2">
+                        <GuiElement type="button" profile="multiTextOptionCropLeft" />
+                        <GuiElement type="button" profile="multiTextOptionCropRight"/>
+                        <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
+                        <GuiElement type="text"   profile="multiTextOptionCropText" text="Crop.Y" />
+                        <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.B" />
+                        <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="95%" />
+                    </GuiElement>
+
+                </GuiElement>
+            </GuiElement>
+
+            <!-- <GuiElement type="bitmap" profile="ingameMenuContractsEmptyBox" id="noCropRotationPlansBox"> -->
+                <!-- <GuiElement type="text" profile="ingameMenuContractsEmptyText" text="$l10n_cropRotation_ui_Explanation" /> -->
+            <!-- </GuiElement> -->
+        </GuiElement>
+    </GuiElement>
+</GUI>
