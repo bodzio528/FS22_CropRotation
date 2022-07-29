@@ -6,8 +6,8 @@
             <GuiElement type="text" profile="ingameMenuFrameHeaderText" text="$l10n_cropRotation_ui_Planner"/>
         </GuiElement>
         <GuiElement type="empty" profile="ingameMenuCenterBox" id="cropRotationPlannerContainer">
-            <GuiElement type="empty" profile="ingameMenuContractsListBox" id="cropRotaionPlannerListBox">
-                <GuiElement  type="smoothList" profile="ingameMenuContractsList" id="cropRotaionPlanList" focusInit="onOpen" listSectionHeader="section">
+            <GuiElement type="empty" profile="ingameMenuContractsListBox" id="cropRotationPlanListBox">
+                <GuiElement  type="smoothList" profile="ingameMenuContractsList" id="cropRotationPlanList" focusInit="onOpen" listSectionHeader="section">
                     <GuiElement type="listItem" profile="ingameMenuContractsListItem">
                         <GuiElement type="text" profile="ingameMenuContractsListItemReward" name="planLength" text="3" />
                         <GuiElement type="text" profile="ingameMenuContractsListItemField" name="planName" text="New plan 7"/>
@@ -19,71 +19,65 @@
                 </GuiElement>
 
                 <GuiElement type="threePartBitmap" profile="verticalListSliderRightDocked">
-                    <GuiElement type="slider" profile="verticalListSliderBar" dataElementId="cropRotationPlannerList" handleFocus="false" />
+                    <GuiElement type="slider" profile="verticalListSliderBar" dataElementId="cropRotationPlanList" handleFocus="false" />
                 </GuiElement>
             </GuiElement> <!-- id="cropRotaionPlannerListBox" a list with available crop rotation plans -->
 
-            <GuiElement type="bitmap" profile="ingameMenuCropRotationPlanerDetailsBox" position="0px 0px" id="detailsBox">
+            <GuiElement type="bitmap" profile="ingameMenuCropRotationPlanerDetailsBox" position="0px 0px" id="cropRotationDetailBox">
 
-                 <!-- <GuiElement type="boxLayout" profile="ingameMenuCropRotationPlanerLayout" position="20px 0px" id="boxLayout"> -->
+                <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px 0px" onClick="onValueChanged" id="rotationPlan[1]">
+                    <GuiElement type="text"   profile="multiTextOptionCropCategoryText" name="categoryName" />
+                    <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="1.0" name="resultName" />
+                    <GuiElement type="button" profile="multiTextOptionCropLeft" />
+                    <GuiElement type="button" profile="multiTextOptionCropRight"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
+                    <GuiElement type="text"   profile="multiTextOptionCropText" />
+                </GuiElement>
 
-                    <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px 0px" onClick="onClickMultiOption" id="cropRotation[3]">
-                        <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
-                        <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
-                        <GuiElement type="button" profile="multiTextOptionCropLeft" />
-                        <GuiElement type="button" profile="multiTextOptionCropRight"/>
-                        <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
-                        <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
-                    </GuiElement>
+                <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -108px" onClick="onValueChanged" id="rotationPlan[2]">
+                    <GuiElement type="text"   profile="multiTextOptionCropCategoryText" name="categoryName" />
+                    <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="1.0" name="resultName" />
+                    <GuiElement type="button" profile="multiTextOptionCropLeft" />
+                    <GuiElement type="button" profile="multiTextOptionCropRight"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
+                    <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
+                </GuiElement>
 
-                    <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -108px" onClick="onClickMultiOption" id="cropRotation[1]">
-                        <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
-                        <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
-                        <GuiElement type="button" profile="multiTextOptionCropLeft" />
-                        <GuiElement type="button" profile="multiTextOptionCropRight"/>
-                        <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
-                        <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
+                <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -216px" onClick="onValueChanged" id="rotationPlan[3]">
+                    <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
+                    <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
+                    <GuiElement type="button" profile="multiTextOptionCropLeft" />
+                    <GuiElement type="button" profile="multiTextOptionCropRight"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
+                    <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
+                </GuiElement>
 
-                    </GuiElement>
+                <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -324px" onClick="onValueChanged" id="rotationPlan[4]">
+                    <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
+                    <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
+                    <GuiElement type="button" profile="multiTextOptionCropLeft" />
+                    <GuiElement type="button" profile="multiTextOptionCropRight"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
+                    <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
+                </GuiElement>
 
-                    <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -216px" onClick="onClickMultiOption" id="cropRotation[2]">
-                        <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
-                        <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
-                        <GuiElement type="button" profile="multiTextOptionCropLeft" />
-                        <GuiElement type="button" profile="multiTextOptionCropRight"/>
-                        <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
-                        <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
-                    </GuiElement>
+                <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -432px" onClick="onValueChanged" id="rotationPlan[5]">
+                    <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
+                    <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
+                    <GuiElement type="button" profile="multiTextOptionCropLeft" />
+                    <GuiElement type="button" profile="multiTextOptionCropRight"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
+                    <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
+                </GuiElement>
 
-
-                    <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -324px" onClick="onClickMultiOption" id="cropRotation[4]">
-                        <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
-                        <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
-                        <GuiElement type="button" profile="multiTextOptionCropLeft" />
-                        <GuiElement type="button" profile="multiTextOptionCropRight"/>
-                        <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
-                        <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
-                    </GuiElement>
-                    <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -432px" onClick="onClickMultiOption" id="cropRotation[5]">
-                        <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
-                        <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
-                        <GuiElement type="button" profile="multiTextOptionCropLeft" />
-                        <GuiElement type="button" profile="multiTextOptionCropRight"/>
-                        <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
-                        <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
-                    </GuiElement>
-
-                    <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -540px" onClick="onClickMultiOption" id="cropRotation[6]">
-                        <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
-                        <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
-                        <GuiElement type="button" profile="multiTextOptionCropLeft" />
-                        <GuiElement type="button" profile="multiTextOptionCropRight"/>
-                        <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
-                        <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
-                    </GuiElement>
-                <!-- </GuiElement> -->
-
-                <!-- </GuiElement> -->
+                <GuiElement type="multiTextOption" profile="multiTextOptionCrop" position="0px -540px" onClick="onValueChanged" id="rotationPlan[6]">
+                    <GuiElement type="text"   profile="multiTextOptionCropCategoryText" text="Cat.C" name="categoryName" />
+                    <GuiElement type="text"   profile="multiTextOptionCropYieldText" text="0.75" name="resultName" />
+                    <GuiElement type="button" profile="multiTextOptionCropLeft" />
+                    <GuiElement type="button" profile="multiTextOptionCropRight"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionCropBg" />
+                    <GuiElement type="text"   profile="multiTextOptionCropText" text="Sugar Potato" />
+                </GuiElement>
 
                 <GuiElement type="bitmap"  profile="cropRotationHelpBg">
                     <GuiElement type="text" profile="cropRotationHelpText" text="$l10n_cropRotation_ui_Explanation" />

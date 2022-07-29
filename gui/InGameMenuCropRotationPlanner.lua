@@ -18,14 +18,17 @@ InGameMenuCropRotationPlanner._mt = Class(InGameMenuCropRotationPlanner, TabbedM
 
 InGameMenuCropRotationPlanner.CONTROLS = {
 	MAIN_BOX = "mainBox",
-	TABLE_SLIDER = "tableSlider",
-	HEADER_BOX = "tableHeaderBox",
-	TABLE = "fieldplanTable",
-	TABLE_TEMPLATE = "fieldplanRowTemplate"
+    CONTAINER = "cropRotationPlannerContainer",
+    PLAN_LIST_BOX = "cropRotationPlanListBox",
+    PLAN_LIST = "cropRotationPlanList",
+    PLANNER_DETAIL_BOX = "cropRotationDetailBox",
+    ROTATION_PLAN = "rotationPlan"
 }
 
 function InGameMenuCropRotationPlanner.new(i18n, cropRotation, cropRotationPlanner)
     local self = InGameMenuCropRotationPlanner:superClass().new(nil, InGameMenuCropRotationPlanner._mt)
+
+    self:registerControls(InGameMenuCropRotationPlanner.CONTROLS)
 
     self.name = "InGameMenuCropRotationPlanner"
     self.i18n = i18n
@@ -35,13 +38,74 @@ function InGameMenuCropRotationPlanner.new(i18n, cropRotation, cropRotationPlann
 
 	self.dataBindings = {}
 
-    self:registerControls(InGameMenuCropRotationPlanner.CONTROLS)
-
     return self
 end
 
 function InGameMenuCropRotationPlanner:delete()
 	InGameMenuCropRotationPlanner:superClass().delete(self)
+end
+
+function InGameMenuCropRotationPlanner:initialize()
+    print(string.format("InGameMenuCropRotationPlanner:initialize(): called!"))
+
+    self.elementToRotationPosition = {}
+    self.stateToFruitType = {}
+    self.fruitTypeToState = {}
+    self.titles = {}
+    table.insert(self.titles, self.cropRotation:getCategoryName(CropRotation.CATEGORIES.FALLOW))
+    for _, fruitType in ipairs(g_fruitTypeManager:getFruitTypes()) do
+        print(string.format("CropRotation: process fruit type %s", fruitType.name))
+        if fruitType.allowsSeeding and fruitType.name ~= "OILSEEDRADISH" then
+            table.insert(self.titles, fruitType.fillType.title)
+            self.stateToFruitType[#self.titles] = fruitType
+            self.fruitTypeToState[fruitType] = #self.titles
+        end
+    end
+
+    DebugUtil.printTableRecursively(self.titles, "--", 0, 0)
+
+--     self.titlesWithoutOptionNone = {unpack(self.titles)} -- clone table / make a copy of the table
+    table.insert(self.titles, "-") -- 'NONE'. This _shall_be_ the last entry, else "odd things" may happen, when `updateRotation` begins calling `setTexts()` on the MTOs.
+
+    print(string.format("add titles to rotations %s", tostring(self.rotationPlan)))
+    for i, element in ipairs(self.rotationPlan) do
+        print(string.format("add titles to element[%d] %s", i, element))
+
+        element:setTexts(self.titles)
+        self.elementToRotationPosition[element] = i
+
+        local resultElement = element:getDescendantByName("resultName")
+        local categoryElement = element:getDescendantByName("categoryName")
+
+        print(string.format("detected subelements yield %s and category %s in element[%d] %s",
+                            tostring(resultElement),
+                            tostring(categoryElement),
+                            i,
+                            element))
+    end
+--
+--     self:setSettings(self.localStorage:getCropRotations())
+--
+    self:updateRotations()
+end
+
+
+function InGameMenuCropRotationPlanner:updateRotations()
+    print(string.format("InGameMenuCropRotationPlanner:updateRotations(): called!"))
+
+end
+----------------------
+-- Events
+----------------------
+
+function InGameMenuCropRotationPlanner:onValueChanged(value, element)
+    print(string.format("InGameMenuCropRotationPlanner:onValueChanged(value = %s, element = %s)", tostring(value), tostring(element)))
+--
+--     local rotIndex = self.elementToRotationIndex[element]
+--
+--     self:updateRotation(rotIndex)
+--
+--     self.localStorage:setCropRotations(self:getSettings())
 end
 
 --

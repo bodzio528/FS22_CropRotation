@@ -39,7 +39,7 @@
     </Profile>
 <!-- multiTextOptionText -->
     <Profile name="multiTextOptionCropText" extends="multiTextOptionText" with="anchorBottomLeft">
-        <!-- <Value name="pivot" value="0.5 0.5" /> -->
+        <Value name="pivot" value="0.5 0.5" />
         <Value name="position" value="244px 14px" />
         <!-- <Value name="size" value="0 48px"/> -->
 <!--  -->

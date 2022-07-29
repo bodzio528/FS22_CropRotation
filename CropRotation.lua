@@ -420,6 +420,8 @@ function CropRotation.fixInGameMenu(frame, pageName, uvs, position, predicateFun
 	end
 
 	inGameMenu:rebuildTabList()
+
+    frame:initialize()
 end
 
 ----------------------
