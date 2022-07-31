@@ -12,7 +12,11 @@
 --      - Initial release
 --
 
-CropRotation = {}
+CropRotation = {
+    MOD_NAME = g_currentModName or "FS22_CropRotation",
+    MOD_DIRECTORY = g_currentModDirectory
+}
+
 local CropRotation_mt = Class(CropRotation)
 
 CropRotation.MAP_NUM_CHANNELS = 2 * 3 + 1 + 1 -- [n-2][n-1][f][h]
@@ -27,6 +31,8 @@ CropRotation.CATEGORIES = {
 }
 CropRotation.CATEGORIES_MAX = 6
 
+CropRotation.PrecisionFarming = "FS22_precisionFarming"
+
 CropRotation.debug = true -- false --
 
 function overwrittenStaticFunction(target, name, newFunc)
@@ -36,10 +42,8 @@ function overwrittenStaticFunction(target, name, newFunc)
     end
 end
 
-function CropRotation:new(modDirectory, mission, messageCenter, fruitTypeManager, i18n, data, dms, planner)
+function CropRotation:new(mission, messageCenter, fruitTypeManager, i18n, data, dms, planner)
     local self = setmetatable({}, CropRotation_mt)
-
-    CropRotation.modDirectory = modDirectory
 
 	self.isServer = mission:getIsServer()
 
@@ -123,12 +127,12 @@ function CropRotation:loadMap()
 	FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, CropRotation.saveSavegame)
 
     -- load GUI
-    g_gui:loadProfiles(CropRotation.modDirectory .. "gui/guiProfiles.xml")
+    g_gui:loadProfiles(CropRotation.MOD_DIRECTORY .. "gui/guiProfiles.xml")
 
     -- MVC - self.cropRotationPlanner is model, GUI is view and controller
 	local guiCropRotationPlanner = InGameMenuCropRotationPlanner.new(g_i18n, self, self.cropRotationPlanner)
 
-    local pathToGuiXml = CropRotation.modDirectory .. "gui/InGameMenuCropRotationPlanner.xml"
+    local pathToGuiXml = CropRotation.MOD_DIRECTORY .. "gui/InGameMenuCropRotationPlanner.xml"
     print(string.format("CropRotation:loadMap(): guiXml = %s", pathToGuiXml))
 	g_gui:loadGui(pathToGuiXml,
                   "ingameMenuCropRotationPlanner",
@@ -142,7 +146,62 @@ function CropRotation:loadMap()
                                CropRotation:makeIsCropRotationPlannerEnabledPredicate())
 
 -- 	g_currentMission.cropRotation = self -- unneeded, alredy set g_cropRotation
+
+    -- install in player HUD - field info box
+
+    if g_isModLoaded[CropRotation.PrecisionFarming] then
+        -- subscribe to precision farming - include yield info in information there
+        local text = "Crop Rotation" or "Płodozmian"
+        local object = self
+        local prio = 4 -- 1=soil 2=phMap 3=nitrogen - generally unused, PF list them in the order of apperance anyway
+        g_precisionFarming.fieldInfoDisplayExtension:addFieldInfo(text, self, self.updateFieldInfoDisplay, prio, yieldChangeFunc)
+    else
+        -- just add Crop Rotation Info to standard HUD
+        PlayerHUDUpdater.fieldAddFarmland = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFarmland, CropRotation.fieldAddFarmland)
+    end
 end
+-- Show crop rotation info on player HUD
+function CropRotation.fieldAddFarmland(data, box)
+end
+
+function CropRotation.yieldChangeFunc(object, fieldInfo)
+
+end
+
+function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
+    --[[
+    -- PF definition
+    local fieldInfo = {
+        text = text,
+        object = object,
+        updateFunc = updateFunc,
+        yieldChangeFunc = yieldChangeFunc
+    }
+    --]]
+    -- modify field info, so information there can be used in yield calculation
+    fieldInfo.crFactor = 0.95
+
+    if fieldInfo.crFactor >= 1.00 then
+        return ""
+    return "MAGIC"
+end
+
+function CropRotation:getFieldInfoYieldChange(fieldInfo)
+	return fieldInfo.crFactor or 0, --factor 1-crYieldMultiplier
+           2.0, --  proportion
+           fieldInfo.yieldPotential or 1, -- _yieldPotential
+           fieldInfo.yieldPotentialToHa or 0 --  _yieldPotentialToHa
+end
+--
+-- function GrowthInfo:fieldAddGrowth(data, box)
+-- 	if (self.fruitTypes == nil) then
+-- 		self.fruitTypes = g_currentMission.fruitTypeManager.indexToFruitType;
+-- 	end
+--
+-- 	if (data == nil or box == nil) then
+-- 		do return end;
+-- 	end
+-- end
 
 -- cropRotation.xml is place where crop rotation planner will store their data
 function CropRotation:saveSavegame()
@@ -241,20 +300,6 @@ function CropRotation:loadCropRotationMap() -- loadCropRotationDensityMap
 
     self.mapSize = getBitVectorMapSize(self.map)
     print(string.format("CropRotation:loadCropRotationMap(): self.mapSize = %s", tostring(self.mapSize)))
-
---     local firstChannel = 1
---     local numChannels = 1
---     local minValue = 0
---     local maxValue = 1
---     self.fallowUpdater = createDensityMapUpdater("cropRotation", self.map, firstChannel, numChannels, minValue, maxValue, 0, 0, 0, 0, 0)
---     if self.fallowUpdater ~= nil then
---         setDensityMapUpdaterApplyFinishedCallback(self.fallowUpdater, "onEngineStepFinished", self)
---         setDensityMapUpdaterApplyMaxTimePerFrame(self.fallowUpdater, self:getMaxUpdateTime())
---
---         local groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels = self.mission.fieldGroundSystem:getDensityMapData(FieldDensityMap.GROUND_TYPE)
---         setDensityMapUpdaterMask(self.fallowUpdater, groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels)
---         setDensityMapUpdaterEnabled(self.fallowUpdater, true)
---     end
 end
 
 function CropRotation:onMissionLoaded()
@@ -363,74 +408,15 @@ function CropRotation:dms_updateFallow(startWorldX, startWorldZ, widthWorldX, wi
     mapModifiers.modifierF:executeSet(0)
 end
 
-----------------------
--- Install Crop Rotation Planner Menu
-----------------------
--- from Courseplay
-function CropRotation.fixInGameMenu(frame, pageName, uvs, position, predicateFunc)
-	local inGameMenu = g_gui.screenControllers[InGameMenu]
-
-	-- remove all to avoid warnings
-	for k, v in pairs({pageName}) do
-		inGameMenu.controlIDs[v] = nil
-	end
-
-	inGameMenu:registerControls({pageName})
-
-	
-	inGameMenu[pageName] = frame
-	inGameMenu.pagingElement:addElement(inGameMenu[pageName])
-
-	inGameMenu:exposeControlsAsFields(pageName)
-
-	for i = 1, #inGameMenu.pagingElement.elements do
-		local child = inGameMenu.pagingElement.elements[i]
-		if child == inGameMenu[pageName] then
-			table.remove(inGameMenu.pagingElement.elements, i)
-			table.insert(inGameMenu.pagingElement.elements, position, child)
-			break
-		end
-	end
-
-	for i = 1, #inGameMenu.pagingElement.pages do
-		local child = inGameMenu.pagingElement.pages[i]
-		if child.element == inGameMenu[pageName] then
-			table.remove(inGameMenu.pagingElement.pages, i)
-			table.insert(inGameMenu.pagingElement.pages, position, child)
-			break
-		end
-	end
-
-	inGameMenu.pagingElement:updateAbsolutePosition()
-	inGameMenu.pagingElement:updatePageMapping()
-	
-	inGameMenu:registerPage(inGameMenu[pageName], position, predicateFunc)
-	local iconFileName = Utils.getFilename('images/menuIcon.dds', CropRotation.modDirectory) -- g_currentModDirectory is invalid at this point
-	inGameMenu:addPageTab(inGameMenu[pageName],iconFileName, GuiUtils.getUVs(uvs))
-	inGameMenu[pageName]:applyScreenAlignment()
-	inGameMenu[pageName]:updateAbsolutePosition()
-
-	for i = 1, #inGameMenu.pageFrames do
-		local child = inGameMenu.pageFrames[i]
-		if child == inGameMenu[pageName] then
-			table.remove(inGameMenu.pageFrames, i)
-			table.insert(inGameMenu.pageFrames, position, child)
-			break
-		end
-	end
-
-	inGameMenu:rebuildTabList()
-
-    frame:initialize()
+function CropRotation:calculateYieldMultiplier(desc, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
+    return 1.0
 end
-
 ----------------------
 -- Injections
 ----------------------
 
 ---Reset harvest bit
 function CropRotation.inj_densityMapUtil_updateSowingArea(superFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, fieldGroundType, angle, growthState, blockedSprayTypeIndex)
-
     -- Oilseed ignores crop rotation
     if true then -- filter on crops that have crop rotation defined fruitId ~= FruitType.OILSEEDRADISH
         local cropRotation = g_cropRotation
@@ -452,7 +438,17 @@ function CropRotation.inj_densityMapUtil_updateSowingArea(superFunc, fruitIndex,
     return superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, fieldGroundType, angle, growthState, blockedSprayTypeIndex)
 end
 
+function CropRotation.inj_fsBaseMission_getHarvestScaleMultiplier(superFunc, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeYieldBonusPercentage)
+    local harvestMultiplier = superFunc(fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeYieldBonusPercentage)
+
+    return harvestMultiplier
+end
+
 ---Update the rotation map on harvest (or forage... perhaps foraging should be more damaging to the ground)
+-- this is not the best option, since FS22 uses the concept of harvestMultiplier
+-- yield = 0.5*cropPotential + 0.5*harvestMultiplier
+-- so half of crop potential is always present, even if farmer do literally nothing between sowing and harvesting
+-- PrecisionFarming comply to that idea, just modify standard agrotech proportions (lime=20%, fertilizer=50%, weeds=15%) and add PF-specific (soilType, seedRateMap etc)
 function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
     local cropRotation = g_cropRotation
 
@@ -461,6 +457,8 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
     if desc.terrainDataPlaneId == nil then
         return 0
     end
+
+    local yieldMultiplier2 = cropRotation:calculateYieldMultiplier()
 
     -- Filter on fruit to limit bad hits like grass borders
     local fruitFilter = cropRotation.modifiers.filter

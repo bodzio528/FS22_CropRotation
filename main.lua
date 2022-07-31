@@ -13,19 +13,14 @@
 --
 
 local modDirectory = g_currentModDirectory
-local modName = g_currentModName
 
 source(modDirectory .. "CropRotation.lua")
 source(modDirectory .. "CropRotationData.lua")
-source(modDirectory .. "CropRotationPlanner.lua")
 source(modDirectory .. "misc/DensityMapScanner.lua")
 source(modDirectory .. "misc/Queue.lua")
 
-source(modDirectory .. "gui/InGameMenuCropRotationPlanner.lua")
-
-
 local cropRotation = nil -- localize
-local cropRotationData = nil
+local cropRotationData = nil -- crops.xml parser and content loader
 
 
 -- Active test: needed for console version where the code is always sourced.
@@ -37,7 +32,7 @@ function isActive()
 --]]
 
     -- Normally this code never runs if mod was not active. However, in development mode this might not always hold true.
-    return g_modIsLoaded["FS22_CropRotation"]
+    return g_modIsLoaded[CropRotation.MOD_NAME]
 end
 
 ---Initialize the mod. This code is run once for the lifetime of the program.
@@ -100,13 +95,12 @@ function cr_loadMission(mission)
     assert(g_cropRotation == nil)
 
     cropRotationData = CropRotationData:new(mission, g_fruitTypeManager)
-    cropRotationPlanner = CropRotationPlanner:new(g_fruitTypeManager)
     densityMapScanner = SeasonsDensityMapScanner:new(mission, g_sleepManager, g_dedicatedServer ~= nil)
 
-    cropRotation = CropRotation:new(modDirectory, mission, g_messageCenter, g_fruitTypeManager, g_i18n, cropRotationData, densityMapScanner, cropRotationPlanner)
+    cropRotation = CropRotation:new(mission, g_messageCenter, g_fruitTypeManager, g_i18n, cropRotationData, densityMapScanner)
 
-    -- Available globals at this point:
-    -- modDirectory, modName, g_densityMapHeightManager, g_fillTypeManager,
+    -- Available at this point:
+    -- modDirectory, g_densityMapHeightManager, g_fillTypeManager,
     -- g_modManager, g_gui, g_gui.inputManager,
     -- g_specializationManager, g_vehicleTypeManager, g_onCreateUtil, g_treePlantManager, g_farmManager,
     -- g_missionManager, g_sprayTypeManager, g_gameplayHintManager, g_helpLineManager, g_soundManager,
@@ -114,16 +108,9 @@ function cr_loadMission(mission)
     -- g_settingsScreen.settingsModel, g_ambientSoundManager, g_depthOfFieldManager, g_server, g_fieldManager,
     -- g_particleSystemManager, g_baleTypeManager, g_npcManager, g_farmlandManager
 
-    getfenv(0)["g_cropRotation"] = cropRotation
+    getfenv(0)["g_cropRotation"] = cropRotation -- globalize
 
     addModEventListener(cropRotation)
-
-    --[[ HACKS
-    if not g_addTestCommands then
-        addConsoleCommand("gsToggleDebugFieldStatus", "Shows field status", "consoleCommandToggleDebugFieldStatus", mission)
-        addConsoleCommand("gsTakeEnvProbes", "Takes env. probes from current camera position", "consoleCommandTakeEnvProbes", mission)
-    end
-	--]]
 end
 
 function cr_loadMissionFinished(mission, superFunc, node)
@@ -150,7 +137,7 @@ end
 function getDataPaths(filename)
     local paths = {} -- self.thirdPartyMods:getDataPaths(filename) -- TODO(v.2): load custom crops.xml from GEOs
 
-    -- First add base
+    -- First add base crops.xml from this mod, then override in 3rdparty
     local path = Utils.getFilename("data/" .. filename, modDirectory)
     if fileExists(path) then
         table.insert(paths, 1, { file = path, modDir = modDirectory })
