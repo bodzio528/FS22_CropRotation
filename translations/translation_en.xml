@@ -9,6 +9,12 @@
         <e k="cropRotation_Category_4" v="Roots" />
         <e k="cropRotation_Category_5" v="Nightshade" />
         <e k="cropRotation_Category_6" v="Grass" />
+        <e k="cropRotation_hud_fieldInfo_title" v="Crop Rotation" />
+        <e k="cropRotation_hud_fieldInfo_previous" v="Previous" />
+        <e k="cropRotation_hud_fieldInfo_perfect" v="Perfect" />
+        <e k="cropRotation_hud_fieldInfo_good" v="Good" />
+        <e k="cropRotation_hud_fieldInfo_ok" v="OK" />
+        <e k="cropRotation_hud_fieldInfo_bad" v="Bad" />
         <e k="cropRotation_ui_Title" v="Crop Rotation" />
         <e k="cropRotation_ui_Explanation" v="Crop rotation starts over from the beginning after the last crop." />
         <e k="cropRotation_ui_Planner" v="Crop Rotation Planner" />

@@ -32,7 +32,7 @@ function isActive()
 --]]
 
     -- Normally this code never runs if mod was not active. However, in development mode this might not always hold true.
-    return g_modIsLoaded[CropRotation.MOD_NAME]
+    return g_modIsLoaded["FS22_CropRotation"]
 end
 
 ---Initialize the mod. This code is run once for the lifetime of the program.
@@ -47,6 +47,7 @@ function init()
     Mission00.loadMission00Finished = Utils.overwrittenFunction(Mission00.loadMission00Finished, cr_loadMissionFinished)
 
     HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, HelpLineManager.loadCropRotationHelpLine)
+
 end
 
 function cr_unload()

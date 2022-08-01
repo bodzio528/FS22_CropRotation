@@ -9,6 +9,12 @@
         <e k="cropRotation_Category_4" v="Okopowe" />
         <e k="cropRotation_Category_5" v="Psiankowate" />
         <e k="cropRotation_Category_6" v="Trawa" />
+        <e k="cropRotation_hud_fieldInfo_title" v="Płodozmian" />
+        <e k="cropRotation_hud_fieldInfo_previous" v="Uprawy" />
+        <e k="cropRotation_hud_fieldInfo_perfect" v="Doskonale" />
+        <e k="cropRotation_hud_fieldInfo_good" v="Dobrze" />
+        <e k="cropRotation_hud_fieldInfo_ok" v="W porządku" />
+        <e k="cropRotation_hud_fieldInfo_bad" v="Źle" />
         <e k="cropRotation_ui_Title" v="Płodozmian" />
         <e k="cropRotation_ui_Explanation" v="Płodozmian rozpoczyna się na nowo po ostatnim zbiorze z listy." />
         <e k="cropRotation_ui_Planner" v="Planer płodozmianu" />
