@@ -33,25 +33,18 @@ CropRotation.CATEGORIES_MAX = 6
 
 CropRotation.PrecisionFarming = "FS22_precisionFarming"
 
-CropRotation.COLORS = {
+CropRotation.COLORS = { -- TODO: rename to HUD_COLORS or sth like that
     [1] = {color = {0.0000, 0.4341, 0.0802, 1}, colorBlind={1.0000, 1.0000, 0.1000, 1}, text="cropRotation_hud_fieldInfo_perfect"}, -- perfect
     [2] = {color = {0.1329, 0.4735, 0.0296, 1}, colorBlind={0.8500, 0.8500, 0.1000, 1}, text="cropRotation_hud_fieldInfo_good"}, -- good
     [3] = {color = {0.3231, 0.4969, 0.0137, 1}, colorBlind={0.7500, 0.7500, 0.1000, 1}, text="cropRotation_hud_fieldInfo_ok"}, -- ok
     [4] = {color = {0.9910, 0.3231, 0.0000, 1}, colorBlind={0.4500, 0.4500, 0.1000, 1}, text="cropRotation_hud_fieldInfo_bad"} -- bad
 }
 
---[[
-<levelDifferenceColor levelDifference="0" color="0.0000 0.4341 0.0802" colorBlind="1.0000 1.0000 0.1000" text="$l10n_fieldInfo_perfect"/>
-<levelDifferenceColor levelDifference="2" color="0.1329 0.4735 0.0296" colorBlind="0.8500 0.8500 0.1000" text="$l10n_fieldInfo_good"/>
-<levelDifferenceColor levelDifference="3" color="0.3231 0.4969 0.0137" colorBlind="0.7500 0.7500 0.1000" text="$l10n_fieldInfo_ok"/>
-<levelDifferenceColor levelDifference="5" color="0.9910 0.3231 0.0000" colorBlind="0.4500 0.4500 0.1000" text="$l10n_fieldInfo_bad"/>
---]]
-
 CropRotation.debug = true -- false --
 
-function overwrittenStaticFunction(target, name, newFunc)
-    local oldFunc = target[name]
-    target[name] = function (...)
+function overwrittenStaticFunction(object, funcName, newFunc)
+    local oldFunc = object[funcName]
+    object[funcName] = function (...)
         return newFunc(oldFunc, ...)
     end
 end
@@ -75,6 +68,8 @@ function CropRotation:new(mission, messageCenter, fruitTypeManager, i18n, data, 
     overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "cutFruitArea", CropRotation.inj_densityMapUtil_cutFruitArea)
+
+    overwrittenStaticFunction(FSBaseMission, "getHarvestScaleMultiplier", CropRotation.inj_fsBaseMission_getHarvestScaleMultiplier)
 
     addConsoleCommand("crInfo", "Get crop rotation info", "commandGetInfo", self)
     if g_addCheatCommands then -- cheats enabled
@@ -137,26 +132,24 @@ function CropRotation:loadMap()
 
 --  g_currentMission.cropRotation = self -- unneeded, alredy set g_cropRotation
 
---[[
-    -- install in player HUD - field info box
     if g_modIsLoaded[CropRotation.PrecisionFarming] then
         -- subscribe to precision farming - include yield info in information there
         print(string.format("CropRotation:loadMap(): append crop rotation to field info hud - Precision Farming mod is loaded!"))
-        local text = "Crop Rotation" or "Płodozmian"
-        local prio = 4 -- 1=soil 2=phMap 3=nitrogen - generally unused, PF list them in the order of apperance anyway
-        g_precisionFarming.fieldInfoDisplayExtension:addFieldInfo(text, self, self.updateFieldInfoDisplay, prio, self.yieldChangeFunc)
-    else
-]]
-        print(string.format("CropRotation:loadMap(): append crop rotation to field info hud!"))
-        -- just add Crop Rotation Info to standard HUD
-    PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit, CropRotation.fieldAddFruit)
 
---    end
-    if g_modIsLoaded[CropRotation.PrecisionFarming] then
-        print(string.format("CropRotation:loadMap(): append crop rotation to field info hud - Precision Farming mod is loaded!"))
+        --FS22_precisionFarming.EnvironmentalScore.updateUI = Utils.overwrittenFunction(FS22_precisionFarming.EnvironmentalScore.updateUI, InfoDisplayExtension.updateUI);
+
+        print(string.format("CropRotation:loadMap(): g_precisionFarming = %s", tostring(FS22_precisionFarming.g_precisionFarming)))
+        local l_precisionFarming = FS22_precisionFarming.g_precisionFarming
+        if l_precisionFarming ~= nil then
+            l_precisionFarming.fieldInfoDisplayExtension:addFieldInfo(text, self, self.updateFieldInfoDisplay, prio, self.yieldChangeFunc)
+        end
+    else
+        -- just add Crop Rotation Info to standard HUD
+        print(string.format("CropRotation:loadMap(): append crop rotation to field info hud!"))
+        PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit, CropRotation.fieldAddFruit)
     end
 
-    PlayerHUDUpdater.updateFieldInfo = Utils.overwrittenFunction(PlayerHUDUpdater.updateFieldInfo, CropRotation.updateFieldInfo)
+    --PlayerHUDUpdater.updateFieldInfo = Utils.overwrittenFunction(PlayerHUDUpdater.updateFieldInfo, CropRotation.updateFieldInfo)
 end
 
 function CropRotation:updateFieldInfo(superFunc, posX, posZ, rotY)
@@ -168,7 +161,6 @@ function CropRotation:updateFieldInfo(superFunc, posX, posZ, rotY)
 
     local cropRotation = g_cropRotation
 
-    cropRotation:readFromMap()
 
     self.cropRotationFieldInfo = {
         current = CropRotation.CATEGORIES.LEGUME,
@@ -203,13 +195,14 @@ function CropRotation:fieldAddFruit(data, box)
 --     DebugUtil.printTableRecursively(data, "", 0, 0)
 
     local cropRotation = g_cropRotation
+    assert(cropRotation ~= nil)
 
     local fruitType = data.fruitTypeMax
---     local fruitDesc = self.fruitTypeManager:getFruitTypeByIndex(fruitType)
---
---     local current = fruitDesc.rotation.category
-    local last = g_cropRotation:getCategoryName(self.cropRotationFieldInfo.n1)
-    local previous = g_cropRotation:getCategoryName(self.cropRotationFieldInfo.n2)
+    self.cropRotationFieldInfo = {
+        current = CropRotation.CATEGORIES.LEGUME,
+        n1 = CropRotation.CATEGORIES.OILSEED,
+        n2 = CropRotation.CATEGORIES.CEREAL
+    }
 
     local crYieldMultiplier = cropRotation:getRotationYieldMultiplier(self.cropRotationFieldInfo.n2,
                                                                       self.cropRotationFieldInfo.n1,
@@ -225,19 +218,29 @@ function CropRotation:fieldAddFruit(data, box)
     box:addLine(string.format("%s (%s)", g_i18n:getText("cropRotation_hud_fieldInfo_title"),
                                          g_i18n:getText(CropRotation.COLORS[level].text)),
                 string.format("%d %s", math.floor(100 * crYieldMultiplier), "%"),
-                true,
+                true, -- use color
                 CropRotation.COLORS[level].color)
-    box:addLine(g_i18n:getText("cropRotation_hud_fieldInfo_previous"), string.format("%s | %s", last, previous))
+    box:addLine(g_i18n:getText("cropRotation_hud_fieldInfo_previous"),
+                string.format("%s | %s", g_cropRotation:getCategoryName(self.cropRotationFieldInfo.n1),
+                                         g_cropRotation:getCategoryName(self.cropRotationFieldInfo.n2)))
 end
 
-function CropRotation.yieldChangeFunc(object, fieldInfo)
-    print(string.format("CropRotation.yieldChangeFunc(): object = %s, fieldInfo = %s", tostring(object), tostring(fieldInfo)))
+function CropRotation.yieldChangeFunc(fieldInfo)
+    print(string.format("CropRotation.yieldChangeFunc(): fieldInfo.crFactor = %s", tostring(fieldInfo.crFactor)))
+
+    DebugUtil.printTableRecursively(fieldInfo, "", 0, 0)
+
+    return fieldInfo.crFactor or 0, --factor
+           2.0, --  proportion ('2' to affect both constant and flowing part of harvest scale multiplier)
+           fieldInfo.yieldPotential or 1, -- _yieldPotential
+           fieldInfo.yieldPotentialToHa or 0 --  _yieldPotentialToHa
 end
 
 function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
     print(string.format("CropRotation:updateFieldInfoDisplay(): s(%f,%f) w(%f,%f) h(%f,%f) colorBlind = %s",
                         startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, tostring(isColorBlindMode)))
-    DebugUtil.printTableRecursively(fieldInfo, "", 0, 1)
+
+    DebugUtil.printTableRecursively(fieldInfo, "", 0, 0)
     --[[
     -- PF definition
     local fieldInfo = {
@@ -247,32 +250,34 @@ function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ
         yieldChangeFunc = yieldChangeFunc
     }
     --]]
-    -- modify field info, so information there can be used in yield calculation
+    -- modify field info, so information there can be used in yield calculation (CropRotation.yieldChangeFunc)
+
+    fieldInfo.crCurrent = CropRotation.CATEGORIES.OILSEED
+    fieldInfo.crN1 = CropRotation.CATEGORIES.LEGUME
+    fieldInfo.crN2 = CropRotation.CATEGORIES.CEREAL
+
     fieldInfo.crFactor = 0.95
-
+    local level = 1
     if fieldInfo.crFactor >= 1.00 then
-        return ""
-    end
+        level = 4 -- perfect
+    elseif fieldInfo.crFactor >= 0.90 then
+        level = 3 -- good
+    elseif fieldInfo.crFactor >= 0.80 then
+        level = 2 -- ok
+    end -- < 0.80  1 -- bad
 
-    return "MAGIC"
-end
+    fieldInfo.text = g_i18n:getText("cropRotation_hud_fieldInfo_title")
 
-function CropRotation:getFieldInfoYieldChange(fieldInfo)
-	return fieldInfo.crFactor or 0, --factor 1-crYieldMultiplier
-           2.0, --  proportion
-           fieldInfo.yieldPotential or 1, -- _yieldPotential
-           fieldInfo.yieldPotentialToHa or 0 --  _yieldPotentialToHa
+    local value = string.format("%s | %s", g_cropRotation:getCategoryName(fieldInfo.crN1),
+                                           g_cropRotation:getCategoryName(fieldInfo.crN2)))
+
+    local color = CropRotation.COLORS[level].color
+    if isColorBlindMode then CropRotation.COLORS[level].colorBlind end
+
+    local additionalText = string.format("%d %s", math.floor(fieldInfo.crFactor * 100), "%")
+
+    return value, color, additionalText
 end
---
--- function GrowthInfo:fieldAddGrowth(data, box)
--- 	if (self.fruitTypes == nil) then
--- 		self.fruitTypes = g_currentMission.fruitTypeManager.indexToFruitType;
--- 	end
---
--- 	if (data == nil or box == nil) then
--- 		do return end;
--- 	end
--- end
 
 -- cropRotation.xml is place where crop rotation planner will store their data
 function CropRotation:saveSavegame()
@@ -515,10 +520,20 @@ end
 function CropRotation.inj_fsBaseMission_getHarvestScaleMultiplier(superFunc, fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeYieldBonusPercentage)
     local harvestMultiplier = superFunc(fruitTypeIndex, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeYieldBonusPercentage)
 
+    if self.checkCropRotationMultiplier then
+
+    end
+    local crMultiplier = 0.0
+    if self.crYieldMultiplier ~= nil then
+        crMultiplier = self.crYieldMultiplier
+    end
+
+    print(string.format("CropRotation:[FSBaseMission]:getHarvestScaleMultiplier(): FS multiplier = %f, CR multiplier = %f", harvestMultiplier, crMultiplier))
+
     return harvestMultiplier
 end
 
----Update the rotation map on harvest (or forage... perhaps foraging should be more damaging to the ground)
+---Update the rotation map on harvest (or forage... perhaps foraging should be more damaging to the soil)
 -- this is not the best option, since FS22 uses the concept of harvestMultiplier
 -- yield = 0.5*cropPotential + 0.5*harvestMultiplier
 -- so half of crop potential is always present, even if farmer do literally nothing between sowing and harvesting
@@ -574,6 +589,14 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
 
     -- Update yield
     return numPixels * yieldMultiplier, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeFactor, growthState, maxArea, terrainDetailPixelsSum
+end
+
+
+function CropRotation:updateLatestFactors(crModule, vehicle, requiresCrFactorUpdate)
+    if requiresCrFactorUpdate then
+
+
+    end
 end
 
 ----------------------
