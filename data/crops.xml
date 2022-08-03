@@ -4,12 +4,12 @@
 	Syntax of this file is strict subset of Seasons19 mod by Realismus Modding.
 
 	For instance, one may copy crops.xml directly from favourite Seasons_GEO mod, and still get meaningful results.
-	
+
 	Hopefully.
 	-->
     <annotation>Copyright (c) Realismus Modding, 2019</annotation>
     <version>2</version>
-	
+
 	<growth overwrite="true">
 		<defaultCrops>
 			<defaultCrop name="BARLEY"/>
@@ -36,16 +36,16 @@
 		</defaultCrops>
 	</growth>
 	<fruitTypes>
-		<!-- 
+		<!--
 		When adding growth for new crops the following at a minimum need to be defined in this section.
 
         <fruitType name="NEW_CROP">
             <rotation category="CEREAL" eturnPeriod="2" />
         </fruitType>
-		
+
 		Note: new category cannot be added (as it was in case of Seasons19), use one of existing
-		-->
-		
+            OILSEED, CEREAL, LEGUME, ROOT, NIGHTSHADE, GRASS
+        -->
 		<fruitType name="BARLEY">
 			<rotation category="CEREAL" returnPeriod="2"/>
 		</fruitType>
