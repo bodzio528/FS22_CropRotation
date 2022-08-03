@@ -4,11 +4,11 @@
 -- main.lua - mod loader script
 --
 -- @Author: Bodzio528
--- @Date: 22.07.2022
+-- @Date: 03.08.2022
 -- @Version: 1.0.0.0
 --
 -- Changelog:
--- 	v1.0.0.0 (22.07.2022):
+-- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
 --
 
@@ -21,7 +21,6 @@ source(modDirectory .. "misc/Queue.lua")
 
 local cropRotation = nil -- localize
 local cropRotationData = nil -- crops.xml parser and content loader
-
 
 -- Active test: needed for console version where the code is always sourced.
 function isActive()
@@ -47,7 +46,6 @@ function init()
     Mission00.loadMission00Finished = Utils.overwrittenFunction(Mission00.loadMission00Finished, cr_loadMissionFinished)
 
     HelpLineManager.loadMapData = Utils.overwrittenFunction(HelpLineManager.loadMapData, HelpLineManager.loadCropRotationHelpLine)
-
 end
 
 function cr_unload()
@@ -98,7 +96,12 @@ function cr_loadMission(mission)
     cropRotationData = CropRotationData:new(mission, g_fruitTypeManager)
     densityMapScanner = SeasonsDensityMapScanner:new(mission, g_sleepManager, g_dedicatedServer ~= nil)
 
-    cropRotation = CropRotation:new(mission, g_messageCenter, g_fruitTypeManager, g_i18n, cropRotationData, densityMapScanner)
+    cropRotation = CropRotation:new(mission,
+                                    g_messageCenter,
+                                    g_fruitTypeManager,
+                                    g_i18n,
+                                    cropRotationData,
+                                    densityMapScanner)
 
     -- Available at this point:
     -- modDirectory, g_densityMapHeightManager, g_fillTypeManager,
@@ -147,16 +150,16 @@ function getDataPaths(filename)
     return paths
 end
 
-----------------------
--- Help menu appendix
-----------------------
+------------------------------------------------
+-- InGame Help Menu chapter loading
+------------------------------------------------
 function HelpLineManager:loadCropRotationHelpLine(superFunc, ...)
-	local ret = superFunc(self, ...)
-	if ret then
-		self:loadFromXML(Utils.getFilename("gui/helpLine.xml", modDirectory))
-		return true
-	end
-	return false
+    local ret = superFunc(self, ...)
+    if ret then
+        self:loadFromXML(Utils.getFilename("gui/helpLine.xml", modDirectory))
+        return true
+    end
+    return false
 end
 
 init()

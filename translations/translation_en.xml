@@ -15,10 +15,6 @@
         <e k="cropRotation_hud_fieldInfo_good" v="Good" />
         <e k="cropRotation_hud_fieldInfo_ok" v="OK" />
         <e k="cropRotation_hud_fieldInfo_bad" v="Bad" />
-        <e k="cropRotation_ui_Title" v="Crop Rotation" />
-        <e k="cropRotation_ui_Explanation" v="Crop rotation starts over from the beginning after the last crop." />
-        <e k="cropRotation_ui_Planner" v="Crop Rotation Planner" />
-        <e k="cropRotation_ui_PlanNew" v="New Plan %d" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Crop Rotation"/>
         <e k="cropRotation_helpTitle_01" v="General information" />

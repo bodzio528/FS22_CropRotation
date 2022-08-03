@@ -3,17 +3,18 @@
 --
 -- CropRotationData.lua
 --
--- manages static data - crop categories and properties,
--- makes contents of data/crops.xml accessible
+-- manage static data - crop categories and properties,
+-- make contents of data/crops.xml accessible
 --
 -- @Author: Bodzio528
--- @Date: 22.07.2022
+-- @Date: 03.08.2022
 -- @Version: 1.0.0.0
 --
 -- Changelog:
--- 	v1.0.0.0 (22.07.2022):
+-- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
 --
+
 CropRotationData = {}
 
 local CropRotationData_mt = Class(CropRotationData)
