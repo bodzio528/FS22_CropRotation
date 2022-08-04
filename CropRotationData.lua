@@ -82,7 +82,7 @@ function CropRotationData:loadDefaultFruitsData(xmlFile, overwriteData)
 
     if not hasXMLProperty(xmlFile, defaultFruitsKey) then
         -- ERROR!
-        print("CropRotationData:loadDefaultFruitsData: XML loading failed " .. defaultFruitsKey .. " not found")
+        log("CropRotationData:loadDefaultFruitsData: XML loading failed " .. defaultFruitsKey .. " not found")
         return
     end
 
@@ -99,7 +99,7 @@ function CropRotationData:loadDefaultFruitsData(xmlFile, overwriteData)
             self.defaultFruits[fruitName] = 1
         else
             -- ERROR!
-            print("CropRotationData:loadDefaultFruitsData(): XML loading failed " .. xmlFile)
+            log("CropRotationData:loadDefaultFruitsData(): XML loading failed " .. xmlFile)
             return
         end
 
@@ -163,7 +163,7 @@ function CropRotationData:loadFruitTypesData(xmlFile)
 
         if fruitName == nil then
             -- ERROR!
-            print("CropRotationData:loadFruitTypesData() fruitTypes section is not defined correctly")
+            log("CropRotationData:loadFruitTypesData() fruitTypes section is not defined correctly")
             break
         end
 
@@ -194,7 +194,7 @@ function CropRotationData:addCustomFruits()
         local fruitName = fruitType.name
 
         if self.defaultFruits[fruitName] == nil then -- new fruit found
-            print("CropRotationData:addCustomFruits(): new fruit found: %s", fruitName)
+            log("CropRotationData:addCustomFruits(): new fruit found: %s", fruitName)
             self:updateFruitTypesDataWithNewFruit(fruitName)
         end
     end

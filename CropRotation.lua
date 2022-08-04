@@ -212,8 +212,6 @@ end
 function CropRotation:fieldAddFruit(data, box)
     local cropRotation = g_cropRotation
     if cropRotation.crFieldInfo ~= nil then
-        DebugUtil.printTableRecursively(cropRotation.crFieldInfo, "", 0, 1)
-
         local crYieldMultiplier = cropRotation:getRotationYieldMultiplier(cropRotation.crFieldInfo.n2,
                                                                           cropRotation.crFieldInfo.n1,
                                                                           data.fruitTypeMax)
@@ -319,7 +317,7 @@ function CropRotation:load()
 
     local finalizer = function (target, parameters)
         if CropRotation.debug then
-            print("CropRotation:finalizer(): job UpdateFallow finished successfully")
+            log("CropRotation:finalizer(): job UpdateFallow finished successfully!")
         end
     end
 

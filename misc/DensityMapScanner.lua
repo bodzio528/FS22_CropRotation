@@ -134,7 +134,7 @@ function SeasonsDensityMapScanner:update(dt)
             self.currentJob.x = 0
             self.currentJob.z = 0
 
-            -- log("[SeasonsDensityMapScanner] Dequed job:", self.currentJob.callbackId, "(", table.concat(self.currentJob.parameters, ";"), ")")
+            log("[SeasonsDensityMapScanner] Dequed job:", self.currentJob.callbackId, "(", table.concat(self.currentJob.parameters, ";"), ")")
         end
     end
 
@@ -189,11 +189,12 @@ function SeasonsDensityMapScanner:queueJob(callbackId, parameters)
         end
 
         if self.callbacks[callbackId] == nil then
-            Logging.error("Callback '" .. callbackId .. "' is not registered with the density map scanner.")
+			--ERROR
+            log(string.format("Callback '%s' is not registered with the density map scanner.", callbackId)
             return
         end
 
-        -- log("[SeasonsDensityMapScanner] Enqued job:", callbackId, "(", table.concat(parameters, ";"), ")")
+        log(string.format("[SeasonsDensityMapScanner] Enqued job: %s (%s)", callbackId, table.concat(parameters, ";")))
 
         local job = {
             callbackId = callbackId,
@@ -252,7 +253,7 @@ function SeasonsDensityMapScanner:run(job)
     local jobRunnerInfo = self.callbacks[job.callbackId]
     if jobRunnerInfo == nil then
 		--ERROR
-        print(string.format("[SeasonsDensityMapScanner] Tried to run unknown callback '%s'", job.callbackId))
+        log(string.format("[SeasonsDensityMapScanner] Tried to run unknown callback '%s'", job.callbackId))
 
         return false
     end
