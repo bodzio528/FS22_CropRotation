@@ -1,32 +1,76 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="67">
-	<author>Bodzio528</author>
-	<version>1.0.0.0</version>
-	<title>
-		<en>Crop Rotation</en>
-		<de>Fruchtfolge</de>
-		<fr>Alternance Des Récoltes</fr>
-		<pl>Płodozmian</pl>
-	</title>
-	<description>
-		<en><![CDATA[
-		TODO: add description EN
-]]></en>
-		<de><![CDATA[
-		TODO: add description DE
-]]></de>
-		<fr><![CDATA[
-		TODO: add description FR
-]]></fr>
-		<pl><![CDATA[
-		TODO: add description PL
-]]></pl>
-	</description>
-	<iconFilename>modIcon.dds</iconFilename>
-	<multiplayer supported="true"/>
-	<extraSourceFiles>
-		<sourceFile filename="main.lua"/>
-	</extraSourceFiles>
+    <author>Bodzio528</author>
+    <version>1.0.0.0</version>
+    <title>
+        <en>Crop Rotation</en>
+        <de>Fruchtfolge</de>
+        <fr>Alternance Des Récoltes</fr>
+        <pl>Płodozmian</pl>
+    </title>
+    <description>
+        <en><![CDATA[The Crop Rotation mod introduces incentive for growing different crops rather than planting potatoes over and over again.
 
-	<l10n filenamePrefix="translations/translation" />
+Try yourself in reality, where nitrogen and lime are not the only nutrients that plants consume during their growth.
+
+Gain up to 20% additional yield if you done it right.
+Loose even more if you fail to take good care about the soil!
+
+Key features:
+- six categories of crops: oilseed, cereal, legume, roots, nightshade and grass
+- crop-specific return period to mitigate monoculture
+- fallow support, up to two years (only with seasonal growth enabled)
+- crop rotation info added to player HUD field information box
+- detailed in-game help menu (with pictures!)
+]]></en>
+        <de><![CDATA[Der Crop Rotation-Mod bietet Anreize für den Anbau verschiedener Pflanzen, anstatt immer wieder Kartoffeln anzupflanzen.
+
+Probieren Sie es in der Realität aus, wo Stickstoff und Kalk nicht die einzigen Nährstoffe sind, die Pflanzen während ihres Wachstums verbrauchen.
+
+Gewinnen Sie bis zu 20 % Mehrertrag, wenn Sie es richtig gemacht haben.
+Verlieren Sie noch mehr, wenn Sie den Boden nicht gut pflegen!
+
+Hauptmerkmale:
+- sechs Kulturpflanzenkategorien: Ölsaaten, Getreide, Hülsenfrüchte, Wurzeln, Nachtschatten und Gräser
+- kulturspezifische Wiederkehrfrist zur Abschwächung von Monokulturen
+- Brachlandunterstützung, bis zu zwei Jahre (nur bei aktiviertem saisonalem Wachstum)
+- Informationen zur Fruchtfolge wurden dem Feldinformationsfeld des Spieler-HUD hinzugefügt
+- Detailliertes Hilfemenü im Spiel (mit Bildern!)
+]]></de>
+        <fr><![CDATA[Le mod de rotation des cultures incite à cultiver différentes cultures plutôt que de planter des pommes de terre encore et encore.
+
+Essayez-vous dans la réalité, où l'azote et la chaux ne sont pas les seuls nutriments que les plantes consomment pendant leur croissance.
+
+Gagnez jusqu'à 20% de rendement supplémentaire si vous l'avez bien fait.
+Perdez encore plus si vous ne prenez pas bien soin du sol !
+
+Principales caractéristiques:
+- six catégories de cultures : oléagineux, céréales, légumineuses, racines, solanacées et graminées
+- période de retour spécifique à la culture pour atténuer la monoculture
+- soutien à la jachère, jusqu'à deux ans (uniquement avec la croissance saisonnière activée)
+- informations sur la rotation des cultures ajoutées à la boîte d'informations sur le champ HUD du joueur
+- menu d'aide détaillé dans le jeu (avec images !)
+]]></fr>
+        <pl><![CDATA[Modyfikacja Płodozmian wprowadza zachętę do zmianowania upraw w miejsce hodowli monokulturowej.
+
+Sprawdź, jak poradzisz sobie w sytuacji, gdzie azot i wapno same już nie wystarczają do zaspokojenia apetytu upraw.
+
+Możesz zyskać dodatkowe 20% plonu, jeśli poprowadzisz zmianowanie poprawnie.
+Możesz stracić więcej plonu, jeśli nie zadbasz o kondycję gleby!
+
+Główne cechy:
+- sześć kategorii upraw: oleiste, zboża, motylkowe, okopowe, psiankowate i trawy
+- uprawy mają określone okresy powrotu na stanowisko: trzy lata, dwa lata lub coroczne
+- możliwość zostawienia pola odłogiem, celem rewitalizacji gleby
+- dane o zmianowaniu widoczne na panelu informacji o polu
+- szczegółowy opis w menu pomocy (są obrazki!)
+]]></pl>
+    </description>
+    <iconFilename>modIcon.dds</iconFilename>
+    <multiplayer supported="true"/>
+    <extraSourceFiles>
+        <sourceFile filename="main.lua"/>
+    </extraSourceFiles>
+
+    <l10n filenamePrefix="translations/translation" />
 </modDesc>

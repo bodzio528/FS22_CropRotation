@@ -8,7 +8,7 @@
 -- @Version: 1.0.0.0
 --
 -- Changelog:
--- 	v1.0.0.0 (03.08.2022):
+-- 	v1.0.0.0 (04.08.2022):
 --      - Initial release
 --
 
@@ -33,7 +33,9 @@ CropRotation.CATEGORIES_MAX = 6
 
 CropRotation.PrecisionFarming = "FS22_precisionFarming"
 
-CropRotation.COLORS = { -- TODO: rename to HUD_COLORS or sth like that
+-- TODO: rename to HUD_COLORS or sth like that
+-- Nice to have: make XML file with configuration to be loaded from there
+CropRotation.COLORS = {
     [1] = {color = {0.0000, 0.4341, 0.0802, 1}, colorBlind={1.0000, 1.0000, 0.1000, 1}, text="cropRotation_hud_fieldInfo_perfect"}, -- perfect
     [2] = {color = {0.1329, 0.4735, 0.0296, 1}, colorBlind={0.8500, 0.8500, 0.1000, 1}, text="cropRotation_hud_fieldInfo_good"}, -- good
     [3] = {color = {0.3231, 0.4969, 0.0137, 1}, colorBlind={0.7500, 0.7500, 0.1000, 1}, text="cropRotation_hud_fieldInfo_ok"}, -- ok
@@ -117,17 +119,12 @@ end
 
 -- called on map loaded, eg. from savegame
 function CropRotation:loadMap()
-    print(string.format("CropRotation:loadMap(): called"))
-
     if self.mission:getIsServer() and self.mission.missionInfo.savegameDirectory ~= nil then
         local path = self.mission.missionInfo.savegameDirectory .. "/cropRotation.xml"
 
         if fileExists(path) then
             local xmlFile = loadXMLFile("CropRotationXML", path)
-            print(string.format("CropRotation:loadMap(): CropRotationXML path = %s", path))
-
             if xmlFile ~= nil then
-                print(string.format("CropRotation:loadMap(): CropRotationXML loading success"))
                 self.densityMapScanner:loadFromSavegame(xmlFile)
 
                 delete(xmlFile)
@@ -140,8 +137,6 @@ function CropRotation:loadMap()
 
     -- extend PlayerHUDUpdater with crop rotation info
     if g_modIsLoaded[CropRotation.PrecisionFarming] then
-        print(string.format("CropRotation:loadMap(): Precision Farming mod is loaded!"))
-
         local l_precisionFarming = FS22_precisionFarming.g_precisionFarming
         if l_precisionFarming ~= nil then
             l_precisionFarming.fieldInfoDisplayExtension:addFieldInfo(g_i18n:getText("cropRotation_hud_fieldInfo_title"),
@@ -151,18 +146,17 @@ function CropRotation:loadMap()
                                                                       self.yieldChangeFunc)
         end
 
+        -- capture fruit type player is currently looking at
         PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit, function(updater, data, box)
             local cropRotation = g_cropRotation
             assert(cropRotation ~= nil)
 
             cropRotation.fruitTypeIndex = data.fruitTypeMax
         end)
-    else
-        -- simply add Crop Rotation Info to standard HUD
+    else -- simply add Crop Rotation Info to standard HUD
         print(string.format("CropRotation:loadMap(): append crop rotation to field info hud!"))
         PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit, CropRotation.fieldAddFruit)
-        -- PlayerHUDUpdater.updateFieldInfo = Utils.overwrittenFunction(PlayerHUDUpdater.updateFieldInfo, CropRotation.updateFieldInfo)
-
+        PlayerHUDUpdater.updateFieldInfo = Utils.prependedFunction(PlayerHUDUpdater.updateFieldInfo, CropRotation.updateFieldInfo)
     end
 end
 
@@ -179,80 +173,73 @@ end
 --- Player HUD Updater
 ------------------------------------------------
 
-function CropRotation:updateFieldInfo(superFunc, posX, posZ, rotY)
+function CropRotation:updateFieldInfo(posX, posZ, rotY)
     if self.requestedFieldData then
         return
     end
 
-    superFunc(posX, posZ, rotY)
-
     local cropRotation = g_cropRotation
 
-
-    self.cropRotationFieldInfo = {
-        current = CropRotation.CATEGORIES.LEGUME,
-        n1 = CropRotation.CATEGORIES.OILSEED,
-        n2 = CropRotation.CATEGORIES.CEREAL
-    }
-
--- 		local sizeX = 5
--- 		local sizeZ = 5
--- 		local distance = 2
--- 		local dirX, dirZ = MathUtil.getDirectionFromYRotation(rotY)
--- 		local sideX, _, sideZ = MathUtil.crossProduct(dirX, 0, dirZ, 0, 1, 0)
--- 		local startWorldX = posX - sideX * sizeX * 0.5 - dirX * distance
--- 		local startWorldZ = posZ - sideZ * sizeX * 0.5 - dirZ * distance
--- 		local widthWorldX = posX + sideX * sizeX * 0.5 - dirX * distance
--- 		local widthWorldZ = posZ + sideZ * sizeX * 0.5 - dirZ * distance
--- 		local heightWorldX = posX - sideX * sizeX * 0.5 - dirX * (distance + sizeZ)
--- 		local heightWorldZ = posZ - sideZ * sizeX * 0.5 - dirZ * (distance + sizeZ)
+--[[ -- TODO: replace with farmland owner filter
+    local sizeX = 5
+    local sizeZ = 5
+    local distance = 2
+    local dirX, dirZ = MathUtil.getDirectionFromYRotation(rotY)
+    local sideX, _, sideZ = MathUtil.crossProduct(dirX, 0, dirZ, 0, 1, 0)
+    local startWorldX = posX - sideX * sizeX * 0.5 - dirX * distance
+    local startWorldZ = posZ - sideZ * sizeX * 0.5 - dirZ * distance
+    local widthWorldX = posX + sideX * sizeX * 0.5 - dirX * distance
+    local widthWorldZ = posZ + sideZ * sizeX * 0.5 - dirZ * distance
+    local heightWorldX = posX - sideX * sizeX * 0.5 - dirX * (distance + sizeZ)
+    local heightWorldZ = posZ - sideZ * sizeX * 0.5 - dirZ * (distance + sizeZ)
     local isColorBlindMode = g_gameSettings:getValue(GameSettings.SETTING.USE_COLORBLIND_MODE) or false
 
--- 		for i = 1, #self.fieldInfos do
--- 			local fieldInfo = self.fieldInfos[i]
--- 			fieldInfo.value, fieldInfo.color, fieldInfo.additionalText = fieldInfo.updateFunc(fieldInfo.object, fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
--- 		end
-end
+    local filter = GROUND_TYPE_FILTER - ground
+    local n2, n1, _ = cropRotation:readFromMap(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ,
+                                               filter,
+                                               true,
+                                               false)
+--]]
+    local n2, n1 = cropRotation:getInfoAtWorldCoords(posX, posZ)
 
+    cropRotation.crFieldInfo = {
+        n2 = n2,
+        n1 = n1
+    }
+
+end
 
 -- Show crop rotation info on player HUD without PRECISION FARMING (not tested yet)
 function CropRotation:fieldAddFruit(data, box)
-    print(string.format("CropRotation.fieldAddFruit(): data = %s, box = %s)", tostring(data), tostring(box)))
-
---     DebugUtil.printTableRecursively(data, "", 0, 0)
-
     local cropRotation = g_cropRotation
-    assert(cropRotation ~= nil)
+    if cropRotation.crFieldInfo ~= nil then
+        DebugUtil.printTableRecursively(cropRotation.crFieldInfo, "", 0, 1)
 
-    local fruitTypeIndex = cropRotation.fruitTypeIndex
-    self.cropRotationFieldInfo = {
-        current = CropRotation.CATEGORIES.LEGUME,
-        n1 = CropRotation.CATEGORIES.OILSEED,
-        n2 = CropRotation.CATEGORIES.CEREAL
-    }
+        local crYieldMultiplier = cropRotation:getRotationYieldMultiplier(cropRotation.crFieldInfo.n2,
+                                                                          cropRotation.crFieldInfo.n1,
+                                                                          data.fruitTypeMax)
+        local level = CropRotation.getLevelByMultiplier(crYieldMultiplier)
 
-    local crYieldMultiplier = cropRotation:getRotationYieldMultiplier(self.cropRotationFieldInfo.n2,
-                                                                      self.cropRotationFieldInfo.n1,
-                                                                      fruitTypeIndex)
+        local isColorBlindMode = g_gameSettings:getValue(GameSettings.SETTING.USE_COLORBLIND_MODE) or false
+        local color = CropRotation.COLORS[level].color
+        if isColorBlindMode then color = CropRotation.COLORS[level].colorBlind end
 
-    local level = 5 - math.min(4, math.max(1, math.floor(20*(crYieldMultiplier - 1.0)+4)))
-
-    box:addLine(string.format("%s (%s)", g_i18n:getText("cropRotation_hud_fieldInfo_title"),
-                                         g_i18n:getText(CropRotation.COLORS[level].text)),
-                string.format("%d %s", math.floor(100 * crYieldMultiplier), "%"),
-                true, -- use color
-                CropRotation.COLORS[level].color)
-    box:addLine(g_i18n:getText("cropRotation_hud_fieldInfo_previous"),
-                string.format("%s | %s", g_cropRotation:getCategoryName(self.cropRotationFieldInfo.n1),
-                                         g_cropRotation:getCategoryName(self.cropRotationFieldInfo.n2)))
+        box:addLine(string.format("%s (%s)", g_i18n:getText("cropRotation_hud_fieldInfo_title"),
+                                  g_i18n:getText(CropRotation.COLORS[level].text)),
+            string.format("%d %s", math.floor(100 * crYieldMultiplier), "%"),
+            true, -- use color
+            color)
+        box:addLine(g_i18n:getText("cropRotation_hud_fieldInfo_previous"),
+                    string.format("%s | %s", cropRotation:getCategoryName(cropRotation.crFieldInfo.n1),
+                                             cropRotation:getCategoryName(cropRotation.crFieldInfo.n2)))
+    end
 end
 
 -- PrecisionFarming Player HUD Updater
 function CropRotation:yieldChangeFunc(fieldInfo)
-
     local crFactor = fieldInfo.crFactor or 1.00 -- default is 100%
 
-    return math.max(-3, 10 * (crFactor - 1)), --factor in <-3;+2>
+    return math.max(-3, 10 * (crFactor - 1)), -- factor in <-3;+2>
            0.20, --  proportion
            fieldInfo.yieldPotential or 1, -- _yieldPotential
            fieldInfo.yieldPotentialToHa or 0 --  _yieldPotentialToHa
@@ -269,17 +256,10 @@ function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ
 
     fieldInfo.crFactor = cropRotation:getRotationYieldMultiplier(n2, n1, cropRotation.fruitTypeIndex)
 
-    local level = 4
-    if fieldInfo.crFactor >= 1.00 then
-        level = 1 -- perfect
-    elseif fieldInfo.crFactor >= 0.90 then
-        level = 2 -- good
-    elseif fieldInfo.crFactor >= 0.80 then
-        level = 3 -- ok
-    end -- < 0.80  4 -- bad
-
     local value = string.format("%s | %s", cropRotation:getCategoryName(n1),
                                            cropRotation:getCategoryName(n2))
+
+    local level = CropRotation.getLevelByMultiplier(fieldInfo.crFactor)
 
     local color = CropRotation.COLORS[level].color
     if isColorBlindMode then color = CropRotation.COLORS[level].colorBlind end
@@ -289,14 +269,25 @@ function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ
     return value, color, additionalText
 end
 
+function CropRotation.getLevelByMultiplier(crYieldMultiplier)
+    if crYieldMultiplier >= 1.00 then
+        return 1 -- perfect
+    end
+    if crYieldMultiplier >= 0.90 then
+        return 2 -- good
+    end
+    if crYieldMultiplier >= 0.80 then
+        return 3 -- ok
+    end
+    return 4 -- < 0.80  4 -- bad
+end
+
 ------------------------------------------------
 --- Save game
 ------------------------------------------------
 
 -- cropRotation.xml is place where crop rotation planner will store their data
 function CropRotation:saveSavegame()
-    print(string.format("FS22_CropRotation:saveSavegame(): called on save game!"))
-
     local cropRotation = g_cropRotation
     assert(cropRotation ~= nil)
 
@@ -325,12 +316,12 @@ end
 ------------------------------------------------
 
 function CropRotation:load()
-    print(string.format("CropRotation:load(): %s", "has been called afer mission loading has finished"))
-
     self:loadModifiers()
 
     local finalizer = function (target, parameters)
-        print(string.format("CropRotation:UpdateFellow:Finalizer(): target = %s parameters = %s", tostring(target), tostring(parameters)))
+        if CropRotation.debug then
+            print("CropRotation:finalizer(): job UpdateFallow finished successfully")
+        end
     end
 
     self.densityMapScanner:registerCallback("UpdateFallow", self.dms_updateFallow, self, finalizer, false)
@@ -338,29 +329,19 @@ function CropRotation:load()
     self.messageCenter:subscribe(MessageType.YEAR_CHANGED, self.onYearChanged, self)
 end
 
-function CropRotation:onMapLoaded(mission, node)
-    print(string.format("CropRotation:onMapLoaded(mission, node): %s", "has been called - NOOP"))
-end
-
 function CropRotation:onTerrainLoaded(mission, terrainId, mapFilename)
-    print(string.format("CropRotation:onTerrainLoaded(): has been called with terrainId = %s", tostring(terrainId)))
-
     self.terrainSize = self.mission.terrainSize
 
     self:loadCropRotationMap()
     self:loadModifiers()
 end
 
-function CropRotation:loadCropRotationMap() -- loadCropRotationDensityMap
-    print(string.format("CropRotation:loadCropRotationMap(): %s", "has been called"))
-
+function CropRotation:loadCropRotationMap()
     self.map = createBitVectorMap("cropRotation")
     local success = false
 
     if self.mission.missionInfo.isValid then
         local path = self.mission.missionInfo.savegameDirectory .. "/cropRotation.grle"
-        print(string.format("CropRotation:loadCropRotationMap(): load from file - %s", tostring(path)))
-
         if fileExists(path) then
             success = loadBitVectorMapFromFile(self.map, path, CropRotation.MAP_NUM_CHANNELS)
         end
@@ -373,18 +354,9 @@ function CropRotation:loadCropRotationMap() -- loadCropRotationDensityMap
     end
 
     self.mapSize = getBitVectorMapSize(self.map)
-    print(string.format("CropRotation:loadCropRotationMap(): self.mapSize = %s", tostring(self.mapSize)))
-end
-
-function CropRotation:onMissionLoaded()
-    print(string.format("CropRotation:onMissionLoaded(mission, node): %s", "has been called - NOOP"))
-
-    print(string.format("CropRotation:onMissionLoaded() precisionFarming = %s", tostring(g_precisionFarming)))
 end
 
 function CropRotation:loadModifiers()
-    print(string.format("CropRotation:loadModifiers(): %s", "has been called 20"))
-
     local modifiers = {}
 
     modifiers.map = {}
@@ -415,9 +387,6 @@ end
 
 -- periodic event handlers (subscribed in constructor)
 function CropRotation:onYearChanged(newYear)
-    if newYear == nil then newYear = 0 end
-    print(string.format("CropRotation:onYearChanged(year = %s): %s", tostring(newYear),"called!"))
-
     self.densityMapScanner:queueJob("UpdateFallow")
 end
 
@@ -480,12 +449,12 @@ function CropRotation.inj_densityMapUtil_updateSowingArea(superFunc, fruitIndex,
         -- Set harvest bit to 0
         local terrainSize = cropRotation.terrainSize
         modifiers.map.modifierH:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
-                                                               startWorldZ / terrainSize + 0.5,
-                                                               widthWorldX / terrainSize + 0.5,
-                                                               widthWorldZ / terrainSize + 0.5,
-                                                               heightWorldX / terrainSize + 0.5,
-                                                               heightWorldZ / terrainSize + 0.5,
-                                                               DensityCoordType.POINT_POINT_POINT)
+                                                         startWorldZ / terrainSize + 0.5,
+                                                         widthWorldX / terrainSize + 0.5,
+                                                         widthWorldZ / terrainSize + 0.5,
+                                                         heightWorldX / terrainSize + 0.5,
+                                                         heightWorldZ / terrainSize + 0.5,
+                                                         DensityCoordType.POINT_POINT_POINT)
         modifiers.map.modifierH:executeSet(0)
     end
 
@@ -556,10 +525,7 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
 
         -- Modifications have to be done sparsely, so when the harvester covers the next area the old values are still available (including h=0)
         mapModifier:executeSet(bits, fruitFilter, cropRotation.modifiers.map.filterH)
-
-        print(string.format("[1] n2: %d n1: %d CRM: %f", n2, n1, yieldMultiplier))
     end
-
 
     local numPixels, totalNumPixels, sprayFactor, plowFactor, limeFactor, weedFactor, stubbleFactor, rollerFactor, beeFactor, growthState, maxArea, terrainDetailPixelsSum =
         superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
@@ -738,6 +704,7 @@ function CropRotation:getInfoAtWorldCoords(x, z)
 end
 
 ---Get the translated name of the given category
+-- TODO: consider crop category name (string) cache
 function CropRotation:getCategoryName(category)
     return self.i18n:getText(string.format("cropRotation_Category_%d", category))
 end
@@ -765,22 +732,35 @@ end
 
 function CropRotation:commandSetFallow()
     local x, _, z = getWorldTranslation(getCamera(0))
+    self:setFallow(x, z, 1)
+end
 
+function CropRotation:commandClearFallow()
+    local x, _, z = getWorldTranslation(getCamera(0))
+    self:setFallow(x, z, 0)
+end
+
+function CropRotation:commandSetHarvest()
+    local x, _, z = getWorldTranslation(getCamera(0))
+    self:setHarvest(x, z, 1)
+end
+
+function CropRotation:commandClearHarvest()
+    local x, _, z = getWorldTranslation(getCamera(0))
+    self:setHarvest(x, z, 0)
+end
+
+function CropRotation:setFallow(x, z, bit)
     local radius = 10
     local terrainSize = self.mission.terrainSize
-
-    local mapModifiers = self.modifiers.map
-
     local startWorldX = math.max(-terrainSize/2, x - radius)
     local startWorldZ = math.max(-terrainSize/2, z - radius)
-
     local widthWorldX = math.min(terrainSize/2, x + radius)
     local widthWorldZ = startWorldZ
-
     local heightWorldX = startWorldX
     local heightWorldZ = math.min(terrainSize/2, z + radius)
 
-    -- Reset fallow map
+    local mapModifiers = self.modifiers.map
     mapModifiers.modifierF:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
                                                     startWorldZ / terrainSize + 0.5,
                                                     widthWorldX / terrainSize + 0.5,
@@ -788,55 +768,20 @@ function CropRotation:commandSetFallow()
                                                     heightWorldX / terrainSize + 0.5,
                                                     heightWorldZ / terrainSize + 0.5,
                                                     DensityCoordType.POINT_POINT_POINT)
-    mapModifiers.modifierF:executeSet(1)
+    mapModifiers.modifierF:executeSet(bit)
 end
 
-function CropRotation:commandSetHarvest()
-    local x, _, z = getWorldTranslation(getCamera(0))
-
+function CropRotation:setHarvest(x, z, bit)
     local radius = 10
     local terrainSize = self.mission.terrainSize
-
-    local mapModifiers = self.modifiers.map
-
     local startWorldX = math.max(-terrainSize/2, x - radius)
     local startWorldZ = math.max(-terrainSize/2, z - radius)
-
     local widthWorldX = math.min(terrainSize/2, x + radius)
     local widthWorldZ = startWorldZ
-
     local heightWorldX = startWorldX
     local heightWorldZ = math.min(terrainSize/2, z + radius)
 
-    -- Reset fallow map
-    mapModifiers.modifierH:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
-                                                    startWorldZ / terrainSize + 0.5,
-                                                    widthWorldX / terrainSize + 0.5,
-                                                    widthWorldZ / terrainSize + 0.5,
-                                                    heightWorldX / terrainSize + 0.5,
-                                                    heightWorldZ / terrainSize + 0.5,
-                                                    DensityCoordType.POINT_POINT_POINT)
-    mapModifiers.modifierH:executeSet(1)
-end
-
-function CropRotation:commandClearHarvest()
-    local x, _, z = getWorldTranslation(getCamera(0))
-
-    local radius = 10
-    local terrainSize = self.mission.terrainSize
-
     local mapModifiers = self.modifiers.map
-
-    local startWorldX = math.max(-terrainSize/2, x - radius)
-    local startWorldZ = math.max(-terrainSize/2, z - radius)
-
-    local widthWorldX = math.min(terrainSize/2, x + radius)
-    local widthWorldZ = startWorldZ
-
-    local heightWorldX = startWorldX
-    local heightWorldZ = math.min(terrainSize/2, z + radius)
-
-    -- Set harvest bit on map
     mapModifiers.modifierH:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
                                                     startWorldZ / terrainSize + 0.5,
                                                     widthWorldX / terrainSize + 0.5,
@@ -845,33 +790,6 @@ function CropRotation:commandClearHarvest()
                                                     heightWorldZ / terrainSize + 0.5,
                                                     DensityCoordType.POINT_POINT_POINT)
     mapModifiers.modifierH:executeSet(0)
-end
-function CropRotation:commandClearFallow()
-    local x, _, z = getWorldTranslation(getCamera(0))
-
-    local radius = 10
-    local terrainSize = self.mission.terrainSize
-
-    local mapModifiers = self.modifiers.map
-
-    local startWorldX = math.max(-terrainSize/2, x - radius)
-    local startWorldZ = math.max(-terrainSize/2, z - radius)
-
-    local widthWorldX = math.min(terrainSize/2, x + radius)
-    local widthWorldZ = startWorldZ
-
-    local heightWorldX = startWorldX
-    local heightWorldZ = math.min(terrainSize/2, z + radius)
-
-    -- Clear harvest bit on map
-    mapModifiers.modifierF:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
-                                                    startWorldZ / terrainSize + 0.5,
-                                                    widthWorldX / terrainSize + 0.5,
-                                                    widthWorldZ / terrainSize + 0.5,
-                                                    heightWorldX / terrainSize + 0.5,
-                                                    heightWorldZ / terrainSize + 0.5,
-                                                    DensityCoordType.POINT_POINT_POINT)
-    mapModifiers.modifierF:executeSet(0)
 end
 
 -- borrowed from FS19_RM_Seasons mod

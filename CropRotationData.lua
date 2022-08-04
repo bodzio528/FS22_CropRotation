@@ -163,7 +163,7 @@ function CropRotationData:loadFruitTypesData(xmlFile)
 
         if fruitName == nil then
             -- ERROR!
-            print("CropRotationData:loadDataFromFile fruitTypes section is not defined correctly")
+            print("CropRotationData:loadFruitTypesData() fruitTypes section is not defined correctly")
             break
         end
 
