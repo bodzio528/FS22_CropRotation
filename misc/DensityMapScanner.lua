@@ -190,7 +190,7 @@ function SeasonsDensityMapScanner:queueJob(callbackId, parameters)
 
         if self.callbacks[callbackId] == nil then
 			--ERROR
-            log(string.format("Callback '%s' is not registered with the density map scanner.", callbackId)
+            log(string.format("Callback '%s' is not registered with the density map scanner.", callbackId))
             return
         end
 
