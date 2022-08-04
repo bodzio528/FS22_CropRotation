@@ -31,6 +31,9 @@
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_02_04" />
             </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages01.png" uvs="0px 240px 900px 240px" aspectRatio="0.26666"/>
+            </paragraph>
         </page>
         <page title="$l10n_cropRotation_helpTitle_03">
             <paragraph>
@@ -45,6 +48,9 @@
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_03_04" />
             </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages01.png" uvs="0px 480px 900px 240px" aspectRatio="0.26666"/>
+            </paragraph>
         </page>
         <page title="$l10n_cropRotation_helpTitle_04">
             <paragraph>
@@ -52,6 +58,9 @@
             </paragraph>
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_04_02" />
+            </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages01.png" uvs="0px 720px 900px 240px" aspectRatio="0.26666"/>
             </paragraph>
         </page>
         <page title="$l10n_cropRotation_helpTitle_05">
@@ -62,7 +71,7 @@
                 <text text="$l10n_cropRotation_helpText_05_02" />
             </paragraph>
             <paragraph>
-                <image filename="gui/helplineImages01.png" uvs="0px 300px 900px 240px" aspectRatio="0.26666"/>
+                <image filename="gui/helplineImages02.png" uvs="0px 0px 900px 240px" aspectRatio="0.26666"/>
             </paragraph>
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_05_03" />
@@ -76,7 +85,7 @@
                 <text text="$l10n_cropRotation_helpText_06_01" />
             </paragraph>
             <paragraph>
-                <image filename="gui/helplineImages01.png" uvs="0px 0px 900px 300px" aspectRatio="0.33333"/>
+                <image filename="gui/helplineImages02.png" uvs="0px 240px 900px 300px" aspectRatio="0.33333"/>
             </paragraph>
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_06_02" />

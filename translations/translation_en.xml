@@ -13,7 +13,7 @@
         <e k="cropRotation_hud_fieldInfo_previous" v="Previous"/>
         <e k="cropRotation_hud_fieldInfo_perfect" v="Perfect"/>
         <e k="cropRotation_hud_fieldInfo_good" v="Good"/>
-        <e k="cropRotation_hud_fieldInfo_ok" v="OK"/>
+        <e k="cropRotation_hud_fieldInfo_ok" v="Ok"/>
         <e k="cropRotation_hud_fieldInfo_bad" v="Bad"/>
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Crop Rotation"/>
