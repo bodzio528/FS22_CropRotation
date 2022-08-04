@@ -81,8 +81,6 @@ function cr_loadMission(mission)
 end
 
 function cr_loadMissionFinished(mission, superFunc, node)
-    print(string.format("FS22_CropRotation:cr_loadMissionFinished(): %s, isActive = %s", "mission loaded called", tostring(isActive())))
-
     if not isActive() then
         return superFunc(mission, node)
     end
