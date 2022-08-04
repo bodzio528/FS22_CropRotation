@@ -65,15 +65,11 @@ function SeasonsDensityMapScanner:loadFromSavegame(xmlFile)
 
         local parameters = Utils.getNoNil(getXMLString(xmlFile, key .. ".parameters"), "")
         job.parameters = string.split(parameters, ";") --string.split(";", parameters)
-        print(string.format("Loading current job: %s x=%d z=%d segments=%d", job.callbackId, job.x, job.z, Utils.getNoNil(job.numSegments, 0)))
         for i, v in ipairs(job.parameters) do
             job.parameters[i] = tonumber(v)
-            print(string.format("parameter[%d] = %d", i, parameters[i]))
         end
 
         self.currentJob = job
-
-        print(string.format("[SeasonsDensityMapScanner] Loaded current job: %s with %d parameters", job.callbackId, #job.parameters))
     end
 
     local pos = 0
@@ -88,15 +84,12 @@ function SeasonsDensityMapScanner:loadFromSavegame(xmlFile)
 
         local parameters = Utils.getNoNil(getXMLString(xmlFile, key .. "#parameters"), "")
         job.parameters = string.split(parameters, ";")
-        print(string.format("Loading queued job: %s with %d parameters", job.callbackId, #job.parameters))
         for i, v in ipairs(job.parameters) do
             job.parameters[i] = tonumber(v)
-            print(string.format("parameter[%d] = %d", i, parameters[i]))
         end
 
         self.queue:push(job)
 
-        print(string.format("[SeasonsDensityMapScanner] Loaded queued job: %s with %d parameters", job.callbackId, #job.parameters))
         pos = 1 + pos
     end
 end
@@ -229,8 +222,6 @@ end
 -- @param detailHeightId bool on whether this is a job over the terrainDetailHeightId, optional
 -- @param mergeFunction function to run when adding a task to optimize the queue, optional
 function SeasonsDensityMapScanner:registerCallback(callbackId, func, target, finalizer, detailHeightId, mergeFunction)
-    log("[SeasonsDensityMapScanner] Registering callback: " .. callbackId)
-
     if self.callbacks == nil then
         self.callbacks = {}
     end
@@ -260,7 +251,8 @@ function SeasonsDensityMapScanner:run(job)
 
     local jobRunnerInfo = self.callbacks[job.callbackId]
     if jobRunnerInfo == nil then
-        logInfo("[SeasonsDensityMapScanner] Tried to run unknown callback '", job.callbackId, "'")
+		--ERROR
+        print(string.format("[SeasonsDensityMapScanner] Tried to run unknown callback '%s'", job.callbackId))
 
         return false
     end

@@ -154,7 +154,6 @@ function CropRotation:loadMap()
             cropRotation.fruitTypeIndex = data.fruitTypeMax
         end)
     else -- simply add Crop Rotation Info to standard HUD
-        print(string.format("CropRotation:loadMap(): append crop rotation to field info hud!"))
         PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit, CropRotation.fieldAddFruit)
         PlayerHUDUpdater.updateFieldInfo = Utils.prependedFunction(PlayerHUDUpdater.updateFieldInfo, CropRotation.updateFieldInfo)
     end
@@ -348,7 +347,6 @@ function CropRotation:loadCropRotationMap()
     end
 
     if not success then
-        print(string.format("CropRotation:loadCropRotationMap(): init new densityMap - mission: %s, tdId: %s", tostring(self.mission), tostring(self.mission.terrainDetailId)))
         local size = getDensityMapSize(self.mission.terrainDetailId)
         loadBitVectorMapNew(self.map, size, size, CropRotation.MAP_NUM_CHANNELS, false)
     end
@@ -481,7 +479,6 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
     end
 
     if fruitFilter == nil then
-        print("CropRotation:cutFruitArea(): WARNING: empty fruitFilter cache! Initializing fruit profile.")
         fruitFilter = DensityMapFilter.new(desc.terrainDataPlaneId,
                                            desc.startStateChannel,
                                            desc.numStateChannels,
