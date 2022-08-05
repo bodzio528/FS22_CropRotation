@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <translationContributors>Bodzio528</translationContributors>
+    <elements>
+        <e k="cropRotation_Category_0" v="Ugór" />
+        <e k="cropRotation_Category_1" v="Oleiste" />
+        <e k="cropRotation_Category_2" v="Zboża" />
+        <e k="cropRotation_Category_3" v="Strączkowe" />
+        <e k="cropRotation_Category_4" v="Okopowe" />
+        <e k="cropRotation_Category_5" v="Psiankowate" />
+        <e k="cropRotation_Category_6" v="Trawa" />
+        <e k="cropRotation_hud_fieldInfo_title" v="Płodozmian" />
+        <e k="cropRotation_hud_fieldInfo_previous" v="Uprawy" />
+        <e k="cropRotation_hud_fieldInfo_perfect" v="Doskonale" />
+        <e k="cropRotation_hud_fieldInfo_good" v="Dobrze" />
+        <e k="cropRotation_hud_fieldInfo_ok" v="W porządku" />
+        <e k="cropRotation_hud_fieldInfo_bad" v="Źle" />
+        <!-- help lines -->
+        <e k="cropRotation_helpHeader" v="Płodozmian"/>
+        <e k="cropRotation_helpTitle_01" v="Informacje ogólne"/>
+        <e k="cropRotation_helpTitle_02" v="Okres powrotu"/>
+        <e k="cropRotation_helpTitle_03" v="Przedplony"/>
+        <e k="cropRotation_helpTitle_04" v="Ugór"/>
+        <e k="cropRotation_helpTitle_05" v="Wskaźnik płodozmianu"/>
+        <e k="cropRotation_helpTitle_06" v="Rolnictwo precyzyjne"/>
+        <e k="cropRotation_helpText_01_01" v="Wieloletnie uprawianie tego samego rodzaju roślin na polu (monokultura) prowadzi do obniżenia plonów." />
+        <e k="cropRotation_helpText_01_02" v="W zależności od jakości gleby i uprawianej rośliny, straty mogą sięgać od 5 nawet 25 procent spodziewanego plonu. Dzieje się tak, gdyż różne rośliny do rozwoju potrzebują różnych proporcji pierwiastków zawartych w glebie."/>
+        <e k="cropRotation_helpText_01_03" v="Płodozmian polega na wprowadzaniu na stanowisko (pole) roślin o odmiennych wymaganiach, co daje glebie czas potrzebny na uzupełnienie wartości odżywczych - zwykle zawartych w szczątkach roślin z poprzednich zbiorów, ale w formie jeszcze nieprzyswajalnej przez rośliny."/>
+        <e k="cropRotation_helpText_01_04" v="Ponadto, dieta wielu szkodników jest ograniczona do konkretnego rodzaju roślin. Zmiana rodzaju uprawy przerywa cykl rozwojowy szkodników i pozwala glebie oczyścić się z patogenów związanych z roślinami."/>
+        <e k="cropRotation_helpText_01_05" v="Idealnie poprowadzony płodozmian zapobiega zmiejszeniu plonu na skutek wyjałowienia gleby z pierwiastków potrzebnych roślinom do prawidłowego wzrostu, oraz znacznie ogranicza presję patogenów chorobotwórczych i szkodników w uprawie. Prowadzi to wprost do polepszenia jakości plonów w kolejnych latach."/>
+        <e k="cropRotation_helpText_02_01" v="Istnieje pewien minimalny czas, jaki należy zachować przed ponownym użyciem pola do uprawy danej rośliny, aby plon nie uległ obniżeniu z powodu szkodników i patogenów."/>
+        <e k="cropRotation_helpText_02_02" v="Na trzeci zasier mogą powrócić: rzepak, słoneczniki, ziemniaki i buraki cukrowe."/>
+        <e k="cropRotation_helpText_02_03" v="Większość zbóż oraz soja, trzcina cukrowa i bawełna mogą być uprawiane w odstępie minimum roku."/>
+        <e k="cropRotation_helpText_02_04" v="Kukurydza, trawa i topola mogą być uprawiane rok po roku, trzeba jednak liczyć się z obniżeniem plonu z powodu wyjałownia gleby."/>
+        <e k="cropRotation_helpText_03_01" v="Niektóre rośliny rosną lepiej, a niektóre gorzej w zależności od rodzaju ich poprzedników. Uprawy zostały podzielone na sześć kategorii: oleiste, zboża, motylkowe, okopowe, psiankowate i trawy."/>
+        <e k="cropRotation_helpText_03_02" v="Rośliny zaklasyfikowane do tej samej grupy mają podobne wymagania, toteż należy unikać uprawiania na polu roślin w obrębie kategorii bezpośrednio po sobie."/>
+        <e k="cropRotation_helpText_03_03" v="I tak na przykład po roślinach motylkowych (soja) bardzo dobrze rosną zboża i rośliny oleiste. Po okopowych warto posiać rzepak lub słoneczniki. A okopowe dobrze rosną na polach po zbożach."/>
+        <e k="cropRotation_helpText_03_04" v="Dwa ostatnie rodzaje upraw mają dominujący wpływ na plon obecnej."/>
+        <e k="cropRotation_helpText_04_01" v="Pole możesz także zostawić odłogiem, czyli nie obsiewać po zbiorach przez cały następny rok (ugór). Gleba odzyska wtedy żyzność i będzie gotowa na przyjęcie najbardziej nawet wymagających upraw."/>
+        <e k="cropRotation_helpText_04_02" v="Ugorowanie ma zastosowanie wyłącznie wtedy, gdy włączony jest wzrost sezonowy w ustawieniach rozgrywki."/>
+        <e k="cropRotation_helpText_05_01" v="Na panelu informacji o polu znajduje się teraz bieżąca ocena prowadzonego płodozmianu wraz z informacją o uprawach z poprzednich dwóch lat."/>
+        <e k="cropRotation_helpText_05_02" v="Ocena wyrażona jest w procentowym zwiększeniu (lub zmniejszeniu) plonu."/>
+        <e k="cropRotation_helpText_05_03" v="Idealny płodozmian pozwala na zwiększenie plonu nawet o 20%."/>
+        <e k="cropRotation_helpText_05_04" v="Płodozmian źle poporowadzony może skutkować zmniejszeniem plonu nawet o 30%."/>
+        <e k="cropRotation_helpText_06_01" v="Jeśli używasz modyfikacji rolnictwo precyzyjne, informacja o płodozmianie jest dołączona do panelu informacji o rolnictwie precyzyjnym."/>
+        <e k="cropRotation_helpText_06_02" v="Ocena płodozmianu jest składową potencjału plonowania, obok poziomu nawożenia azotem, odczynu pH, rodzaju gleby, gęstości zasiewu itp."/>
+    </elements>
+</l10n>

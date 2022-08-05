@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<helpLines>
+    <category title="$l10n_cropRotation_helpHeader">
+        <page title="$l10n_cropRotation_helpTitle_01">
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_01" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_02" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_03" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_04" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_01_05" />
+            </paragraph>
+        </page>
+        <page title="$l10n_cropRotation_helpTitle_02">
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_02_01" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_02_02" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_02_03" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_02_04" />
+            </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages01.png" uvs="0px 240px 900px 240px" aspectRatio="0.26666"/>
+            </paragraph>
+        </page>
+        <page title="$l10n_cropRotation_helpTitle_03">
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_03_01" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_03_02" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_03_03" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_03_04" />
+            </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages01.png" uvs="0px 480px 900px 240px" aspectRatio="0.26666"/>
+            </paragraph>
+        </page>
+        <page title="$l10n_cropRotation_helpTitle_04">
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_04_01" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_04_02" />
+            </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages01.png" uvs="0px 720px 900px 240px" aspectRatio="0.26666"/>
+            </paragraph>
+        </page>
+        <page title="$l10n_cropRotation_helpTitle_05">
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_05_01" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_05_02" />
+            </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages02.png" uvs="0px 0px 900px 240px" aspectRatio="0.26666"/>
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_05_03" />
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_05_04" />
+            </paragraph>
+        </page>
+        <page title="$l10n_cropRotation_helpTitle_06">
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_06_01" />
+            </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages02.png" uvs="0px 240px 900px 300px" aspectRatio="0.33333"/>
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_06_02" />
+            </paragraph>
+        </page>
+    </category>
+</helpLines>
