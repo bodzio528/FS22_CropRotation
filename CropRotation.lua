@@ -637,12 +637,17 @@ end
 ---Calculate the yield multiplier based on the crop history, fallow state, and harvested fruit type
 function CropRotation:getRotationYieldMultiplier(n2, n1, fruitType)
     local fruitDesc = self.fruitTypeManager:getFruitTypeByIndex(fruitType)
-    local current = fruitDesc.rotation.category
+	
+	if fruitDesc.rotation == nil then
+		return 1.0
+	end
 
-    local returnPeriod = self:getRotationReturnPeriodMultiplier(n2, n1, current, fruitDesc)
-    local rotationCategory = self:getRotationCategoryMultiplier(n2, n1, current)
+	local current = fruitDesc.rotation.category
 
-    return returnPeriod * rotationCategory
+	local returnPeriod = self:getRotationReturnPeriodMultiplier(n2, n1, current, fruitDesc)
+	local rotationCategory = self:getRotationCategoryMultiplier(n2, n1, current)
+
+	return returnPeriod * rotationCategory
 end
 
 function CropRotation:getRotationReturnPeriodMultiplier(n2, n1, current, fruitDesc)
