@@ -7,15 +7,18 @@
 -- make contents of data/crops.xml accessible
 --
 -- @Author: Bodzio528
--- @Date: 03.08.2022
--- @Version: 1.0.0.0
+-- @Date: 08.08.2022
+-- @Version: 1.1.0.0
 --
 -- Changelog:
 -- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
+--  v1.1.0.0 (08.08.2022):
+--      - added support for loading crops from GEO mods
 --
 
 CropRotationData = {}
+CropRotationData.debug = true -- false --
 
 local CropRotationData_mt = Class(CropRotationData)
 
@@ -29,6 +32,10 @@ function CropRotationData:new(mission, fruitTypeManager)
     self.cropRotation = {}
 
     self.isNewGame = true -- not used
+
+    if CropRotationData.debug then
+        print("WARNING: CropRotationData is running with debug prints enabled")
+    end
 
     return self
 end
@@ -45,16 +52,19 @@ function CropRotationData:setDataPaths(paths)
     self.paths = paths
 end
 
---loads data from files and builds the necessary tables related to crop rotation
-
+--load data from files and build the necessary tables related to crop rotation
 function CropRotationData:load()
     self:loadDataFromFiles()
---    self:addCustomFruits()
+    self:addCustomFruits()
+    
+    if CropRotationData.debug then
+        self:printFruitData()
+    end
 end
 
------------------------------------
+----------------------------------------------------------------------
 --- loading functions from crops.xml
------------------------------------
+----------------------------------------------------------------------
 
 function CropRotationData:loadDataFromFiles()
     for _, path in ipairs(self.paths) do
@@ -193,17 +203,34 @@ function CropRotationData:addCustomFruits()
     for fruitType in self.fruitTypeManager:getFruitTypes() do
         local fruitName = fruitType.name
 
-        if self.defaultFruits[fruitName] == nil then -- new fruit found
+        if self.defaultFruits[fruitName] == nil then -- new fruit found outside declarations in crops.xml
             log("CropRotationData:addCustomFruits(): new fruit found: %s", fruitName)
-            self:updateFruitTypesDataWithNewFruit(fruitName)
+            self:initializeNewFruitToDefault(fruitName)
         end
     end
 end
 
-function CropRotationData:updateFruitTypesDataWithNewFruit(fruitName)
+function CropRotationData:initializeNewFruitToDefault(fruitName)
     local fruitType = self.fruitTypeManager:getFruitTypeByName(fruitName)
 
     fruitType.rotation = {}
     fruitType.rotation.category = CropRotation.CATEGORIES.CEREAL
     fruitType.rotation.returnPeriod = 1
+end
+
+----------------------------------------------------------------------
+-- DEBUG
+----------------------------------------------------------------------
+
+function CropRotationData:printFruitData()
+    print("CropRotationData:printFruitData(): [1] list locations of crops.xml found...")
+    DebugUtil.printTableRecursively(self.paths, "", 0, 1)
+    print("CropRotationData:printFruitData(): ...[1] done")
+
+    print("CropRotationData:printFruitData(): [2] list fruit types registered...")
+    for fruit in self.fruitTypeManager:getFruitTypes() do
+        print(string.format("fruit name: %s crop rotation table:", fruit.name))
+        DebugUtil.printTableRecursively(fruit.rotation, "", 0, 1)
+    end
+    print("CropRotationData:printFruitData(): ... [2] done")
 end
