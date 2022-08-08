@@ -29,10 +29,9 @@
             <defaultCrop name="SUGARCANE"/>
             <defaultCrop name="COTTON"/>
             <defaultCrop name="SORGHUM" />
-            <!-- TODO: check internal representation of those two!
-            <defaultCrop name="GRAPES" />
-            <defaultCrop name="OLIVES" />
-            -->
+            <defaultCrop name="GRAPE" />
+            <defaultCrop name="OLIVE" />
+			<defaultCrop name="MEADOW" />
         </defaultCrops>
     </growth>
     <fruitTypes>
@@ -43,7 +42,7 @@
             <rotation category="CEREAL" returnPeriod="2" />
         </fruitType>
 
-        Note: new category cannot be added (as it was in case of Seasons19), use one of existing
+        Note: new category cannot be added (as it was in case of Seasons19), use one of existing:
             OILSEED, CEREAL, LEGUME, ROOT, NIGHTSHADE, GRASS
         -->
         <fruitType name="BARLEY">
@@ -91,13 +90,15 @@
         <fruitType name="SORGHUM">
             <rotation category="CEREAL" returnPeriod="2"/>
         </fruitType>
-        <!-- TODO: check internal representation for those two -->
-        <!--fruitType name="GRAPES">
+        <fruitType name="GRAPE">
             <rotation category="GRASS" returnPeriod="1"/>
-        </fruitType-->
-        <!--fruitType name="OLIVES">
+        </fruitType>
+        <fruitType name="OLIVE">
             <rotation category="GRASS" returnPeriod="1"/>
-        </fruitType-->
+        </fruitType>
+        <fruitType name="MEADOW">
+            <rotation category="GRASS" returnPeriod="1"/>
+        </fruitType>
     </fruitTypes>
     <cropRotation>
         <crop category="OILSEED">

@@ -8,6 +8,8 @@
 -- @Version: 1.0.0.0
 --
 -- Changelog:
+-- 	v1.1.0.0 (08.08.2022):
+--      - added support for loading crops from GEO mods
 -- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
 --

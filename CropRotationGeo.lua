@@ -63,20 +63,20 @@ function CropRotationGeo:loadMod(mod, xmlFile)
     end
 
     if version > self.maxAPIVersion or version < self.minAPIVersion then
-        print("WARNING: Mod '" .. mod.title .. "' is not compatible with the current version of Seasons. Skipping.")
+        log("WARNING: Mod '" .. mod.title .. "' is not compatible with the current version of Seasons. Skipping.")
         return
     end
 
     local modType = getXMLString(xmlFile, "modDesc.seasons.type")
     if modType == nil then
-        print("ERROR: Mod '" .. mod.title .. "' has a Seasons information block but it missing a type. Skipping.")
+        log("ERROR: Mod '" .. mod.title .. "' has a Seasons information block but it missing a type. Skipping.")
         return
     end
     modType = modType:lower()
 
     -- Loading multiple GEO mods is never something that a player would want.
     if modType == "geo" and self.isGEOModActive then
-        print("ERROR: Multiple GEO mods are active. Mod '" .. mod.title .. "' will not be loaded.")
+        log("ERROR: Multiple GEO mods are active. Mod '" .. mod.title .. "' will not be loaded.")
         return
     end
 

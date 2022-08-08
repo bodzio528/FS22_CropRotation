@@ -22,6 +22,11 @@ Key features:
 - fallow support, up to two years (only with seasonal growth enabled)
 - crop rotation info added to player HUD field information box
 - detailed in-game help menu (with pictures!)
+
+Changelog 1.1.0.0:
+- added support for GEO type mods
+- performance improved
+- fixed bug with incomplete crops.xml file
 ]]></en>
         <de><![CDATA[Der Crop Rotation-Mod bietet Anreize für den Anbau verschiedener Pflanzen, anstatt immer wieder Kartoffeln anzupflanzen.
 
@@ -36,6 +41,11 @@ Hauptmerkmale:
 - Brachlandunterstützung, bis zu zwei Jahre (nur bei aktiviertem saisonalem Wachstum)
 - Informationen zur Fruchtfolge wurden dem Feldinformationsfeld des Spieler-HUD hinzugefügt
 - Detailliertes Hilfemenü im Spiel (mit Bildern!)
+
+Changelog 1.1.0.0:
+- Unterstützung für Mods vom Typ GEO hinzugefügt
+- Leistung verbessert
+- Fehler mit unvollständiger crops.xml-Datei behoben
 ]]></de>
         <fr><![CDATA[Le mod de rotation des cultures incite à cultiver différentes cultures plutôt que de planter des pommes de terre encore et encore.
 
@@ -50,6 +60,11 @@ Principales caractéristiques:
 - soutien à la jachère, jusqu'à deux ans (uniquement avec la croissance saisonnière activée)
 - informations sur la rotation des cultures ajoutées à la boîte d'informations sur le champ HUD du joueur
 - menu d'aide détaillé dans le jeu (avec images !)
+
+Changelog 1.1.0.0:
+- ajout du support pour les mods de type GEO
+- performances améliorées
+- correction d'un bug avec le fichier crop.xml incomplet
 ]]></fr>
         <pl><![CDATA[Modyfikacja Płodozmian wprowadza zachętę do zmianowania upraw w miejsce hodowli monokulturowej.
 
@@ -64,6 +79,11 @@ Główne cechy:
 - możliwość zostawienia pola odłogiem, celem rewitalizacji gleby
 - dane o zmianowaniu widoczne na panelu informacji o polu
 - szczegółowy opis w menu pomocy (są obrazki!)
+
+Changelog 1.1.0.0:
+- dodano wsparcie dla modów typu GEO
+- poprawiono wydajność
+- usunięto błąd w przypadku niekompletnego pliku crops.xml
 ]]></pl>
     </description>
     <iconFilename>modIcon.dds</iconFilename>
