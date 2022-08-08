@@ -3,3 +3,6 @@ tar.exe -a -c -f FS22_CropRotation.zip data gui misc translations main.lua CropR
 
 rem copy ZIP to FS22 mods folder
 xcopy /b/v/y FS22_CropRotation.zip "%userprofile%\Documents\My Games\FarmingSimulator2022\mods"
+
+rem make mod update
+xcopy /b/v/y FS22_CropRotation.zip FS22_CropRotation_update.zip
