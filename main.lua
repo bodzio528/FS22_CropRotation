@@ -8,6 +8,8 @@
 -- @Version: 1.0.0.0
 --
 -- Changelog:
+-- 	v1.1.0.0 (08.08.2022):
+--      - added support for loading crops from GEO mods
 -- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
 --
@@ -16,6 +18,7 @@ local modDirectory = g_currentModDirectory
 
 source(modDirectory .. "CropRotation.lua")
 source(modDirectory .. "CropRotationData.lua")
+source(modDirectory .. "CropRotationGeo.lua")
 source(modDirectory .. "misc/DensityMapScanner.lua")
 source(modDirectory .. "misc/Queue.lua")
 
@@ -65,15 +68,18 @@ function cr_loadMission(mission)
     if not isActive() then return end
     assert(g_cropRotation == nil)
 
-    cropRotationData = CropRotationData:new(mission, g_fruitTypeManager)
     densityMapScanner = SeasonsDensityMapScanner:new(mission, g_sleepManager, g_dedicatedServer ~= nil)
 
+    cropRotationGeo = CropRotationGeo:new(g_modManager, modDirectory, mission)
+    cropRotationData = CropRotationData:new(mission, g_fruitTypeManager)
     cropRotation = CropRotation:new(mission,
+                                    modDirectory,
                                     g_messageCenter,
                                     g_fruitTypeManager,
                                     g_i18n,
                                     cropRotationData,
-                                    densityMapScanner)
+                                    densityMapScanner,
+                                    cropRotationGeo)
 
     getfenv(0)["g_cropRotation"] = cropRotation -- globalize
 
@@ -85,9 +91,6 @@ function cr_loadMissionFinished(mission, superFunc, node)
         return superFunc(mission, node)
     end
 
-    cropRotationData:setDataPaths(getDataPaths("crops.xml"))
-    cropRotationData:load()
-
     cropRotation:load()
 
     superFunc(mission, node)
@@ -97,18 +100,6 @@ function cr_loadMissionFinished(mission, superFunc, node)
     end
 
     return
-end
-
-function getDataPaths(filename)
-    local paths = {} -- self.thirdPartyMods:getDataPaths(filename) -- TODO(v.2): load custom crops.xml from GEOs
-
-    -- First add base crops.xml from this mod, then override in 3rdparty
-    local path = Utils.getFilename("data/" .. filename, modDirectory)
-    if fileExists(path) then
-        table.insert(paths, 1, { file = path, modDir = modDirectory })
-    end
-
-    return paths
 end
 
 ------------------------------------------------

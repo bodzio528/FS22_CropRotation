@@ -4,10 +4,12 @@
 -- CropRotation.lua
 --
 -- @Author: Bodzio528
--- @Date: 03.08.2022
--- @Version: 1.0.0.0
+-- @Date: 08.08.2022
+-- @Version: 1.1.0.0
 --
 -- Changelog:
+-- 	v1.1.0.0 (08.08.2022):
+--      - added support for loading crops from GEO mods
 -- 	v1.0.0.0 (04.08.2022):
 --      - Initial release
 --
@@ -42,7 +44,7 @@ CropRotation.COLORS = {
     [4] = {color = {0.9910, 0.3231, 0.0000, 1}, colorBlind={0.4500, 0.4500, 0.1000, 1}, text="cropRotation_hud_fieldInfo_bad"} -- bad
 }
 
-CropRotation.debug = true -- false --
+CropRotation.debug = false -- true --
 
 function overwrittenStaticFunction(object, funcName, newFunc)
     local oldFunc = object[funcName]
@@ -51,12 +53,13 @@ function overwrittenStaticFunction(object, funcName, newFunc)
     end
 end
 
-function CropRotation:new(mission, messageCenter, fruitTypeManager, i18n, data, dms)
+function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager, i18n, data, dms, cropRotationGeo)
     local self = setmetatable({}, CropRotation_mt)
 
     self.isServer = mission:getIsServer()
 
     self.mission = mission
+    self.modDirectory = modDirectory
     self.messageCenter = messageCenter
     self.fruitTypeManager = fruitTypeManager
     self.i18n = i18n
@@ -64,6 +67,10 @@ function CropRotation:new(mission, messageCenter, fruitTypeManager, i18n, data, 
     self.data = data
 
     self.densityMapScanner = dms
+    
+    self.geo = cropRotationGeo
+    
+    self.fruitTypeIndex = FruitType.UNKNOWN --0
 
     overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
@@ -77,8 +84,36 @@ function CropRotation:new(mission, messageCenter, fruitTypeManager, i18n, data, 
         addConsoleCommand("crHarvestSet", "Set harvest state", "commandSetHarvest", self)
         addConsoleCommand("crHarvestClear", "Clear harvest state", "commandClearHarvest", self)
     end
+    
+    self:initCache()
 
     return self
+end
+
+function CropRotation:initCache()
+    self.cache = {}
+    
+    -- fieldInfo HUD title
+    self.cache.fieldInfo_title = self.i18n:getText("cropRotation_hud_fieldInfo_title")
+    
+    -- crop category name list
+    self.cache.categoryNames = {}
+    for category=0,6 do
+        self.cache.categoryNames[category] = self.i18n:getText(string.format("cropRotation_Category_%d", category))
+    end
+    
+    local isColorBlindMode = g_gameSettings:getValue(GameSettings.SETTING.USE_COLORBLIND_MODE) or false
+    
+    -- crop rotation level color and text
+    self.cache.colors = {}
+    for level=1,4 do
+        local color = CropRotation.COLORS[level].color
+        if isColorBlindMode then color = CropRotation.COLORS[level].colorBlind end
+        
+        local text = self.i18n:getText(CropRotation.COLORS[level].text)
+
+        self.cache.colors[level] = {color=color, text=text}
+    end
 end
 
 function CropRotation:delete()
@@ -139,7 +174,7 @@ function CropRotation:loadMap()
     if g_modIsLoaded[CropRotation.PrecisionFarming] then
         local l_precisionFarming = FS22_precisionFarming.g_precisionFarming
         if l_precisionFarming ~= nil then
-            l_precisionFarming.fieldInfoDisplayExtension:addFieldInfo(g_i18n:getText("cropRotation_hud_fieldInfo_title"),
+            l_precisionFarming.fieldInfoDisplayExtension:addFieldInfo(self.cache.fieldInfo_title,
                                                                       self,
                                                                       self.updateFieldInfoDisplay,
                                                                       4, -- prio,
@@ -151,7 +186,7 @@ function CropRotation:loadMap()
             local cropRotation = g_cropRotation
             assert(cropRotation ~= nil)
 
-            cropRotation.fruitTypeIndex = data.fruitTypeMax
+            cropRotation.fruitTypeIndex = data.fruitTypeMax or FruitType.UNKNOWN
         end)
     else -- simply add Crop Rotation Info to standard HUD
         PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit, CropRotation.fieldAddFruit)
@@ -218,14 +253,13 @@ function CropRotation:fieldAddFruit(data, box)
         local level = CropRotation.getLevelByMultiplier(crYieldMultiplier)
 
         local isColorBlindMode = g_gameSettings:getValue(GameSettings.SETTING.USE_COLORBLIND_MODE) or false
-        local color = CropRotation.COLORS[level].color
-        if isColorBlindMode then color = CropRotation.COLORS[level].colorBlind end
-
-        box:addLine(string.format("%s (%s)", g_i18n:getText("cropRotation_hud_fieldInfo_title"),
-                                  g_i18n:getText(CropRotation.COLORS[level].text)),
-            string.format("%d %s", math.floor(100 * crYieldMultiplier), "%"),
-            true, -- use color
-            color)
+        local color, text = self.cache.colors[level]
+        local title = self.cache.fieldInfo_title
+        
+        box:addLine(string.format("%s (%s)", title, text),
+                    string.format("%d %s", math.floor(100 * crYieldMultiplier), "%"),
+                    true, -- use color
+                    color)
         box:addLine(g_i18n:getText("cropRotation_hud_fieldInfo_previous"),
                     string.format("%s | %s", cropRotation:getCategoryName(cropRotation.crFieldInfo.n1),
                                              cropRotation:getCategoryName(cropRotation.crFieldInfo.n2)))
@@ -246,15 +280,16 @@ function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ
     local cropRotation = g_cropRotation
     assert(cropRotation ~= nil)
 
-    if cropRotation.fruitTypeIndex == nil then return end
-
     -- Read CR data
     local n2, n1 = cropRotation:getInfoAtWorldCoords(startWorldX, startWorldZ)
-
-    fieldInfo.crFactor = cropRotation:getRotationYieldMultiplier(n2, n1, cropRotation.fruitTypeIndex)
-
     local value = string.format("%s | %s", cropRotation:getCategoryName(n1),
                                            cropRotation:getCategoryName(n2))
+
+    if cropRotation.fruitTypeIndex == FruitType.UNKNOWN then
+        return value, nil, nil
+    end
+
+    fieldInfo.crFactor = cropRotation:getRotationYieldMultiplier(n2, n1, cropRotation.fruitTypeIndex)
 
     local level = CropRotation.getLevelByMultiplier(fieldInfo.crFactor)
 
@@ -313,6 +348,11 @@ end
 ------------------------------------------------
 
 function CropRotation:load()
+    self.geo:load() -- load 3rdparty mods
+
+    self.data:setDataPaths(self:getDataPaths("crops.xml"))
+    self.data:load()
+
     self:loadModifiers()
 
     local finalizer = function (target, parameters)
@@ -705,8 +745,8 @@ end
 
 ---Get the translated name of the given category
 -- TODO: consider crop category name (string) cache
-function CropRotation:getCategoryName(category)
-    return self.i18n:getText(string.format("cropRotation_Category_%d", category))
+function CropRotation:getCategoryName(category)    
+    return self.cache.categoryNames[category]
 end
 
 function CropRotation:commandGetInfo()
@@ -714,10 +754,9 @@ function CropRotation:commandGetInfo()
 
     local n2, n1, f, h = self:getInfoAtWorldCoords(x, z)
 
-    log(string.format("crops: [last: %s] [previous: %s] perf: [index: %d] bits: [Fallow: %d] [Harvest: %d]",
+    log(string.format("crops: [last: %s] [previous: %s] bits: [Fallow: %d] [Harvest: %d]",
                       self:getCategoryName(n1),
                       self:getCategoryName(n2),
-                      self.data:getRotationCategoryValue(n2, n1),
                       f,
                       h))
 end
@@ -839,4 +878,17 @@ function CropRotation:visualize()
             end
         end
     end
+end
+
+-- 3rd party mods search
+function CropRotation:getDataPaths(filename)
+    local paths =  self.geo:getDataPaths(filename)
+
+    -- add base crops.xml from this mod first, then override in 3rd-party
+    local path = Utils.getFilename("data/" .. filename, self.modDirectory)
+    if fileExists(path) then
+        table.insert(paths, 1, { file = path, modDir = self.modDirectory })
+    end
+
+    return paths
 end

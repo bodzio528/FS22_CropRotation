@@ -7,15 +7,18 @@
 -- make contents of data/crops.xml accessible
 --
 -- @Author: Bodzio528
--- @Date: 03.08.2022
--- @Version: 1.0.0.0
+-- @Date: 08.08.2022
+-- @Version: 1.1.0.0
 --
 -- Changelog:
+--  v1.1.0.0 (08.08.2022):
+--      - added support for loading crops from GEO mods
 -- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
 --
 
 CropRotationData = {}
+CropRotationData.debug = false -- true --
 
 local CropRotationData_mt = Class(CropRotationData)
 
@@ -29,6 +32,10 @@ function CropRotationData:new(mission, fruitTypeManager)
     self.cropRotation = {}
 
     self.isNewGame = true -- not used
+
+    if CropRotationData.debug then
+        log("WARNING: CropRotationData is running with debug prints enabled")
+    end
 
     return self
 end
@@ -45,16 +52,31 @@ function CropRotationData:setDataPaths(paths)
     self.paths = paths
 end
 
---loads data from files and builds the necessary tables related to crop rotation
+----------------------------------------------------------------------
+--- INTERFACE
+----------------------------------------------------------------------
 
-function CropRotationData:load()
-    self:loadDataFromFiles()
---    self:addCustomFruits()
+function CropRotationData:getRotationCategoryValue(n, current)
+    if n == CropRotation.CATEGORIES.FALLOW then
+        return 2
+    end
+
+    return self.cropRotation[current][n]
 end
 
------------------------------------
---- loading functions from crops.xml
------------------------------------
+----------------------------------------------------------------------
+--- LOADING DATA FROM crops.xml
+----------------------------------------------------------------------
+
+--load data from files and build the necessary tables related to crop rotation
+function CropRotationData:load()
+    self:loadDataFromFiles()
+    self:addCustomFruits()
+    
+    if CropRotationData.debug then
+        self:postLoadInfo()
+    end
+end
 
 function CropRotationData:loadDataFromFiles()
     for _, path in ipairs(self.paths) do
@@ -107,7 +129,6 @@ function CropRotationData:loadDefaultFruitsData(xmlFile, overwriteData)
     end
 end
 
--- crop rotation
 function CropRotationData:loadRotationData(xmlFile)
     local i = 0
     while true do
@@ -141,14 +162,6 @@ function CropRotationData:loadRotationData(xmlFile)
 
         i = i + 1
     end
-end
-
-function CropRotationData:getRotationCategoryValue(n, current)
-    if n == CropRotation.CATEGORIES.FALLOW then
-        return 2
-    end
-
-    return self.cropRotation[current][n]
 end
 
 -- fruit category and return period
@@ -190,20 +203,41 @@ end
 
 -- check for new fruits and update
 function CropRotationData:addCustomFruits()
-    for fruitType in self.fruitTypeManager:getFruitTypes() do
+    for index, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
         local fruitName = fruitType.name
 
-        if self.defaultFruits[fruitName] == nil then -- new fruit found
+        if self.defaultFruits[fruitName] == nil then -- new fruit found outside declarations in crops.xml
             log("CropRotationData:addCustomFruits(): new fruit found: %s", fruitName)
-            self:updateFruitTypesDataWithNewFruit(fruitName)
+            self:initializeNewFruitToDefault(index)
         end
     end
 end
 
-function CropRotationData:updateFruitTypesDataWithNewFruit(fruitName)
-    local fruitType = self.fruitTypeManager:getFruitTypeByName(fruitName)
+function CropRotationData:initializeNewFruitToDefault(fruitIndex)
+    local fruitType = self.fruitTypeManager:getFruitTypeByIndex(fruitIndex)
 
     fruitType.rotation = {}
     fruitType.rotation.category = CropRotation.CATEGORIES.CEREAL
     fruitType.rotation.returnPeriod = 1
+end
+
+----------------------------------------------------------------------
+-- DEBUG
+----------------------------------------------------------------------
+
+function CropRotationData:postLoadInfo()
+    log("CropRotationData:postLoadInfo(): [1] list locations of crops.xml found...")
+    DebugUtil.printTableRecursively(self.paths, "", 0, 1)
+    log("CropRotationData:postLoadInfo(): ...[1] done")
+
+    log("CropRotationData:postLoadInfo(): [2] list fruit types in use...")
+    for fruitIndex, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
+        log(string.format("fruit %d name: %s crop rotation table:",fruitIndex,  fruitType.name))
+        DebugUtil.printTableRecursively(fruitType.rotation, "", 0, 1)
+    end
+    log("CropRotationData:postLoadInfo(): ... [2] done")
+    
+    log("CropRotationData:postLoadInfo(): [3] list fruit types declared in crops.xml...")
+    DebugUtil.printTableRecursively(self.defaultFruits, "", 0, 1)
+    log("CropRotationData:postLoadInfo(): ... [3] done")
 end
