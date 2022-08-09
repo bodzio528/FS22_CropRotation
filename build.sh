@@ -2,7 +2,7 @@
 
 zip --version
 
-zip -r FS22_CropRotation_update.zip \
+zip -r FS22_CropRotation.zip \
  modDesc.xml \
  modIcon.dds \
  data \
