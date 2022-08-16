@@ -5,7 +5,7 @@
     <title>
         <en>Crop Rotation</en>
         <de>Fruchtfolge</de>
-        <fr>Alternance Des Récoltes</fr>
+        <fr>Rotation Des Cultures</fr>
         <pl>Płodozmian</pl>
     </title>
     <description>
@@ -49,16 +49,16 @@ Changelog 1.1.0.0:
 ]]></de>
         <fr><![CDATA[Le mod de rotation des cultures incite à cultiver différentes cultures plutôt que de planter des pommes de terre encore et encore.
 
-Essayez-vous dans la réalité, où l'azote et la chaux ne sont pas les seuls nutriments que les plantes consomment pendant leur croissance.
+Dans la réalité, l'azote et la chaux ne sont pas les seuls nutriments que les plantes consomment pendant leur croissance.
 
-Gagnez jusqu'à 20% de rendement supplémentaire si vous l'avez bien fait.
-Perdez encore plus si vous ne prenez pas bien soin du sol !
+Gagnez jusqu'à 20% de rendement supplémentaire si vous prenez soin d'alterner correctement les cultures.
+Perdez du rendement si vous ne prenez pas bien soin du sol !
 
 Principales caractéristiques:
 - six catégories de cultures : oléagineux, céréales, légumineuses, racines, solanacées et graminées
-- période de retour spécifique à la culture pour atténuer la monoculture
-- soutien à la jachère, jusqu'à deux ans (uniquement avec la croissance saisonnière activée)
-- informations sur la rotation des cultures ajoutées à la boîte d'informations sur le champ HUD du joueur
+- intervalle avant replantage spécifique à la culture pour atténuer la monoculture
+- promotion de la jachère pour redonner au sol le temps de reconstituer ses nutriments, jusqu'à deux ans (uniquement avec la croissance saisonnière activée)
+- informations sur la rotation des cultures ajoutées dans la fenêtre d'information de la parcelle
 - menu d'aide détaillé dans le jeu (avec images !)
 
 Changelog 1.1.0.0:
