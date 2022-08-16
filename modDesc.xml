@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="67">
     <author>Bodzio528</author>
-    <version>1.1.0.0</version>
+    <version>1.1.0.1</version>
     <title>
         <en>Crop Rotation</en>
         <de>Fruchtfolge</de>
@@ -27,6 +27,9 @@ Changelog 1.1.0.0:
 - added support for GEO type mods
 - performance improved
 - fixed bug with incomplete crops.xml file
+
+Changelog 1.1.0.1:
+- update french translation
 ]]></en>
         <de><![CDATA[Der Crop Rotation-Mod bietet Anreize für den Anbau verschiedener Pflanzen, anstatt immer wieder Kartoffeln anzupflanzen.
 
@@ -46,6 +49,9 @@ Changelog 1.1.0.0:
 - Unterstützung für Mods vom Typ GEO hinzugefügt
 - Leistung verbessert
 - Fehler mit unvollständiger crops.xml-Datei behoben
+
+Changelog 1.1.0.1:
+- update french translation
 ]]></de>
         <fr><![CDATA[Le mod de rotation des cultures incite à cultiver différentes cultures plutôt que de planter des pommes de terre encore et encore.
 
@@ -65,6 +71,9 @@ Changelog 1.1.0.0:
 - ajout du support pour les mods de type GEO
 - performances améliorées
 - correction d'un bug avec le fichier crop.xml incomplet
+
+Changelog 1.1.0.1:
+- update french translation
 ]]></fr>
         <pl><![CDATA[Modyfikacja Płodozmian wprowadza zachętę do zmianowania upraw w miejsce hodowli monokulturowej.
 
@@ -84,6 +93,9 @@ Changelog 1.1.0.0:
 - dodano wsparcie dla modów typu GEO
 - poprawiono wydajność
 - usunięto błąd w przypadku niekompletnego pliku crops.xml
+
+Changelog 1.1.0.1:
+- zaktualizowano francuskie tłumaczenie
 ]]></pl>
     </description>
     <iconFilename>modIcon.dds</iconFilename>
