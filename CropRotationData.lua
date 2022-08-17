@@ -17,7 +17,7 @@
 --      - Initial release
 --
 ----------------------------------------------------------------------------------------------------
--- Based on src/growth/SeasonsGrowthData.lua
+-- Based on FS19_RM_Seasons/src/growth/SeasonsGrowthData.lua
 -- Copyright (c) Realismus Modding, 2019
 ----------------------------------------------------------------------------------------------------
 
