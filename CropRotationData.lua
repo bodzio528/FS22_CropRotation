@@ -17,8 +17,7 @@
 --      - Initial release
 --
 ----------------------------------------------------------------------------------------------------
--- Based on:
--- SeasonsCropRotation.lua
+-- Based on src/growth/SeasonsGrowthData.lua
 -- Copyright (c) Realismus Modding, 2019
 ----------------------------------------------------------------------------------------------------
 
