@@ -7,6 +7,7 @@
         <de>Fruchtfolge</de>
         <fr>Rotation Des Cultures</fr>
         <pl>Płodozmian</pl>
+		<cz>Střídání plodin</cz>
     </title>
     <description>
         <en><![CDATA[The Crop Rotation mod introduces incentive for growing different crops rather than planting potatoes over and over again.
@@ -97,6 +98,29 @@ Changelog 1.1.0.0:
 Changelog 1.1.0.1:
 - zaktualizowano francuskie tłumaczenie
 ]]></pl>
+
+        <cz><![CDATA[Mod Crop Rotation nabádá uživatele ke střídání plodin namísto monokultur.
+
+Vyzkoušejte si v realitě, kde dusík a vápno nejsou jediné živiny, které rostliny během svého růstu spotřebovávají.
+
+Pokud jste udělali všechno správně, můžete získat až o 20% dodatečný výnos.
+Naopak ztráta může být ještě větší, pokud se o půdu nebudete dobře starat!
+
+Klíčové vlastnosti:
+- šest kategorií plodin: olejnatá semena, obiloviny, luskoviny, kořenové plodiny, lilek a tráva
+- návratové období specifické pro plodiny ke zmírnění monokultury
+- podpora ladem, až na dva roky (pouze s povoleným sezónním růstem)
+- informace o rotaci plodin byly přidány do informačního pole HUD hráče
+- podrobné menu nápovědy ve hře (s obrázky!)
+
+Changelog 1.1.0.0:
+- added support for GEO type mods
+- performance improved
+- fixed bug with incomplete crops.xml file
+
+Changelog 1.1.0.1:
+- update french translation
+]]></cz>
     </description>
     <iconFilename>modIcon.dds</iconFilename>
     <multiplayer supported="true"/>
