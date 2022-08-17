@@ -12,7 +12,11 @@
 --      - added support for loading crops from GEO mods
 -- 	v1.0.0.0 (04.08.2022):
 --      - Initial release
---
+----------------------------------------------------------------------------------------------------
+-- Based on FS19_RM_Seasons/src/growth/SeasonsCropRotation.lua
+-- Copyright (c) Realismus Modding, 2019
+----------------------------------------------------------------------------------------------------
+
 
 CropRotation = {
     MOD_NAME = g_currentModName or "FS22_CropRotation",
