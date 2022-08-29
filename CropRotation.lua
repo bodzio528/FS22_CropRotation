@@ -289,11 +289,12 @@ function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ
     local value = string.format("%s | %s", cropRotation:getCategoryName(n1),
                                            cropRotation:getCategoryName(n2))
 
-    if cropRotation.fruitTypeIndex == FruitType.UNKNOWN then
+    local fruitTypeIndex = cropRotation.fruitTypeIndex or FruitType.UNKNOWN
+    if fruitTypeIndex == FruitType.UNKNOWN then
         return value, nil, nil
     end
 
-    fieldInfo.crFactor = cropRotation:getRotationYieldMultiplier(n2, n1, cropRotation.fruitTypeIndex)
+    fieldInfo.crFactor = cropRotation:getRotationYieldMultiplier(n2, n1, fruitTypeIndex)
 
     local level = CropRotation.getLevelByMultiplier(fieldInfo.crFactor)
 
