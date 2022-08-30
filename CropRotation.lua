@@ -250,6 +250,8 @@ end
 -- Show crop rotation info on player HUD without PRECISION FARMING (not tested yet)
 function CropRotation:fieldAddFruit(data, box)
     local cropRotation = g_cropRotation
+    assert(cropRotation ~= nil)
+
     if cropRotation.crFieldInfo ~= nil then
         local crYieldMultiplier = cropRotation:getRotationYieldMultiplier(cropRotation.crFieldInfo.n2,
                                                                           cropRotation.crFieldInfo.n1,
@@ -257,8 +259,8 @@ function CropRotation:fieldAddFruit(data, box)
         local level = CropRotation.getLevelByMultiplier(crYieldMultiplier)
 
         local isColorBlindMode = g_gameSettings:getValue(GameSettings.SETTING.USE_COLORBLIND_MODE) or false
-        local color, text = self.cache.colors[level]
-        local title = self.cache.fieldInfo_title
+        local color, text = cropRotation.cache.colors[level]
+        local title = cropRotation.cache.fieldInfo_title
         
         box:addLine(string.format("%s (%s)", title, text),
                     string.format("%d %s", math.floor(100 * crYieldMultiplier), "%"),
