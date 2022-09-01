@@ -5,17 +5,16 @@ The Crop Rotation mod introduces incentive for growing different crops rather th
 
 Try yourself in reality, where nitrogen and lime are not the only nutrients that plants consume during their growth.
 
-Gain up to 20% additional yield if you done it right.
+Gain up to 15% additional yield if you done it right.
 Loose even more if you fail to take good care about the soil!
 
 Key features:
-- six categories of crops: oilseed, cereal, legume, roots, nightshade and grass
 - crop-specific return period to mitigate monoculture
 - fallow support, up to two years (only with seasonal growth enabled)
 - detailed in-game help menu
 
 Future development:
-- extended support for Seasons_GEO-like mods and maps with additional crops.
+- biomass content in soil management
 
 ## Crop Rotation
 
@@ -29,7 +28,7 @@ Crop rotation is a technique to alternate types of plants with different require
 
 Also lots of pests are adjusted to single kind of plants. Crop rotation severe their multiplication ability and soil is allowed to clean itself from pathogens specific to particular crop type.
 
-Crop rotation performed well, prevets soil from loosing elements plants require for growth, and greatly reduce diseases and pests presence. All this leads directly to higher quality and quantity of yield in subsequent years.
+Crop rotation performed well, prevents soil from loosing elements plants require for growth, and greatly reduce diseases and pests presence. All this leads directly to higher quality and quantity of yield in subsequent years.
 
 ### Return period
 
@@ -60,8 +59,9 @@ Crop rotation efficiency is the percentage of gain (or lost) yield.
 
 > hud-standard.PNG
 
+Perfect crop rotation allows to receive additional 15 percent of yield.
 
-Perfect crop rotation allows to receive additional 20 percent of yield.
+Ignoring soil condition may reduce yield by 30 percent.
 
 ### Precision Farming
 
@@ -101,7 +101,7 @@ Kukurydza, trawa i topola mogą być uprawiane rok po roku, trzeba jednak liczy
 
 ### Przedplony
 
-Niektóre rośliny rosną lepiej, a niektóre gorzej w zależności od rodzaju ich poprzedników. Uprawy zostały podzielone na sześć kategorii: oleiste, zboża, motylkowe, okopowe, psiankowate i trawy.
+Niektóre rośliny rosną lepiej, a niektóre gorzej w zależności od rodzaju ich poprzedników. --[[Uprawy zostały podzielone na sześć kategorii: oleiste, zboża, motylkowe, okopowe, psiankowate i trawy.]]
 Rośliny zaklasyfikowane do tej samej grupy mają podobne wymagania, toteż należy unikać uprawiania na polu roślin w obrębie kategorii bezpośrednio po sobie.
 
 I tak na przykład po roślinach motylkowych (soja) bardzo dobrze rosną zboża i rośliny oleiste.
@@ -121,7 +121,8 @@ Ocena wyrażona jest w procentowym zwiększeniu (lub zmniejszeniu) plonu.
 
 > hud-standard.PNG
 
-Idealny płodozmian pozwala na zwiększenie plonu nawet o 20%.
+Idealny płodozmian pozwala na zwiększenie plonu nawet o 15%.
+Przez zaniechanie dbania o stan gleby plon może spaść
 
 ### Rolnictwo precyzyjne
 
@@ -165,7 +166,7 @@ Mais, Gras und Pappel können jedes Jahr angebaut werden, aber der Landwirt muss
 
 ### Vorderfrüchte
 
-Manche Pflanzen wachsen besser nach anderen. Um dies auszudrücken, wurden Nutzpflanzen in mehrere Kategorien eingeteilt: Ölsaaten, Getreide, Hülsenfrüchte, Wurzeln, Nachtschatten und Gräser. Pflanzen innerhalb einer Gruppe haben ähnliche Eigenschaften, daher sollten Sie vermeiden, sie nacheinander auf derselben Parzelle zu pflanzen.
+Manche Pflanzen wachsen besser nach anderen. --[[Um dies auszudrücken, wurden Nutzpflanzen in mehrere Kategorien eingeteilt: Ölsaaten, Getreide, Hülsenfrüchte, Wurzeln, Nachtschatten und Gräser. Pflanzen innerhalb einer Gruppe haben ähnliche Eigenschaften, daher sollten Sie vermeiden, sie nacheinander auf derselben Parzelle zu pflanzen.]]
 
 Zum Beispiel: Getreide und Ölsaaten wachsen sehr gut nach Leguminosen. Wurzeln wachsen gut nach Getreide. Raps oder Sonnenblumen können nach Zuckerrüben sehr gut wachsen.
 
@@ -183,7 +184,7 @@ Die Fruchtfolgeeffizienz ist der Prozentsatz des Gewinns (oder Verlusts) des Ert
 > hud-standard.PNG
 
 
-Eine perfekte Fruchtfolge ermöglicht zusätzliche 20 Prozent des Ertrags.
+Eine perfekte Fruchtfolge ermöglicht zusätzliche 15 Prozent des Ertrags.
 Das Ignorieren der Fruchtfolge kann zu 30 Prozent Ertragsverlust führen.
 
 ### Präzisionslandwirtschaft
