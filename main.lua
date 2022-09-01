@@ -22,7 +22,7 @@ source(modDirectory .. "utils/Queue.lua")
 local cropRotation = nil -- localize
 
 function isActive()
-    return g_modIsLoaded["FS22_PF_CropRotation"]
+    return g_modIsLoaded["FS22_CropRotation"] or g_modIsLoaded["FS22_CropRotation_update"]
 end
 
 ---Initialize the mod. This code is run once for the lifetime of the program.
@@ -69,8 +69,8 @@ function cr_loadMission(mission)
                                     g_messageCenter,
                                     g_fruitTypeManager,
                                     g_i18n,
-                                    CropRotationData:new(mission, g_fruitTypeManager),
-                                    SeasonsDensityMapScanner:new(mission, g_sleepManager, g_dedicatedServer ~= nil))
+                                    CropRotationData:new(mission, modDirectory, g_fruitTypeManager),
+                                    DensityMapUpdater:new(mission, g_sleepManager, g_dedicatedServer ~= nil))
 
     getfenv(0)["g_cropRotation"] = cropRotation -- globalize
 

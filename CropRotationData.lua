@@ -20,23 +20,25 @@ CropRotationData.debug = true -- false --
 
 local CropRotationData_mt = Class(CropRotationData)
 
-function CropRotationData:new(mission, fruitTypeManager)
+function CropRotationData:new(mission, modDirectory, fruitTypeManager)
     local self = setmetatable({}, CropRotationData_mt)
 
     self.mission = mission
     self.fruitTypeManager = fruitTypeManager
 
-    self.matrix = {}
+    self.xmlFilePath = Utils.getFilename("data/crops.xml", modDirectory)
+
+    self.crops = {}
 
     if CropRotationData.debug then
-        log("WARNING: CropRotationData is running with debug prints enabled. Expect high amount of messages at startup.")
+        log("CropRotationData:new(): DEBUG running with debug prints enabled. Expect high amount of messages at startup.")
     end
 
     return self
 end
 
 function CropRotationData:delete()
-    self.defaultFruits = nil
+    self.crops = nil
 end
 
 function CropRotationData:loadFromSavegame(xmlFile)
@@ -48,25 +50,99 @@ end
 
 function CropRotationData:getRotationForecropValue(past, current)
     if past == FruitType.UNKNOWN then
-        return 2.0 -- "FALLOW"
+        return 1.0 -- "UNKNOWN"
     end
 
-    if self.matrix[current] ~= nil then
-        return self.matrix[current][past] or 1.0
-    end
+    -- TODO: rewrite
+    -- if self.matrix[current] ~= nil then
+    --     return self.matrix[current][past] or 1.0
+    -- end
 
     return 1.0
 end
 
 ----------------------------------------------------------------------
---- LOADING DATA
+--- LOADING DATA FROM crops.xml
 ----------------------------------------------------------------------
 
---load data from files and build the necessary tables related to crop rotation
-function CropRotationData:load()
-    log("CropRotationData:load(): [1] populate the crop rotation matrix")
+function split(s)
+    chunks = {}
+    for substring in s:gmatch("%S+") do
+        table.insert(chunks, substring)
+    end
 
-    log("CropRotationData:load(): [2] populate the return period per fruit")
+    return chunks
+end
+
+
+--load data from file and build the necessary tables related to crop rotation
+function CropRotationData:load()
+    log("CropRotationData:load(): INFO populate static crop properties")
+
+    local xmlFile = loadXMLFile("xml", self.xmlFilePath)
+    if xmlFile then
+
+        local cropsKey = "crops"
+        if not hasXMLProperty(xmlFile, cropsKey) then
+            log(string.format("CropRotationData:load(): ERROR XML element %s loading failed:", cropsKey), xmlFile)
+            return
+        end
+
+        -- local overwriteData = Utils.getNoNil(getXMLBool(xmlFile, cropsKey .. "#overwrite"), false)
+        -- if overwriteData then
+        --     if CropRotationData.debug then
+        --         log(string.format("CropRotationData:load(): DEBUG overwrite crops data in file %s", self.xmlFilePath))
+        --     end
+        --     self.crops = {}
+        -- end
+
+        local i = 0
+        while true do
+            local cropKey = string.format("%s.crop(%i)", cropsKey, i)
+
+            if not hasXMLProperty(xmlFile, cropKey) then
+                break
+            end
+
+            local cropName = (getXMLString(xmlFile, cropKey .. "#name")):upper()
+
+            log("CropRotationData:load(): DEBUG processing fruit", cropName)
+
+            if cropName ~= nil then
+                local cropReturnPeriod = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#returnPeriod"), 2)
+                local cropGrowth = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#growth"), 0)
+                local cropHarvest = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#harvest"), 0)
+                local cropForage = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#forage"), 0)
+
+                local goodForecrops = Utils.getNoNil(getXMLString(xmlFile, cropKey .. ".good"), ""):upper()
+                local badForecrops = Utils.getNoNil(getXMLString(xmlFile, cropKey .. ".bad"), ""):upper()
+                log("CROP:", cropName, "FORECROPS: GOOD [", goodForecrops, "] BAD: [", badForecrops, "]")
+
+                self.crops[cropName] = {
+                    returnPeriod = cropReturnPeriod,
+                    growth = cropGrowth,
+                    harvest = cropHarvest,
+                    forage = cropForage,
+                    good = split(goodForecrops),
+                    bad = split(badForecrops)
+                }
+
+            else
+                log("CropRotationData:load(): ERROR XML loading failed:", xmlFile)
+                return
+            end
+
+            i = i + 1
+        end
+
+        DebugUtil.printTableRecursively(self.crops, "", 0, 4)
+
+        -- END: self:loadDataFromFile
+        delete(xmlFile)
+    end
+
+    log("CropRotationData:load(): INFO populate the crop rotation matrix")
+
 
     if CropRotationData.debug then
         self:postLoadInfo()

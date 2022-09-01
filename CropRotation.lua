@@ -34,11 +34,11 @@ CropRotation = {
     MAP_NUM_CHANNELS = 12 -- [R2:5][R1:5][F:1][H:1]
 
     --[[
-    BIT MAPPING
     [D:1] lvl-up due to liquid manure/digestate
     [M:1] lvl-up due to manure
     [L:1] lvl-up due to green biomass (harvest leftovers)
 
+    BIT MAPPING
     [R2:5] crop that was growing two harvests ago
     [R1:5] crop that was growing before current crop
     [F:1] fallow bit
@@ -99,14 +99,17 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
     overwrittenStaticFunction(FSDensityMapUtil, "cutFruitArea", CropRotation.inj_densityMapUtil_cutFruitArea)
 
     addConsoleCommand("crInfo", "Get crop rotation info", "commandGetInfo", self)
+
+    if CropRotation.debug then
+        addConsoleCommand("crVisualizeToggle", "Toggle Crop Rotation visualization", "commandToggleVisualize", self)
+    end
+
     if g_addCheatCommands then -- cheats enabled
         addConsoleCommand("crFallowRun", "Run yearly fallow", "commandRunFallow", self)
         addConsoleCommand("crFallowSet", "Set fallow state", "commandSetFallow", self)
         addConsoleCommand("crFallowClear", "Clear fallow state", "commandClearFallow", self)
         addConsoleCommand("crHarvestSet", "Set harvest state", "commandSetHarvest", self)
         addConsoleCommand("crHarvestClear", "Clear harvest state", "commandClearHarvest", self)
-
-        addConsoleCommand("crVisualizeToggle", "Toggle Crop Rotation visualization", "commandToggleVisualize", self)
     end
 
     self:initCache()
@@ -183,8 +186,6 @@ function CropRotation:loadMap()
         if fileExists(self.xmlFilePath) then
             local xmlFile = loadXMLFile(self.xmlName, self.xmlFilePath)
             if xmlFile ~= nil then
-                self.densityMapScanner:loadFromSavegame(xmlFile)
-
                 delete(xmlFile)
             end
         end
@@ -374,8 +375,6 @@ function CropRotation:saveSavegame()
 end
 
 function CropRotation:saveToSavegame(xmlFile)
-    self.densityMapScanner:saveToSavegame(xmlFile)
-
     if self.map ~= 0 then
         saveBitVectorMapToFile(self.map, self.mapFilePath)
     end

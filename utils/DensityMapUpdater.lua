@@ -61,7 +61,7 @@ function DensityMapUpdater:update(dt)
             self.currentJob.x = 0
             self.currentJob.z = 0
 
-            log(string.format("DensityMapUpdater: start processing %s", self.currentJob.callbackId)))
+            log("DensityMapUpdater: INFO start processing", self.currentJob.callbackId)
         end
     end
 
@@ -93,12 +93,11 @@ end
 function DensityMapUpdater:schedule(callbackId)
     if self.isServer then
         if self.callbacks[callbackId] == nil then
-			--ERROR
-            log(string.format("DensityMapUpdater: ERROR Callback '%s' is not registered with the density map scanner.", callbackId))
+            log("DensityMapUpdater: ERROR Callback is not registered:", callbackId)
             return
         end
 
-        log(string.format("DensityMapUpdater: schedule %s", callbackId))
+        log("DensityMapUpdater: INFO schedule", callbackId)
 
         self.queue:push({callbackId = callbackId})
     end
@@ -125,8 +124,7 @@ function DensityMapUpdater:process(job)
 
     local jobDesc = self.callbacks[job.callbackId]
     if jobDesc == nil then
-		--ERROR
-        log(string.format("DensityMapUpdater: ERROR Tried to run unknown callback '%s'", job.callbackId))
+        log("DensityMapUpdater: ERROR Tried to run unknown callback:", job.callbackId)
 
         return false
     end
