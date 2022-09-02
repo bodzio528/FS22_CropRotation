@@ -517,7 +517,7 @@ end
 
 ---Reset harvest bit on sowing
 function CropRotation.inj_densityMapUtil_updateSowingArea(superFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, fieldGroundType, angle, growthState, blockedSprayTypeIndex)
-    if true or fruitIndex.rotation ~= nil then -- TODO filter out crops that don't have crop rotation defined
+    if fruitIndex.rotation.enabled then -- TODO filter out crops that don't have crop rotation defined
         local cropRotation = g_cropRotation
         local modifiers = cropRotation.modifiers
 

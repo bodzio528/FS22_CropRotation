@@ -29,6 +29,7 @@ function CropRotationData:new(mission, modDirectory, fruitTypeManager)
     self.xmlFilePath = Utils.getFilename("data/crops.xml", modDirectory)
 
     self.crops = {}
+    self.matrix = {}
 
     if CropRotationData.debug then
         log("CropRotationData:new(): DEBUG running with debug prints enabled. Expect high amount of messages at startup.")
@@ -143,6 +144,54 @@ function CropRotationData:load()
 
     log("CropRotationData:load(): INFO populate the crop rotation matrix")
 
+    for i, crop in pairs(self.crops) do
+        local fruitType = self.fruitTypeManager:getFruitTypeByName(i)
+
+        if fruitType ~= nil then
+            log("CropRotationData:load(): INFO populate the fruit rotation info", fruitType.index, fruitType.name)
+
+            fruitType.rotation = {}
+            fruitType.rotation.enabled = true
+            fruitType.rotation.returnPeriod = crop.returnPeriod
+            fruitType.rotation.growth = crop.growth
+            fruitType.rotation.harvest = crop.harvest
+            fruitType.rotation.forage = crop.forage
+
+            self.matrix[fruitType.index] = {}
+
+            for _, name in pairs(crop.good) do
+                local forecropType = self.fruitTypeManager:getFruitTypeByName(name)
+                if forecropType ~= nil then
+                    self.matrix[fruitType.index][forecropType.index] = 2 -- CropRotationData.GOOD
+                end
+            end
+            for _, name in pairs(crop.bad) do
+                local forecropType = self.fruitTypeManager:getFruitTypeByName(name)
+                if forecropType ~= nil then
+                    self.matrix[fruitType.index][forecropType.index] = 0 -- CropRotationData.BAD
+                end
+            end
+        end
+    end
+
+    -- process fruits not mentioned in crops.xml
+    for k, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
+        if self.crops[fruitType.name] == nil then
+            log("CropRotationData:load(): added fruit index:", fruitType.index, "not mentioned in crops.xml:", fruitType.name, "using default setting")
+            fruitType.rotation = {
+                enabled = false,
+                returnPeriod = 2,
+                growth = 0,
+                harvest = 0,
+                forage = 0
+            }
+
+            -- no good & no bad forecrops
+            self.matrix[fruitType.index] = {}
+        end
+    end
+
+    DebugUtil.printTableRecursively(self.matrix, "", 0, 4)
 
     if CropRotationData.debug then
         self:postLoadInfo()
