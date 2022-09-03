@@ -5,83 +5,83 @@
     returnPeriod [years] - time between planting this crop again
     growth [kg/ha] - biomass nutrients required for crop to growth
     harvest [kg/ha] - biomass left in soil after harvest
-    forage [kg/ha] - biomass left in soil after foraging
  -->
-    <crop name="BARLEY"     returnPeriod="2" growth="0" harvest="1" forage="0">
+    <crop name="BARLEY"     returnPeriod="2" growth="0" harvest="1">
         <good>OAT CANOLA MAIZE SOYBEAN SUNFLOWER SUGARBEET</good> <!-- good forecrops -->
         <bad>BARLEY</bad> <!-- bad forecrops -->
     </crop>
-    <crop name="OAT"        returnPeriod="2" growth="0" harvest="1" forage="0">
+    <crop name="OAT"        returnPeriod="2" growth="0" harvest="1">
         <good>WHEAT MAIZE SOYBEAN SUNFLOWER</good>
         <bad></bad>
     </crop>
-    <crop name="WHEAT"      returnPeriod="2" growth="0" harvest="1" forage="0">
+    <crop name="WHEAT"      returnPeriod="2" growth="0" harvest="1">
         <good>OAT CANOLA MAIZE SOYBEAN POTATO SUGARBEET</good>
         <bad>WHEAT</bad>
     </crop>
-    <crop name="CANOLA"     returnPeriod="3" growth="0" harvest="1" forage="0">
+    <crop name="CANOLA"     returnPeriod="3" growth="0" harvest="1">
         <good>BARLEY OAT SOYBEAN GRASS</good>
         <bad>CANOLA SUNFLOWER</bad>
     </crop>
-    <crop name="MAIZE"      returnPeriod="1" growth="0" harvest="1" forage="0">
+    <crop name="MAIZE"      returnPeriod="1" growth="0" harvest="1">
         <good>OAT CANOLA SOYBEAN SUNFLOWER POTATO SUGARBEET GRASS</good>
         <bad></bad>
     </crop>
-    <crop name="SOYBEAN"    returnPeriod="2" growth="0" harvest="1" forage="0">
+    <crop name="SOYBEAN"    returnPeriod="2" growth="0" harvest="1">
         <good>OAT CANOLA MAIZE SUNFLOWER SORGHUM</good>
         <bad>SOYBEAN</bad>
     </crop>
-    <crop name="SUNFLOWER"  returnPeriod="3" growth="0" harvest="1" forage="0">
+    <crop name="SUNFLOWER"  returnPeriod="3" growth="0" harvest="1">
         <good>SOYBEAN SUGARBEET</good>
         <bad>CANOLA POTATO</bad>
     </crop>
-    <!-- <crop name="POTATO"     returnPeriod="3" growth="0" harvest="1" forage="0"> -->
-        <!-- <good>CANOLA</good>
+    <crop name="POTATO"     returnPeriod="3" growth="0" harvest="1">
+        <good>CANOLA</good>
         <bad>POTATO</bad>
-    </crop> -->
-    <crop name="SUGARBEET"  returnPeriod="3" growth="0" harvest="1" forage="0">
-        <good>OAT SOYBEAN</good>
+    </crop>
+    <crop name="SUGARBEET"  returnPeriod="3" growth="0" harvest="1">
+        <good>BARLEY OAT WHEAT SOYBEAN</good>
         <bad>CANOLA MAIZE SUGARBEET</bad>
     </crop>
-    <crop name="POPLAR"     returnPeriod="1" growth="0" harvest="1" forage="0">
+    <crop name="POPLAR"     returnPeriod="1" growth="0" harvest="1">
         <good></good>
         <bad></bad>
     </crop>
-    <crop name="GRASS"      returnPeriod="1" growth="0" harvest="1" forage="0">
+    <crop name="GRASS"      returnPeriod="1" growth="0" harvest="1">
         <good>OAT SUNFLOWER GRASS MEADOW</good>
         <bad></bad>
     </crop>
-    <crop name="SUGARCANE"  returnPeriod="2" growth="0" harvest="1" forage="0">
+    <crop name="SUGARCANE"  returnPeriod="2" growth="0" harvest="1">
         <good></good>
         <bad></bad>
     </crop>
-    <crop name="COTTON"     returnPeriod="2" growth="0" harvest="1" forage="0">
+    <crop name="COTTON"     returnPeriod="2" growth="0" harvest="1">
         <good></good>
         <bad>COTTON</bad>
     </crop>
-    <crop name="SORGHUM"    returnPeriod="2" growth="0" harvest="1" forage="0">
+    <crop name="SORGHUM"    returnPeriod="2" growth="0" harvest="1">
         <good>SOYBEAN SUNFLOWER</good>
         <bad>SORGHUM</bad>
     </crop>
 
-    <crop name="MEADOW"        returnPeriod="1" growth="0" harvest="1" forage="0">
+    <crop name="MEADOW"        returnPeriod="1" growth="0" harvest="1">
         <good>GRASS MEADOW</good>
         <bad></bad>
     </crop>
 
     <!-- CR IS DISABLED
-    <crop name="OILSEEDRADISH" returnPeriod="2" growth="0" harvest="1" forage="0"/>
-    <crop name="GRAPE"         returnPeriod="1" growth="0" harvest="1" forage="0"/>
-    <crop name="OLIVE"         returnPeriod="1" growth="0" harvest="1" forage="0"/>
+    <crop name="OILSEEDRADISH" returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="GRAPE"         returnPeriod="1" growth="0" harvest="1"/>
+    <crop name="OLIVE"         returnPeriod="1" growth="0" harvest="1"/>
     -->
 
-    <!--ADDITIONAL CROPS -->
-    <crop name="RYE"       returnPeriod="2" growth="0" harvest="1" forage="0"/>
-    <crop name="TRITICALE" returnPeriod="2" growth="0" harvest="1" forage="0"/>
-    <crop name="ALFALFA"   returnPeriod="1" growth="0" harvest="1" forage="0"/>
-    <crop name="ONION"     returnPeriod="3" growth="0" harvest="1" forage="0"/>
-    <crop name="CARROT"    returnPeriod="3" growth="0" harvest="1" forage="0"/>
-    <crop name="RICE"      returnPeriod="1" growth="0" harvest="1" forage="0"/>
-    <crop name="MILLET"    returnPeriod="2" growth="0" harvest="1" forage="0"/>
-    <crop name="SPELT"     returnPeriod="2" growth="0" harvest="1" forage="0"/>
+    <!--ADDITIONAL CROPS
+    <crop name="RYE"       returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="TRITICALE" returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="SPELT"     returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="ALFALFA"   returnPeriod="1" growth="0" harvest="1"/>
+    <crop name="ONION"     returnPeriod="3" growth="0" harvest="1"/>
+    <crop name="CARROT"    returnPeriod="3" growth="0" harvest="1"/>
+    <crop name="MILLET"    returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="RICE"      returnPeriod="1" growth="0" harvest="1"/>
+    -->
 </crops>

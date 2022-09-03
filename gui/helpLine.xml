@@ -39,9 +39,9 @@
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_03_01" />
             </paragraph>
-            <paragraph>
+            <!--paragraph>
                 <text text="$l10n_cropRotation_helpText_03_02" />
-            </paragraph>
+            </paragraph-->
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_03_03" />
             </paragraph>

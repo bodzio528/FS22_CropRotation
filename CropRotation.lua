@@ -260,8 +260,7 @@ function CropRotation:updateFieldInfo(posX, posZ, rotY)
     local filter = GROUND_TYPE_FILTER - ground
     local n2, n1, _ = cropRotation:readFromMap(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ,
                                                filter,
-                                               true,
-                                               false)
+                                               true)
 --]]
     local prev, last = cropRotation:getInfoAtWorldCoords(posX, posZ)
 
@@ -588,8 +587,7 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
                                                          heightWorldX,
                                                          heightWorldZ,
                                                          fruitFilter,
-                                                         true, -- skipWhenHarvested
-                                                         false) -- r1 only
+                                                         true) -- skipWhenHarvested
                                                          -- OPTIMIZATION: pass-in self(vehicle/cutter).cache.cropRotation object
 
     local yieldMultiplier = 1
@@ -773,41 +771,47 @@ end
 
 ---Calculate the yield multiplier based on the crop history, fallow state, and harvested fruit type
 function CropRotation:getRotationYieldMultiplier(prevIndex, lastIndex, currentIndex)
-    local fruitDesc = self.fruitTypeManager:getFruitTypeByIndex(currentIndex)
+    local current = self.fruitTypeManager:getFruitTypeByIndex(currentIndex)
 
-    log(string.format("CropRotation:getRotationYieldMultiplier(): prevIndex = %d, lastIndex = %d, currentIndex = %d", prevIndex, lastIndex, currentIndex))
+    local returnPeriod = self:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, currentIndex, current)
+	local forecrops = self:getRotationForecropMultiplier(prevIndex, lastIndex, currentIndex)
 
-    return 1.2 -- TODO: make it work
+    if CropRotation.debug then
+        local prev = self.fruitTypeManager:getFruitTypeByIndex(prevIndex)
+        local last = self.fruitTypeManager:getFruitTypeByIndex(lastIndex)
 
-    --[[
-	local current = fruitDesc.rotation
+        local yieldMultiplier = returnPeriod * forecrop
+        log(string.format("CropRotation:getRotationYieldMultiplier(): yieldMultiplier: %f (returnPeriod: %f) * (forecrop: %f = F(prev: %s(%d), last: %s(%d), current: %s(%d)))",
+                          yieldMultiplier,
+                          returnPeriod, forecrops,
+                          prev.name, prevIndex,
+                          last.name, lastIndex,
+                          current.name, currentIndex))
+    end
 
-	local returnPeriod = self:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, currentIndex, fruitDesc)
-	local rotationCategory = self:getRotationForecropMultiplier(prevIndex, lastIndex, currentIndex)
-
-	return returnPeriod * rotationCategory
-    --]]
+    return returnPeriod * forecrops
 end
-function CropRotation:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, currentIndex, fruitDesc)
-    local returnPeriod = 3 -- fruitDesc.rotation.returnPeriod
+
+function CropRotation:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, current)
+    local returnPeriod = current.rotation.returnPeriod
 
     if returnPeriod == 2 then
         -- monoculture
-        if prevIndex == lastIndex and lastIndex == currentIndex then
+        if prevIndex == lastIndex and lastIndex == current.index then
             return 0.9
         -- same as last
-        elseif lastIndex == currentIndex then
+        elseif lastIndex == current.index then
             return 0.95
         end
     elseif returnPeriod == 3 then
         -- monoculture
-        if prevIndex == lastIndex and lastIndex == currentIndex then
+        if prevIndex == lastIndex and lastIndex == current.index then
             return 0.85
         -- same as last
-        elseif lastIndex == currentIndex then
+        elseif lastIndex == current.index then
             return 0.9
         -- 1 year gap
-        elseif prevIndex == currentIndex and lastIndex ~= currentIndex then
+        elseif prevIndex == current.index and lastIndex ~= current.index then
             return 0.95
         end
     end
@@ -820,10 +824,39 @@ function CropRotation:getRotationForecropMultiplier(prevIndex, lastIndex, curren
     local prevValue = self.data:getRotationForecropValue(prevIndex, currentIndex)
     local lastValue = self.data:getRotationForecropValue(lastIndex, currentIndex)
 
-    local prevFactor = -0.02 * prevValue ^ 2 + 0.10 * prevValue + 0.92
-    local lastFactor = -0.05 * lastValue ^ 2 + 0.25 * lastValue + 0.80
+    local prevFactor = -0.025 * prevValue ^ 2 + 0.125 * prevValue -- <0.0 ; 0.15>
+    local lastFactor = -0.05 * lastValue ^ 2 + 0.25 * lastValue -- <0.0 ; 0.30>
 
-    return prevFactor * lastFactor
+    return prevFactor + lastFactor + 0.7 -- <0.7 ; 1.15>
+end
+
+-- input: list of crop indices: {1, 2, 3} NOTE: indices must be consecutive natural numbers
+-- output: list of multipliers: {1.15, 1.1, 1.0}
+function CropRotation:getRotationPlannerYieldMultipliers(input)
+    if #input < 1 then return {} end
+
+    result = {}
+    for pos, current in pairs(input) do
+        if current ~= Fruits.UNKNOWN then
+            lastPos = 1 + math.mod(pos - 1 - 1 + #input, #input)
+            prevPos = 1 + math.mod(pos - 2 - 1 + #input, #input)
+
+            last = input[lastPos]
+            prev = input[prevPos]
+
+            local mult = self:getRotationYieldMultiplier(prev, last, current)
+            table.insert(result, mult)
+
+            if CropRotation.debug then
+                print(string.format("CropRotation:getRotationPlannerYieldMultipliers(): pos: %i => mult: %f curr: %i last: %i prev: %i",
+                                    pos, mult, current, last, prev))
+            end
+        else -- Fruits.UNKNOWN
+            table.insert(result, 0)
+        end
+    end
+
+    return result
 end
 
 ------------------------------------------------
