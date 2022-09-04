@@ -5,14 +5,14 @@
         <e k="cropRotation_fallow" v="Ležící ladem"/>
         <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Střídání plodin"/>
-        <e k="cropRotation_hud_fieldInfo_previous" v="Předchozí"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Předchozí sklizně"/>
         <e k="cropRotation_hud_fieldInfo_perfect" v="Perfektní"/>
         <e k="cropRotation_hud_fieldInfo_good" v="Dobrý"/>
         <e k="cropRotation_hud_fieldInfo_ok" v="Ok"/>
         <e k="cropRotation_hud_fieldInfo_bad" v="Špatný"/>
         <!-- planner gui -->
-        <e k="cropRotation_gui_planner_pageTitle" v="Střídání plodin Planner" />
-        <e k="cropRotation_gui_planner_planName" v="Střídání %s" />
+        <e k="cropRotation_gui_planner_title" v="Střídání plodin Planner" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Střídání %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Střídání plodin"/>
         <e k="cropRotation_helpTitle_01" v="Obecné informace"/>
@@ -40,6 +40,11 @@
         <e k="cropRotation_helpText_05_02" v="Účinnost střídání plodin je procento zisku (pokud je vyšší než 100 %) nebo ztráty (pokud je nižší než 100 %) výnosu."/>
         <e k="cropRotation_helpText_05_03" v="Dokonalé střídání plodin umožňuje získat dalších 15 procent výnosu."/>
         <e k="cropRotation_helpText_05_04" v="Ignorování střídání plodin může vést ke ztrátě 30 procent výnosu."/>
+        <e k="cropRotation_helpText_05_05" v="Prvky pole infobox:
+        A.aktuálně rostoucí plodina
+        B. předchozí plodiny od nejnovější po nejstarší
+        C. celkový výkon s textovým popisem a bonusem/snížením výnosu
+        D. sklizená plodina je přesměrována na první položku a poslední položka je zapomenuta." />
         <e k="cropRotation_helpText_06_01" v="V případě použití režimu precizního zemědělství se účinnost střídání plodin stává jednou ze složek konečného odhadu výnosu, který je přidán do informačního pole precizního zemědělství."/>
         <e k="cropRotation_helpText_06_02" v="Účinnost střídání plodin je nyní součástí výnosového potenciálu, vedle dusíku, pH, typu půdy, výsevku a koeficientů plevelů."/>
     </elements>

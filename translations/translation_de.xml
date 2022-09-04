@@ -5,14 +5,14 @@
         <e k="cropRotation_fallow" v="Brachland"/>
         <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Fruchtfolge"/>
-        <e k="cropRotation_hud_fieldInfo_previous" v="letzte Frucht"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Frühere Ernten"/>
         <e k="cropRotation_hud_fieldInfo_perfect" v="Perfekt"/>
         <e k="cropRotation_hud_fieldInfo_good" v="Gut"/>
         <e k="cropRotation_hud_fieldInfo_ok" v="Ok"/>
         <e k="cropRotation_hud_fieldInfo_bad" v="Schlecht"/>
         <!-- planner gui -->
-        <e k="cropRotation_gui_planner_pageTitle" v="Fruchtfolge Planner" />
-        <e k="cropRotation_gui_planner_planName" v="Fruchtfolge %s" />
+        <e k="cropRotation_gui_planner_title" v="Fruchtfolge Planner" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Fruchtfolge %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Fruchtfolge"/>
         <e k="cropRotation_helpTitle_01" v="Allgemeines"/>
@@ -40,6 +40,11 @@
         <e k="cropRotation_helpText_05_02" v="Die Fruchtfolgeeffizienz ist der Prozentsatz des Gewinns (oder Verlusts) des Ertrags."/>
         <e k="cropRotation_helpText_05_03" v="Eine perfekte Fruchtfolge ermöglicht zusätzliche 15 Prozent des Ertrags."/>
         <e k="cropRotation_helpText_05_04" v="Das Ignorieren der Fruchtfolge kann zu 30 Prozent Ertragsverlust führen."/>
+        <e k="cropRotation_helpText_05_05" v="Feldinfobox-Elemente:
+        A. derzeit wachsende Ernte
+        B. frühere Ernten vom neusten zum ältesten
+        C. Gesamtleistung mit textueller Beschreibung und Ertragszuschlag/-abschlag
+        D. Erntegut wird zum ersten Eintrag weitergeleitet, und der letzte Eintrag wird vergessen." />
         <e k="cropRotation_helpText_06_01" v="Falls der Präzisionslandwirtschafts-Mod verwendet wird, wird die Fruchtfolgeeffizienz zu einem der Bestandteile der endgültigen Ertragsschätzung, die der Präzisionslandwirtschafts-Infobox hinzugefügt wird."/>
         <e k="cropRotation_helpText_06_02" v="Die Fruchtfolgeeffizienz ist jetzt neben Stickstoff, pH-Wert, Bodentyp, Saatmenge und Unkrautkoeffizienten ein Teil des Ertragspotenzials."/>
     </elements>

@@ -5,14 +5,14 @@
         <e k="cropRotation_fallow" v="Ugór" />
         <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Płodozmian" />
-        <e k="cropRotation_hud_fieldInfo_previous" v="Uprawy" />
+        <e k="cropRotation_hud_fieldInfo_previous" v="Poprzednie zbiory" />
         <e k="cropRotation_hud_fieldInfo_perfect" v="Doskonale" />
         <e k="cropRotation_hud_fieldInfo_good" v="Dobrze" />
         <e k="cropRotation_hud_fieldInfo_ok" v="W porządku" />
         <e k="cropRotation_hud_fieldInfo_bad" v="Źle" />
         <!-- planner gui -->
-        <e k="cropRotation_gui_planner_pageTitle" v="Planer płodozmianu" />
-        <e k="cropRotation_gui_planner_planName" v="Płodozmian %s" />
+        <e k="cropRotation_gui_planner_title" v="Planer płodozmianu" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Płodozmian %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Płodozmian"/>
         <e k="cropRotation_helpTitle_01" v="Informacje ogólne"/>
@@ -40,6 +40,11 @@
         <e k="cropRotation_helpText_05_02" v="Ocena wyrażona jest w procentowym zwiększeniu (lub zmniejszeniu) plonu."/>
         <e k="cropRotation_helpText_05_03" v="Idealny płodozmian pozwala na zwiększenie plonu o 15%."/>
         <e k="cropRotation_helpText_05_04" v="Płodozmian źle poporowadzony może skutkować zmniejszeniem plonu nawet o 30%."/>
+        <e k="cropRotation_helpText_05_05" v="Informacje zawarte w panelu informacyjnym:
+        A. aktualna uprawa
+        B. poprzednie uprawy w kolejności od najświeższej do najstarszej
+        C. aktualna wydajność płodozmianu z opisem i procentową informacją o zwiększeniu/zmniejszeniu plonu
+        D. schemat zmianowania - zebrana uprawa zapisywana jest w miejscu ostatniego, a najstarszy wpis jest kasowany." />
         <e k="cropRotation_helpText_06_01" v="Jeśli używasz modyfikacji rolnictwo precyzyjne, informacja o płodozmianie jest dołączona do panelu informacji o rolnictwie precyzyjnym."/>
         <e k="cropRotation_helpText_06_02" v="Ocena płodozmianu jest składową potencjału plonowania, obok poziomu nawożenia azotem, odczynu pH, rodzaju gleby, gęstości zasiewu itp."/>
     </elements>

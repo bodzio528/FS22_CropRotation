@@ -5,14 +5,14 @@
         <e k="cropRotation_fallow" v="Jachère"/>
         <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Rotation des cultures"/>
-        <e k="cropRotation_hud_fieldInfo_previous" v="Précèdente"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Récolte précèdente"/>
         <e k="cropRotation_hud_fieldInfo_perfect" v="Parfait"/>
         <e k="cropRotation_hud_fieldInfo_good" v="Bon"/>
         <e k="cropRotation_hud_fieldInfo_ok" v="Correct"/>
         <e k="cropRotation_hud_fieldInfo_bad" v="Mauvais"/>
         <!-- planner gui -->
-        <e k="cropRotation_gui_planner_pageTitle" v="Rotation planner" />
-        <e k="cropRotation_gui_planner_planName" v="Rotation %s" />
+        <e k="cropRotation_gui_planner_title" v="Rotation planner" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Rotation %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Rotation des cultures"/>
         <e k="cropRotation_helpTitle_01" v="Information générale"/>
@@ -40,6 +40,11 @@
         <e k="cropRotation_helpText_05_02" v="L'efficacité de la rotation est exprimée en pourcentage et représente le gain ou la perte de rendement dans la parcelle par rapport à 100%."/>
         <e k="cropRotation_helpText_05_03" v="Une rotation parfaite des cultures permet un gain de 15 pourcent de rendement."/>
         <e k="cropRotation_helpText_05_04" v="L'absence de rotation des cultures entrainera une perte de 30 pourcent de rendement."/>
+        <e k="cropRotation_helpText_05_05" v="Éléments du panneau d'information:
+        A. culture en cours de croissance
+        B. cultures précédentes de la plus récente à la plus ancienne
+        C. performance globale avec description textuelle et bonus/réduction de rendement
+        D. la récolte récoltée est transmise à la première entrée, et la dernière entrée est oubliée." />
         <e k="cropRotation_helpText_06_01" v="Lorsque le mod Precision Farming est activé, l'efficacité de la rotation entre dans le calcul final du rendement estimé. Elle est également ajoutée dans la fenêtre d'information du Precision Farming."/>
         <e k="cropRotation_helpText_06_02" v="L'efficacité de la rotation de cultures fait à présent partie du potentiel de rendement, en plus de l'azote, du pH, du type de sol, de la densité des semis et des mauvaises herbes."/>
     </elements>
