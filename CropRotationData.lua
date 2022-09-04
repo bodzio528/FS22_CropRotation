@@ -18,6 +18,9 @@
 CropRotationData = {}
 CropRotationData.debug = true -- false --
 
+CropRotationData.BAD = 0
+CropRotationData.GOOD = 2
+
 local CropRotationData_mt = Class(CropRotationData)
 
 function CropRotationData:new(mission, modDirectory, fruitTypeManager)
@@ -78,7 +81,7 @@ function CropRotationData:load()
     if xmlFile then
         local cropsKey = "crops"
         if not hasXMLProperty(xmlFile, cropsKey) then
-            log(string.format("CropRotationData:load(): ERROR loading XML element '%s' failed:", cropsKey), xmlFile)
+            log(string.format("CropRotationData:load(): ERROR loading XML element '%s' failed:", cropsKey), self.xmlFilePath)
             return
         end
 
@@ -93,12 +96,11 @@ function CropRotationData:load()
         local i = 0
         while true do
             local cropKey = string.format("%s.crop(%i)", cropsKey, i)
-
             if not hasXMLProperty(xmlFile, cropKey) then
-                if CropRotationData.debug then log("CropRotationData:load(): successfully processed file", self.xmlFilePath) end
                 break
             end
 
+            local cropName = getXMLString(xmlFile, cropKey .. "#name"):upper()
             if cropName ~= nil then
                 local cropReturnPeriod = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#returnPeriod"), 2)
                 local cropGrowth = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#growth"), 0)
@@ -120,11 +122,15 @@ function CropRotationData:load()
                 }
 
             else
-                log("CropRotationData:load(): ERROR XML loading failed:", xmlFile)
+                log("CropRotationData:load(): ERROR XML loading failed:", self.xmlFilePath)
                 return
             end
 
             i = i + 1
+        end
+
+        if CropRotationData.debug then
+            log("CropRotationData:load(): DEBUG data file reading complete:", self.xmlFilePath)
         end
 
         delete(xmlFile)
@@ -134,7 +140,7 @@ function CropRotationData:load()
         local fruitType = self.fruitTypeManager:getFruitTypeByName(i)
         if fruitType ~= nil then
             if CropRotationData.debug then
-                log("CropRotationData:load(): INFO populate rotation property in fruitType", fruitType.index, fruitType.name)
+                log("CropRotationData:load(): INFO populate rotation for fruit:", fruitType.index, fruitType.name)
             end
 
             fruitType.rotation = {}
@@ -148,14 +154,14 @@ function CropRotationData:load()
             for _, name in pairs(crop.good) do
                 local forecropType = self.fruitTypeManager:getFruitTypeByName(name)
                 if forecropType ~= nil then
-                    self.matrix[fruitType.index][forecropType.index] = 2 -- CropRotationData.GOOD
+                    self.matrix[fruitType.index][forecropType.index] = CropRotationData.GOOD
                 end
             end
 
             for _, name in pairs(crop.bad) do
                 local forecropType = self.fruitTypeManager:getFruitTypeByName(name)
                 if forecropType ~= nil then
-                    self.matrix[fruitType.index][forecropType.index] = 0 -- CropRotationData.BAD
+                    self.matrix[fruitType.index][forecropType.index] = CropRotationData.BAD
                 end
             end
         end
@@ -165,7 +171,7 @@ function CropRotationData:load()
     for k, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
         if self.crops[fruitType.name] == nil then
             if CropRotationData.debug then
-                log("CropRotationData:load(): added fruit index:", fruitType.index, "not mentioned in crops.xml:", fruitType.name, "using default setting")
+                log("CropRotationData:load(): DEBUG fruit:", fruitType.index, fruitType.name, "not mentioned in crops.xml file.")
             end
 
             fruitType.rotation = {
@@ -180,29 +186,29 @@ function CropRotationData:load()
         end
     end
 
-    self:postLoadInfo()
+    self:postLoad()
 end
 
 ----------------------------------------------------------------------
 -- DEBUG
 ----------------------------------------------------------------------
 
-function CropRotationData:postLoadInfo()
+function CropRotationData:postLoad()
     if CropRotationData.debug then
-        log("CropRotationData:postLoadInfo(): [A] list fruit types currently in use...")
+        log("CropRotationData:postLoad(): DEBUG list fruits in use ...")
 
         for fruitIndex, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
-            log(string.format("fruit %d name: %s crop rotation table begin", fruitIndex,  fruitType.name))
+            log("CropRotationData:postLoad(): DEBUG begin crop rotation table for fruit:", fruitIndex, fruitType.name)
 
             if fruitType.rotation ~= nil then
                 DebugUtil.printTableRecursively(fruitType.rotation, "", 0, 1)
             else
-                log(string.format("Empty rotation data for fruit %s", fruitType.name))
+                log("CropRotationData:postLoad(): WARNING Empty rotation data for fruit", fruitIndex, fruitType.name)
             end
 
-            log(string.format("fruit %d name: %s crop rotation table end", fruitIndex,  fruitType.name))
+            log("CropRotationData:postLoad(): DEBUG end crop rotation table for fruit:", fruitIndex,  fruitType.name)
         end
 
-        log("CropRotationData:postLoadInfo(): ... done [A]")
+        log("CropRotationData:postLoad(): DEBUG ... done")
     end
 end

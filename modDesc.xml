@@ -102,7 +102,9 @@ Changelog 2.0.0.0:
 
     <l10n filenamePrefix="translations/translation" />
 
+    <!-- 
     <dependencies>
         <dependency>FS22_precisionFarming</dependency>
     </dependencies>
+    -->
 </modDesc>

@@ -12,6 +12,7 @@
 -- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
 
+--[[
 -- TODO: check if this little piece of code is loaded properly
 -- TODO: make it FS22_SoilCare mod
 PF_ValueMap = FS22_precisionFarming.ValueMap
@@ -28,9 +29,32 @@ function BiomassMap.new(pfModule, customMt)
     return self
 end
 
+---Calculate the yield multiplier based on the soil condition
+-- TODO: move to BiomassMap
+function CropRotation:getSoilConditionYieldMultiplier(v)
+
+    -- F(v) = v^3/500 - v^2/50 - v/125 + 1.15
+    --
+    -- F(perfect) = 1.15
+    -- F(good_2) = 1.125
+    -- F(good_1) = 1.07
+    -- F(ok_2) = 1.0
+    -- F(ok_1) = 0.93
+    -- F(bad_3) = 0.86
+    -- F(bad_2) = 0.815
+    -- F(bad_1) = 0.8
+
+    return 0.002 * v ^ 3 - 0.02 * v ^ 2 - 0.008 * v + 1.15
+end
+
+    -- TODO: * cropRotation:getSoilConditionYieldMultiplier()
+    -- TODO: read BiomassMap for level!
+]]
+
 CropRotation = {
     MOD_NAME = g_currentModName or "FS22_PF_CropRotation",
     MOD_DIRECTORY = g_currentModDirectory,
+    MAP_VERSION = 2,
     MAP_NUM_CHANNELS = 12 -- [R2:5][R1:5][F:1][H:1]
 
     --[[
@@ -70,7 +94,7 @@ function overwrittenStaticFunction(object, funcName, newFunc)
     end
 end
 
-function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager, i18n, data, dms)
+function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager, i18n, data, densityMapUpdater)
     local self = setmetatable({}, CropRotation_mt)
 
     self.isServer = mission:getIsServer()
@@ -88,11 +112,14 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
 
     self.xmlName = "CropRotationXML"
     self.xmlFilePath = self.mission.missionInfo.savegameDirectory .. "/cropRotation.xml"
+    self.xmlRootElement = "cropRotation"
 
-    self.densityMapScanner = dms
+    self.densityMapUpdater = densityMapUpdater
 
     self.numFruits = math.min(31, #self.fruitTypeManager:getFruitTypes())
     self.isVisualizeEnabled = false
+
+    self.isNewSavegame = false
 
     overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
@@ -122,15 +149,15 @@ function CropRotation:initCache()
     self.cache = {}
     self.cache.fieldInfoDisplay = {}
     self.cache.fieldInfoDisplay.title = self.i18n:getText("cropRotation_hud_fieldInfo_title")
-    self.cache.fieldInfoDisplay.fruitNone = "-" -- "Żaden, Nic"
+    self.cache.fieldInfoDisplay.fruitNone = "-" -- TODO: i18n => "Nothing, None"
 
-    self.cache.fieldInfoDisplay.currentTypeIndex = FruitType.UNKNOWN -- 0
+    self.cache.fieldInfoDisplay.currentTypeIndex = FruitType.UNKNOWN
 
     -- crop rotation fieldInfoDisplay level color and text
     local isColorBlindMode = g_gameSettings:getValue(GameSettings.SETTING.USE_COLORBLIND_MODE) or false
 
     self.cache.fieldInfoDisplay.levels = {}
-    for level=0, 7 do
+    for level=0,7 do
         local color = CropRotation.COLORS[level].color
         if isColorBlindMode then color = CropRotation.COLORS[level].colorBlind end
 
@@ -149,14 +176,19 @@ function CropRotation:delete()
         delete(self.map)
     end
 
-    self.densityMapScanner:unregisterCallback("UpdateFallow")
+    self.densityMapUpdater:unregisterCallback("UpdateFallow")
 
-    if self.densityMapScanner ~= nil then
-        delete(self.densityMapScanner)
-        self.densityMapScanner = nil
+    if self.densityMapUpdater ~= nil then
+        delete(self.densityMapUpdater)
+        self.densityMapUpdater = nil
     end
 
     removeConsoleCommand("crInfo")
+
+    if CropRotation.debug then
+        addConsoleCommand("crVisualizeToggle", "Toggle Crop Rotation visualization", "commandToggleVisualize", self)
+    end
+
     if g_addCheatCommands then
         removeConsoleCommand("crFallowRun")
         removeConsoleCommand("crFallowSet")
@@ -182,30 +214,25 @@ end
 
 -- called on map loaded, eg. from savegame
 function CropRotation:loadMap()
-    if self.mission:getIsServer() and self.mission.missionInfo.savegameDirectory ~= nil then
-        if fileExists(self.xmlFilePath) then
-            local xmlFile = loadXMLFile(self.xmlName, self.xmlFilePath)
-            if xmlFile ~= nil then
-                delete(xmlFile)
-            end
-        end
-    end
+    self:loadSavegame()
 
-    -- ok, we got loading, now add savegame event handler
     FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, CropRotation.saveSavegame)
 
     -- extend PlayerHUDUpdater with crop rotation info
     if g_modIsLoaded[CropRotation.PrecisionFarming] then
         local l_precisionFarming = FS22_precisionFarming.g_precisionFarming
         if l_precisionFarming ~= nil then
-            -- TODO: occupy two rows:
-            -- 1st: forecrop and pre-forecrop
-            -- 2nd: overall crop rotation performance
             l_precisionFarming.fieldInfoDisplayExtension:addFieldInfo(self.cache.fieldInfoDisplay.title,
                                                                       self,
                                                                       self.updateFieldInfoDisplay,
                                                                       4, -- prio,
                                                                       self.yieldChangeFunc)
+
+            l_precisionFarming.fieldInfoDisplayExtension:addFieldInfo(self.i18n:getText("cropRotation_hud_fieldInfo_previous"),
+                                                                      self,
+                                                                      self.updateFieldInfoDisplayPreviousCrops,
+                                                                      5, -- prio,
+                                                                      nil)
         end
 
         PlayerHUDUpdater.fieldAddFruit = Utils.appendedFunction(PlayerHUDUpdater.fieldAddFruit, function(updater, data, box)
@@ -223,11 +250,11 @@ end
 
 ---Called every frame update
 function CropRotation:update(dt)
-    if self.densityMapScanner ~= nil then
-        self.densityMapScanner:update(dt)
+    if self.densityMapUpdater ~= nil then
+        self.densityMapUpdater:update(dt)
     end
 
-    if self.isVisualizeEnabled then
+    if CropRotation.debug and self.isVisualizeEnabled then
         self:visualize()
     end
 end
@@ -236,112 +263,8 @@ end
 --- Player HUD Updater
 ------------------------------------------------
 
-function CropRotation:updateFieldInfo(posX, posZ, rotY)
-    if self.requestedFieldData then
-        return
-    end
-
-    local cropRotation = g_cropRotation
-
---[[ -- TODO: replace with farmland owner filter
-    local sizeX = 5
-    local sizeZ = 5
-    local distance = 2
-    local dirX, dirZ = MathUtil.getDirectionFromYRotation(rotY)
-    local sideX, _, sideZ = MathUtil.crossProduct(dirX, 0, dirZ, 0, 1, 0)
-    local startWorldX = posX - sideX * sizeX * 0.5 - dirX * distance
-    local startWorldZ = posZ - sideZ * sizeX * 0.5 - dirZ * distance
-    local widthWorldX = posX + sideX * sizeX * 0.5 - dirX * distance
-    local widthWorldZ = posZ + sideZ * sizeX * 0.5 - dirZ * distance
-    local heightWorldX = posX - sideX * sizeX * 0.5 - dirX * (distance + sizeZ)
-    local heightWorldZ = posZ - sideZ * sizeX * 0.5 - dirZ * (distance + sizeZ)
-    local isColorBlindMode = g_gameSettings:getValue(GameSettings.SETTING.USE_COLORBLIND_MODE) or false
-
-    local filter = GROUND_TYPE_FILTER - ground
-    local n2, n1, _ = cropRotation:readFromMap(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ,
-                                               filter,
-                                               true)
---]]
-    local prev, last = cropRotation:getInfoAtWorldCoords(posX, posZ)
-
-    cropRotation.crFieldInfo = {
-        prev = prev,
-        last = last
-    }
-
-end
-
-function CropRotation:fieldAddFruit(data, box)
-    local cropRotation = g_cropRotation
-    assert(cropRotation ~= nil)
-
-    if cropRotation.crFieldInfo ~= nil then
-        local crYieldMultiplier = cropRotation:getRotationYieldMultiplier(cropRotation.crFieldInfo.previous,
-                                                                          cropRotation.crFieldInfo.last,
-                                                                          data.fruitTypeMax)
-        local level = CropRotation.getLevelByMultiplier(crYieldMultiplier)
-
-        local color, text = cropRotation.cache.fieldInfoDisplay.levels[level]
-        local title = cropRotation.cache.fieldInfoDisplay.title
-
-        box:addLine(string.format("%s (%s)", title, text),
-                    string.format("%d %%", math.floor(100 * crYieldMultiplier)),
-                    true, -- use color
-                    color)
-        box:addLine(g_i18n:getText("cropRotation_hud_fieldInfo_previous"),
-                    string.format("%s | %s", cropRotation:getCategoryName(cropRotation.crFieldInfo.last),
-                                             cropRotation:getCategoryName(cropRotation.crFieldInfo.previous)))
-    end
-end
-
-------------------------------------------------
---- PrecisionFarming Player HUD Updater
-------------------------------------------------
-function CropRotation:yieldChangeFunc(fieldInfo)
-    local crFactor = fieldInfo.crFactor or 1.00 -- default is 100%
-
-    -- crFactor is between 1.15 and 0.80
-
-    return 10.0 * (crFactor-1.0), -- factor here should be in <-3;+2> range
-           0.20, --  proportion -> (-30% | +20%)
-           fieldInfo.yieldPotential or 1, -- _yieldPotential
-           fieldInfo.yieldPotentialToHa or 0 --  _yieldPotentialToHa
-end
-
-function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
-    local cropRotation = g_cropRotation
-    assert(cropRotation ~= nil)
-
-    -- Read CR data
-    local prevIndex, lastIndex, f, harvestBit = cropRotation:getInfoAtWorldCoords(startWorldX, startWorldZ) -- TODO: change to ReadFromMap(sx,sz,wx,wz,hx,hz)
-
-    local getFruitTitle = function(index)
-        if index ~= FruitType.UNKNOWN then
-            return g_fruitTypeManager:getFruitTypeByIndex(lastIndex).fillType.title
-        end
-        return cropRotation.cache.fieldInfoDisplay.fruitNone
-    end
-
-    local value = string.format("%s | %s", getFruitTitle(lastIndex), getFruitTitle(prevIndex))
-
-    local currentIndex = cropRotation.cache.fieldInfoDisplay.currentTypeIndex
-    if currentIndex == FruitType.UNKNOWN or harvestBit then
-        return value, nil, nil
-    end
-
-    fieldInfo.crFactor = cropRotation:getRotationYieldMultiplier(prevIndex, lastIndex, currentIndex)
-    -- TODO: * cropRotation:getSoilConditionYieldMultiplier()
-    -- TODO: read BiomassMap for level!
-
-    local level = cropRotation:getLevelByCrFactor(fieldInfo.crFactor) -- level 3 is neutral (multiplier = 1.00)
-    local color = cropRotation.cache.fieldInfoDisplay.levels[level].color
-
-    --local text = cropRotation.cache.fieldInfoDisplay.levels[level].text
-
-    return value, color, string.format("%d %%", math.floor(crFactor*100))
-end
-
-function CropRotation:getLevelByCrFactor(factor)
+function CropRotation.getLevelByCrFactor(factor)
+    -- factor -- min = 0.7x  -- max = 1.15x
     if factor > 1.10 then return 0 end
     if factor > 1.05 then return 1 end
     if factor > 1.00 then return 2 end
@@ -352,8 +275,124 @@ function CropRotation:getLevelByCrFactor(factor)
     return 7
 end
 
+function CropRotation:getFruitTitle(index)
+    if index ~= FruitType.UNKNOWN then
+        return self.fruitTypeManager:getFruitTypeByIndex(index).fillType.title
+    end
+
+    return self.cache.fieldInfoDisplay.fruitNone
+end
+
+function CropRotation:updateFieldInfo(posX, posZ, rotY)
+    if self.requestedFieldData then
+        return
+    end
+
+    local cropRotation = g_cropRotation
+    assert(cropRotation ~= nil)
+
+    local prev, last = cropRotation:getInfoAtWorldCoords(posX, posZ)
+
+    cropRotation.cache.fieldInfoDisplay.fruit = {
+        prev = prev,
+        last = last
+    }
+
+    --[[ -- TODO: replace with farmland owner filter
+        local sizeX = 5
+        local sizeZ = 5
+        local distance = 2
+        local dirX, dirZ = MathUtil.getDirectionFromYRotation(rotY)
+        local sideX, _, sideZ = MathUtil.crossProduct(dirX, 0, dirZ, 0, 1, 0)
+        local startWorldX = posX - sideX * sizeX * 0.5 - dirX * distance
+        local startWorldZ = posZ - sideZ * sizeX * 0.5 - dirZ * distance
+        local widthWorldX = posX + sideX * sizeX * 0.5 - dirX * distance
+        local widthWorldZ = posZ + sideZ * sizeX * 0.5 - dirZ * distance
+        local heightWorldX = posX - sideX * sizeX * 0.5 - dirX * (distance + sizeZ)
+        local heightWorldZ = posZ - sideZ * sizeX * 0.5 - dirZ * (distance + sizeZ)
+
+        local filter = GROUND_TYPE_FILTER - ground
+        local n2, n1, _ = cropRotation:readFromMap(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ,
+                                                   filter,
+                                                   true)
+    --]]
+end
+
+function CropRotation:fieldAddFruit(data, box)
+    local cropRotation = g_cropRotation
+    assert(cropRotation ~= nil)
+
+    if cropRotation.cache.fieldInfoDisplay.fruit ~= nil then
+        if data.fruitTypeMax and data.fruitTypeMax ~= FruitType.UNKNOWN then
+            local crYieldMultiplier = cropRotation:getRotationYieldMultiplier(cropRotation.cache.fieldInfoDisplay.fruit.prev,
+                                                                              cropRotation.cache.fieldInfoDisplay.fruit.last,
+                                                                              data.fruitTypeMax)
+            local level = CropRotation.getLevelByCrFactor(crYieldMultiplier)
+
+            local text = cropRotation.cache.fieldInfoDisplay.levels[level].text
+
+            box:addLine(string.format("%s (%s)", cropRotation.cache.fieldInfoDisplay.title, text),
+                        string.format("%d %%", math.ceil(100.0 * crYieldMultiplier)),
+                        true, -- use color
+                        cropRotation.cache.fieldInfoDisplay.levels[level].color)
+        end
+        box:addLine(g_i18n:getText("cropRotation_hud_fieldInfo_previous"),
+                    string.format("%s | %s", cropRotation:getFruitTitle(cropRotation.cache.fieldInfoDisplay.fruit.last),
+                                             cropRotation:getFruitTitle(cropRotation.cache.fieldInfoDisplay.fruit.prev)))
+    end
+end
+
 ------------------------------------------------
---- Save game
+--- PrecisionFarming DLC Player HUD Updater
+------------------------------------------------
+function CropRotation:yieldChangeFunc(fieldInfo)
+    local crFactor = fieldInfo.crFactor or 1.00 -- default is 100%
+
+    -- crFactor is between 1.15 and 0.70
+    return 10.0 * (crFactor-1.0), -- factor here should be in <-3;+1.5> range...
+           0.20, -- ... proportion makes it (-30% | +15%)
+           fieldInfo.yieldPotential,
+           fieldInfo.yieldPotentialToHa
+end
+
+function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
+    local cropRotation = g_cropRotation
+    assert(cropRotation ~= nil)
+
+    -- Read CR data
+    local prevIndex, lastIndex, f, harvestBit = cropRotation:getInfoAtWorldCoords(startWorldX, startWorldZ) -- TODO: change to ReadFromMap(sx,sz,wx,wz,hx,hz)
+
+    local currentIndex = cropRotation.cache.fieldInfoDisplay.currentTypeIndex
+    if FruitType.UNKNOWN == currentIndex or 1 == harvestBit then
+        return nil
+    end
+
+    local crFactor = cropRotation:getRotationYieldMultiplier(prevIndex, lastIndex, currentIndex)
+
+    local value = string.format("%d %%",  math.ceil(100.0 * crFactor))
+
+    local level = CropRotation.getLevelByCrFactor(crFactor) -- level 3 is neutral (multiplier = 1.00)
+    local color = cropRotation.cache.fieldInfoDisplay.levels[level].color
+    local text = cropRotation.cache.fieldInfoDisplay.levels[level].text
+
+    fieldInfo.crFactor = crFactor -- update for PF's yieldChangeFunc (above)
+
+    return value, color, text
+end
+
+function CropRotation:updateFieldInfoDisplayPreviousCrops(fieldInfo, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, isColorBlindMode)
+    local cropRotation = g_cropRotation
+    assert(cropRotation ~= nil)
+
+    -- Read CR data
+    -- TODO: change to ReadFromMap(sx,sz,wx,wz,hx,hz)
+    local prevIndex, lastIndex = cropRotation:getInfoAtWorldCoords(startWorldX, startWorldZ)
+
+    return string.format("%s | %s", cropRotation:getFruitTitle(lastIndex), cropRotation:getFruitTitle(prevIndex))
+end
+
+------------------------------------------------
+--- Savegame handlers
 ------------------------------------------------
 
 -- cropRotation.xml is place where crop rotation planner (TODO) will store its data
@@ -374,8 +413,41 @@ function CropRotation:saveSavegame()
 end
 
 function CropRotation:saveToSavegame(xmlFile)
+    setXMLInt(xmlFile, "cropRotation.mapVersion", CropRotation.MAP_VERSION)
+
     if self.map ~= 0 then
         saveBitVectorMapToFile(self.map, self.mapFilePath)
+    end
+end
+
+function CropRotation:loadSavegame()
+    if self.mission:getIsServer() and self.mission.missionInfo.savegameDirectory ~= nil then
+        if fileExists(self.xmlFilePath) then
+            local xmlFile = loadXMLFile(self.xmlName, self.xmlFilePath)
+            if xmlFile ~= nil then
+                self:loadFromSavegame(xmlFile)
+                -- TODO: self.planner:loadFromSavegame(xmlFile)
+
+                delete(xmlFile)
+            end
+        end
+    end
+end
+
+function CropRotation:loadFromSavegame(xmlFile)
+    local mapVersionKey = "cropRotation.mapVersion"
+    if not hasXMLProperty(xmlFile, mapVersionKey) then
+        self.isNewSavegame = true
+
+        log("CropRotation:loadMap(): WARNING old version of mod was in use! Discarding crop rotation history.")
+        return
+    end
+
+    local mapVersionLoaded = getXMLInt(xmlFile, mapVersionKey)
+    if mapVersionLoaded and mapVersionLoaded < CropRotation.MAP_VERSION then
+        self.isNewSavegame = true
+
+        log("CropRotation:loadMap(): INFO found old version of crop rotation map! Reinitializing.")
     end
 end
 
@@ -386,6 +458,7 @@ end
 function CropRotation:load()
     self.data:load()
 
+    self:loadCropRotationMap() --
     self:loadModifiers()
 
     local fallowFinalizer = function (target, parameters)
@@ -394,18 +467,13 @@ function CropRotation:load()
         end
     end
 
-    self.densityMapScanner:registerCallback("UpdateFallow", self.dms_updateFallow, self, fallowFinalizer, false)
+    self.densityMapUpdater:registerCallback("UpdateFallow", self.dms_updateFallow, self, fallowFinalizer, false)
 
     self.messageCenter:subscribe(MessageType.YEAR_CHANGED, self.onYearChanged, self)
-    self.messageCenter:subscribe(MessageType.PERIOD_CHANGED, self.onPeriodChanged, self)
-    self.messageCenter:subscribe(MessageType.DAY_CHANGED, self.onDayChanged, self)
 end
 
 function CropRotation:onTerrainLoaded(mission, terrainId, mapFilename)
     self.terrainSize = self.mission.terrainSize
-
-    self:loadCropRotationMap()
-    self:loadModifiers()
 end
 
 function CropRotation:loadCropRotationMap()
@@ -413,7 +481,7 @@ function CropRotation:loadCropRotationMap()
     local success = false
 
     if self.mission.missionInfo.isValid then
-        if fileExists(self.mapFilePath) then
+        if fileExists(self.mapFilePath) and not self.isNewSavegame then
             success = loadBitVectorMapFromFile(self.map, self.mapFilePath, CropRotation.MAP_NUM_CHANNELS)
         end
     end
@@ -458,20 +526,11 @@ end
 
 -- periodic event handlers (subscribed in constructor)
 function CropRotation:onYearChanged(newYear)
-    log(string.format("CropRotation:onYearChanged(): year = %d", newYear))
-    self.densityMapScanner:schedule("UpdateFallow")
-end
-
-function CropRotation:onPeriodChanged(newPeriod)
-    log(string.format("CropRotation:onPeriodChanged(): period = %d", newPeriod))
-end
-
-function CropRotation:onDayChanged(newDay)
-    log(string.format("CropRotation:onDayChanged(): month = %d", newDay))
+    self.densityMapUpdater:schedule("UpdateFallow")
 end
 
 ------------------------------------------------
---- Density Map Updater callback (job)
+--- Density Map Updater job
 ------------------------------------------------
 
 -- yearly fallow bit update on parallelogram(start, width, height)
@@ -621,9 +680,9 @@ end
 ------------------------------------------------
 -- Reading and writing
 ------------------------------------------------
+-- [R2:5][R1:5][F:1][H:1]
 
 function CropRotation:decode(bits)
-    -- [R2:5][R1:5][F:1][H:1]
     local previous = bitShiftRight(bitAND(bits, 3968), 7)
     local last = bitShiftRight(bitAND(bits, 124), 2)
     local fallow = bitShiftRight(bitAND(bits, 2), 1)
@@ -633,7 +692,6 @@ function CropRotation:decode(bits)
 end
 
 function CropRotation:encode(previous, last, fallow, harvest)
-    -- [R2:5][R1:5][F:1][H:1]
     return bitShiftLeft(previous, 7) + bitShiftLeft(last, 2) + bitShiftLeft(fallow, 1) + harvest
 end
 
@@ -751,43 +809,12 @@ end
 -- Algorithms
 -----------------------------------
 
----Calculate the yield multiplier based on the soil condition
--- TODO: move to BiomassMap
-function CropRotation:getSoilConditionYieldMultiplier(v)
-    --[[
-    F(v) = v^3/500 - v^2/50 - v/125 + 1.15
-
-    F(perfect) = 1.15
-    F(good_2) = 1.125
-    F(good_1) = 1.07
-    F(ok_2) = 1.0
-    F(ok_1) = 0.93
-    F(bad_3) = 0.86
-    F(bad_2) = 0.815
-    F(bad_1) = 0.8
-    --]]
-    return 0.002 * v ^ 3 - 0.02 * v ^ 2 - 0.008 * v + 1.15
-end
-
 ---Calculate the yield multiplier based on the crop history, fallow state, and harvested fruit type
 function CropRotation:getRotationYieldMultiplier(prevIndex, lastIndex, currentIndex)
-    local current = self.fruitTypeManager:getFruitTypeByIndex(currentIndex)
+    local currentDesc = self.fruitTypeManager:getFruitTypeByIndex(currentIndex)
 
-    local returnPeriod = self:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, currentIndex, current)
+    local returnPeriod = self:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, currentDesc)
 	local forecrops = self:getRotationForecropMultiplier(prevIndex, lastIndex, currentIndex)
-
-    if CropRotation.debug then
-        local prev = self.fruitTypeManager:getFruitTypeByIndex(prevIndex)
-        local last = self.fruitTypeManager:getFruitTypeByIndex(lastIndex)
-
-        local yieldMultiplier = returnPeriod * forecrop
-        log(string.format("CropRotation:getRotationYieldMultiplier(): yieldMultiplier: %f (returnPeriod: %f) * (forecrop: %f = F(prev: %s(%d), last: %s(%d), current: %s(%d)))",
-                          yieldMultiplier,
-                          returnPeriod, forecrops,
-                          prev.name, prevIndex,
-                          last.name, lastIndex,
-                          current.name, currentIndex))
-    end
 
     return returnPeriod * forecrops
 end
@@ -796,23 +823,18 @@ function CropRotation:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, cu
     local returnPeriod = current.rotation.returnPeriod
 
     if returnPeriod == 2 then
-        -- monoculture
         if prevIndex == lastIndex and lastIndex == current.index then
-            return 0.9
-        -- same as last
+            return 0.9 -- monoculture
         elseif lastIndex == current.index then
-            return 0.95
+            return 0.95 -- same as last
         end
     elseif returnPeriod == 3 then
-        -- monoculture
         if prevIndex == lastIndex and lastIndex == current.index then
-            return 0.85
-        -- same as last
+            return 0.85 -- monoculture
         elseif lastIndex == current.index then
-            return 0.9
-        -- 1 year gap
+            return 0.9 -- same as last
         elseif prevIndex == current.index and lastIndex ~= current.index then
-            return 0.95
+            return 0.95 -- 1 year gap
         end
     end
 
@@ -827,7 +849,7 @@ function CropRotation:getRotationForecropMultiplier(prevIndex, lastIndex, curren
     local prevFactor = -0.025 * prevValue ^ 2 + 0.125 * prevValue -- <0.0 ; 0.15>
     local lastFactor = -0.05 * lastValue ^ 2 + 0.25 * lastValue -- <0.0 ; 0.30>
 
-    return prevFactor + lastFactor + 0.7 -- <0.7 ; 1.15>
+    return 0.7 + (prevFactor + lastFactor) -- <0.7 ; 1.15>
 end
 
 -- input: list of crop indices: {1, 2, 3} NOTE: indices must be consecutive natural numbers
@@ -844,15 +866,9 @@ function CropRotation:getRotationPlannerYieldMultipliers(input)
             last = input[lastPos]
             prev = input[prevPos]
 
-            local mult = self:getRotationYieldMultiplier(prev, last, current)
-            table.insert(result, mult)
-
-            if CropRotation.debug then
-                print(string.format("CropRotation:getRotationPlannerYieldMultipliers(): pos: %i => mult: %f curr: %i last: %i prev: %i",
-                                    pos, mult, current, last, prev))
-            end
-        else -- Fruits.UNKNOWN
-            table.insert(result, 0)
+            table.insert(result, self:getRotationYieldMultiplier(prev, last, current))
+        else
+            table.insert(result, 0.0)
         end
     end
 
@@ -872,9 +888,7 @@ function CropRotation:getInfoAtWorldCoords(x, z)
 
     local v = getBitVectorMapPoint(self.map, xi, zi, 0, CropRotation.MAP_NUM_CHANNELS)
 
-    local cropPrev, cropLast, fallowBit, harvestBit = self:decode(v)
-
-    return cropPrev, cropLast, fallowBit, harvestBit
+    return self:decode(v) -- cropPrev, cropLast, fallowBit, harvestBit
 end
 
 function CropRotation:commandGetInfo()
@@ -884,7 +898,7 @@ function CropRotation:commandGetInfo()
 
     local getName = function (fruitIndex)
         if fruitIndex ~= FruitType.UNKNOWN then return g_fruitTypeManager:getFruitTypeByIndex(last).fillType.title end
-        return "UNKNOWN" -- g_i18n:getText("FillType: None")
+        return g_i18n:getText("cropRotation_fallow")
     end
 
     log(string.format("crops: [last: %s(%d)] [previous: %s(%d)] bits: [Fallow: %d] [Harvest: %d]",
@@ -898,8 +912,12 @@ end
 -- Debugging
 ------------------------------------------------
 
+function CropRotation:commandToggleVisualize()
+    self.isVisualizeEnabled = not self.isVisualizeEnabled
+end
+
 function CropRotation:commandRunFallow()
-    self.densityMapScanner:schedule("UpdateFallow")
+    self.densityMapUpdater:schedule("UpdateFallow")
 end
 
 function CropRotation:commandSetFallow()
@@ -920,10 +938,6 @@ end
 function CropRotation:commandClearHarvest()
     local x, _, z = getWorldTranslation(getCamera(0))
     self:setHarvest(x, z, 0)
-end
-
-function CropRotation:commandToggleVisualize()
-    self.isVisualizeEnabled = not self.isVisualizeEnabled
 end
 
 function CropRotation:setFallow(x, z, bit)
