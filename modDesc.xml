@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="68">
     <author>Bodzio528</author>
-    <version>2.0.0.0</version>
+    <version>2.0.0.1</version>
     <title>
         <en>Crop Rotation</en>
         <de>Fruchtfolge</de>
@@ -23,8 +23,8 @@ Key features:
 - crop rotation info added to player HUD field information box
 - detailed in-game help menu (with pictures!)
 
-Changelog 2.0.0.0:
-- mod rewritten for modhub release
+Changelog 2.0.0.1:
+- Precision Farming DLC is not required
 ]]></en>
         <de><![CDATA[Der Crop Rotation-Mod bietet Anreize für den Anbau verschiedener Pflanzen, anstatt immer wieder Kartoffeln anzupflanzen.
 
@@ -39,8 +39,8 @@ Hauptmerkmale:
 - Informationen zur Fruchtfolge wurden dem Feldinformationsfeld des Spieler-HUD hinzugefügt
 - Detailliertes Hilfemenü im Spiel (mit Bildern!)
 
-Changelog 2.0.0.0:
-- mod rewritten for modhub release
+Changelog 2.0.0.1:
+- Precision Farming DLC is not required
 ]]></de>
         <fr><![CDATA[Le mod de rotation des cultures incite à cultiver différentes cultures plutôt que de planter des pommes de terre encore et encore.
 
@@ -55,8 +55,8 @@ Principales caractéristiques:
 - informations sur la rotation des cultures ajoutées dans la fenêtre d'information de la parcelle
 - menu d'aide détaillé dans le jeu (avec images !)
 
-Changelog 2.0.0.0:
-- mod rewritten for modhub release
+Changelog 2.0.0.1:
+- Precision Farming DLC is not required
 ]]></fr>
         <pl><![CDATA[Modyfikacja Płodozmian wprowadza zachętę do zmianowania upraw w miejsce hodowli monokulturowej.
 
@@ -71,8 +71,8 @@ Główne cechy:
 - dane o zmianowaniu widoczne na panelu informacji o polu
 - szczegółowy opis w menu pomocy (są obrazki!)
 
-Changelog 2.0.0.0:
-- mod rewritten for modhub release
+Changelog 2.0.0.1:
+- Precision Farming DLC is not required
 ]]></pl>
         <cz><![CDATA[Mod Crop Rotation nabádá uživatele ke střídání plodin namísto monokultur.
 
@@ -87,8 +87,8 @@ Klíčové vlastnosti:
 - informace o rotaci plodin byly přidány do informačního pole HUD hráče
 - podrobné menu nápovědy ve hře (s obrázky!)
 
-Changelog 2.0.0.0:
-- mod rewritten for modhub release
+Changelog 2.0.0.1:
+- Precision Farming DLC is not required
 ]]></cz>
     </description>
 
@@ -101,8 +101,4 @@ Changelog 2.0.0.0:
     </extraSourceFiles>
 
     <l10n filenamePrefix="translations/translation" />
-
-    <dependencies>
-        <dependency>FS22_precisionFarming</dependency>
-    </dependencies>
 </modDesc>

@@ -239,12 +239,13 @@ function CropRotation:updateFieldInfo(posX, posZ, rotY)
         return
     end
 
-    if g_farmlandManager:getOwnerIdAtWorldPosition(posX, posZ) ~= g_currentMission.player.farmId then
-        return
-    end
-
     local cropRotation = g_cropRotation
     assert(cropRotation ~= nil)
+
+    if g_farmlandManager:getOwnerIdAtWorldPosition(posX, posZ) ~= g_currentMission.player.farmId then
+        cropRotation.cache.fieldInfoDisplay.rotation = nil
+        return
+    end
 
     local startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ = CropRotation.getParallellogramFromXZrotY(posX, posZ, rotY)
     local prev, last = cropRotation:getInfoAtWorldParallelogram(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
