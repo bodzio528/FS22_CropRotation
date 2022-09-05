@@ -2,19 +2,17 @@
 <l10n>
     <translationContributors>Bodzio528</translationContributors>
     <elements>
-        <e k="cropRotation_Category_0" v="Fallow"/>
-        <e k="cropRotation_Category_1" v="Oilseed"/>
-        <e k="cropRotation_Category_2" v="Cereal"/>
-        <e k="cropRotation_Category_3" v="Legumes"/>
-        <e k="cropRotation_Category_4" v="Roots"/>
-        <e k="cropRotation_Category_5" v="Nightshade"/>
-        <e k="cropRotation_Category_6" v="Grass"/>
+        <e k="cropRotation_fallow" v="Fallow"/>
+        <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Crop Rotation"/>
-        <e k="cropRotation_hud_fieldInfo_previous" v="Previous"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Previous Harvest"/>
         <e k="cropRotation_hud_fieldInfo_perfect" v="Perfect"/>
         <e k="cropRotation_hud_fieldInfo_good" v="Good"/>
         <e k="cropRotation_hud_fieldInfo_ok" v="Ok"/>
         <e k="cropRotation_hud_fieldInfo_bad" v="Bad"/>
+        <!-- planner gui -->
+        <e k="cropRotation_gui_planner_title" v="Crop Rotation Planner" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Rotation %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Crop Rotation"/>
         <e k="cropRotation_helpTitle_01" v="General information"/>
@@ -32,16 +30,21 @@
         <e k="cropRotation_helpText_02_02" v="Canola, sunflower, potatoes and sugar beets can return in third season."/>
         <e k="cropRotation_helpText_02_03" v="Most of cereals, soybean, sugar cane and cotton require at least one year gap."/>
         <e k="cropRotation_helpText_02_04" v="Corn, grass and poplar can be grow every year, but farmer must take into account yield deduction due to soil nutrients depletion."/>
-        <e k="cropRotation_helpText_03_01" v="Some plants grow better after another ones. To express that, crops have been assigned to several categories: oilseed, cereal, legume, roots, nightshade and grass."/>
+        <e k="cropRotation_helpText_03_01" v="Some plants grow better after another ones."/>
         <e k="cropRotation_helpText_03_02" v="Crops within single group have similar properties, thus you should avoid planting them one after another on the same plot."/>
         <e k="cropRotation_helpText_03_03" v="For instance, cereals and oilseed grow very well after legumes. Roots grow well after cereals. Rapeseeds or sunflowers can grow very well after sugar beets."/>
         <e k="cropRotation_helpText_03_04" v="Two last crop categories have the dominant influence over current yield."/>
         <e k="cropRotation_helpText_04_01" v="You may leave field without planting for full year (fallow). Soil will then regain the ability to support even the most demanding crops."/>
         <e k="cropRotation_helpText_04_02" v="Yearly fallow applies only when seasonal growth is enabled in game options."/>
-        <e k="cropRotation_helpText_05_01" v="In field info box, there is additional entry, with crop rotation efficiency and two last harvested crop categories."/>
+        <e k="cropRotation_helpText_05_01" v="In field info box, there is additional entry, with crop rotation efficiency and two previous crop categories."/>
         <e k="cropRotation_helpText_05_02" v="Crop rotation efficiency is the percentage of gain (when over 100%) or lost (when less than 100%) yield."/>
-        <e k="cropRotation_helpText_05_03" v="Perfect crop rotation allows to receive additional 20 percent of yield."/>
+        <e k="cropRotation_helpText_05_03" v="Perfect crop rotation allows to receive additional 15 percent of yield."/>
         <e k="cropRotation_helpText_05_04" v="Ignoring crop rotation may result in 30 percent of yield lost."/>
+        <e k="cropRotation_helpText_05_05" v="Field info box elements:
+        A. currently growing crop
+        B. previous crops from newest to oldest
+        C. overall performance with textual description and yield bonus/reduction
+        D. harvested crop is forwarded to first entry, and the last entry is forget." />
         <e k="cropRotation_helpText_06_01" v="In case precision farming mod is in use, the crop rotation efficiency becomes one of the ingredients of the final yield estimation, added to precision farming info box."/>
         <e k="cropRotation_helpText_06_02" v="Crop rotation efficiency is now a part of yield potential, next to nitrogen, pH, soil type, seed rate and weeds coefficients."/>
     </elements>

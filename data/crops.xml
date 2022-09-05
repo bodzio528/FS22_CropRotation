@@ -1,153 +1,87 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<crops>
-    <!--
-    Syntax of this file is strict subset of Seasons19 crops.xml mod by Realismus Modding.
+<crops overwrite="true">
+<!--
+    Crop Rotation Matrix - define good and bad forecrops for each crop
+    returnPeriod [years] - time between planting this crop again
+    growth [kg/ha] - biomass nutrients required for crop to growth
+    harvest [kg/ha] - biomass left in soil after harvest
+ -->
+    <crop name="BARLEY"     returnPeriod="2" growth="0" harvest="1">
+        <good>OAT CANOLA MAIZE SOYBEAN SUNFLOWER SUGARBEET</good> <!-- good forecrops -->
+        <bad>BARLEY</bad> <!-- bad forecrops -->
+    </crop>
+    <crop name="OAT"        returnPeriod="2" growth="0" harvest="1">
+        <good>WHEAT MAIZE SOYBEAN SUNFLOWER</good>
+        <bad></bad>
+    </crop>
+    <crop name="WHEAT"      returnPeriod="2" growth="0" harvest="1">
+        <good>OAT CANOLA MAIZE SOYBEAN POTATO SUGARBEET</good>
+        <bad>WHEAT</bad>
+    </crop>
+    <crop name="CANOLA"     returnPeriod="3" growth="0" harvest="1">
+        <good>BARLEY OAT SOYBEAN GRASS</good>
+        <bad>CANOLA SUNFLOWER</bad>
+    </crop>
+    <crop name="MAIZE"      returnPeriod="1" growth="0" harvest="1">
+        <good>OAT CANOLA SOYBEAN SUNFLOWER POTATO SUGARBEET GRASS</good>
+        <bad></bad>
+    </crop>
+    <crop name="SOYBEAN"    returnPeriod="2" growth="0" harvest="1">
+        <good>OAT CANOLA MAIZE SUNFLOWER SORGHUM</good>
+        <bad>SOYBEAN</bad>
+    </crop>
+    <crop name="SUNFLOWER"  returnPeriod="3" growth="0" harvest="1">
+        <good>SOYBEAN SUGARBEET</good>
+        <bad>CANOLA POTATO</bad>
+    </crop>
+    <crop name="POTATO"     returnPeriod="3" growth="0" harvest="1">
+        <good>CANOLA</good>
+        <bad>POTATO</bad>
+    </crop>
+    <crop name="SUGARBEET"  returnPeriod="3" growth="0" harvest="1">
+        <good>BARLEY OAT WHEAT SOYBEAN</good>
+        <bad>CANOLA MAIZE SUGARBEET</bad>
+    </crop>
+    <crop name="POPLAR"     returnPeriod="1" growth="0" harvest="1">
+        <good></good>
+        <bad></bad>
+    </crop>
+    <crop name="GRASS"      returnPeriod="1" growth="0" harvest="1">
+        <good>OAT SUNFLOWER GRASS MEADOW</good>
+        <bad></bad>
+    </crop>
+    <crop name="SUGARCANE"  returnPeriod="2" growth="0" harvest="1">
+        <good></good>
+        <bad></bad>
+    </crop>
+    <crop name="COTTON"     returnPeriod="2" growth="0" harvest="1">
+        <good></good>
+        <bad>COTTON</bad>
+    </crop>
+    <crop name="SORGHUM"    returnPeriod="2" growth="0" harvest="1">
+        <good>SOYBEAN SUNFLOWER</good>
+        <bad>SORGHUM</bad>
+    </crop>
 
-    For instance, one may copy crops.xml directly from favourite Seasons_GEO mod, and still get meaningful results.
+    <crop name="MEADOW"        returnPeriod="1" growth="0" harvest="1">
+        <good>GRASS MEADOW</good>
+        <bad></bad>
+    </crop>
 
-    Hopefully.
+    <!-- CR IS DISABLED
+    <crop name="OILSEEDRADISH" returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="GRAPE"         returnPeriod="1" growth="0" harvest="1"/>
+    <crop name="OLIVE"         returnPeriod="1" growth="0" harvest="1"/>
     -->
-    <annotation>Copyright (c) Realismus Modding, 2019</annotation>
-    <version>2</version>
 
-    <growth overwrite="true">
-        <defaultCrops>
-            <defaultCrop name="BARLEY"/>
-            <defaultCrop name="OAT"/>
-            <defaultCrop name="WHEAT"/>
-            <defaultCrop name="CANOLA"/>
-            <defaultCrop name="MAIZE"/>
-            <defaultCrop name="SOYBEAN"/>
-            <defaultCrop name="SUNFLOWER"/>
-            <defaultCrop name="POTATO"/>
-            <defaultCrop name="SUGARBEET"/>
-            <defaultCrop name="POPLAR"/>
-            <defaultCrop name="GRASS"/>
-            <defaultCrop name="OILSEEDRADISH"/>
-            <defaultCrop name="WEED"/>
-            <defaultCrop name="DRYGRASS"/>
-            <defaultCrop name="SUGARCANE"/>
-            <defaultCrop name="COTTON"/>
-            <defaultCrop name="SORGHUM" />
-            <defaultCrop name="GRAPE" />
-            <defaultCrop name="OLIVE" />
-			<defaultCrop name="MEADOW" />
-        </defaultCrops>
-    </growth>
-    <fruitTypes>
-        <!--
-        When adding growth for new crops the following at a minimum need to be defined in this section.
-
-        <fruitType name="NEW_CROP">
-            <rotation category="CEREAL" returnPeriod="2" />
-        </fruitType>
-
-        Note: new category cannot be added (as it was in case of Seasons19), use one of existing:
-            OILSEED, CEREAL, LEGUME, ROOT, NIGHTSHADE, GRASS
-        -->
-        <fruitType name="BARLEY">
-            <rotation category="CEREAL" returnPeriod="2"/>
-        </fruitType>
-        <fruitType name="OAT">
-            <rotation category="CEREAL" returnPeriod="2"/>
-        </fruitType>
-        <fruitType name="WHEAT">
-            <rotation category="CEREAL" returnPeriod="2"/>
-        </fruitType>
-        <fruitType name="CANOLA">
-            <rotation category="OILSEED" returnPeriod="3"/>
-        </fruitType>
-        <fruitType name="MAIZE">
-            <rotation category="CEREAL" returnPeriod="1"/>
-        </fruitType>
-        <fruitType name="SOYBEAN">
-            <rotation category="LEGUME" returnPeriod="2"/>
-        </fruitType>
-        <fruitType name="SUNFLOWER">
-            <rotation category="OILSEED" returnPeriod="3"/>
-        </fruitType>
-        <fruitType name="POTATO">
-            <rotation category="NIGHTSHADE" returnPeriod="3"/>
-        </fruitType>
-        <fruitType name="SUGARBEET">
-            <rotation category="ROOT" returnPeriod="3"/>
-        </fruitType>
-        <fruitType name="GRASS">
-            <rotation category="GRASS" returnPeriod="1"/>
-        </fruitType>
-        <fruitType name="OILSEEDRADISH">
-            <rotation category="OILSEED" returnPeriod="2"/>
-        </fruitType>
-        <fruitType name="POPLAR">
-            <rotation category="GRASS" returnPeriod="1"/>
-        </fruitType>
-        <fruitType name="SUGARCANE">
-            <rotation category="GRASS" returnPeriod="2"/>
-        </fruitType>
-        <fruitType name="COTTON">
-            <rotation category="GRASS" returnPeriod="2"/>
-        </fruitType>
-        <fruitType name="SORGHUM">
-            <rotation category="CEREAL" returnPeriod="2"/>
-        </fruitType>
-        <fruitType name="GRAPE">
-            <rotation category="GRASS" returnPeriod="1"/>
-        </fruitType>
-        <fruitType name="OLIVE">
-            <rotation category="GRASS" returnPeriod="1"/>
-        </fruitType>
-        <fruitType name="MEADOW">
-            <rotation category="GRASS" returnPeriod="1"/>
-        </fruitType>
-    </fruitTypes>
-    <cropRotation>
-        <crop category="OILSEED">
-            <rotation category="OILSEED" value="1"/>
-            <rotation category="CEREAL" value="2"/>
-            <rotation category="LEGUME" value="2"/>
-            <rotation category="ROOT" value="2"/>
-            <rotation category="NIGHTSHADE" value="1"/>
-            <rotation category="GRASS" value="1"/>
-        </crop>
-        <crop category="CEREAL">
-            <rotation category="OILSEED" value="2"/>
-            <rotation category="CEREAL" value="1"/>
-            <rotation category="LEGUME" value="2"/>
-            <rotation category="ROOT" value="1"/>
-            <rotation category="NIGHTSHADE" value="0"/>
-            <rotation category="GRASS" value="2"/>
-        </crop>
-        <crop category="LEGUME">
-            <rotation category="OILSEED" value="1"/>
-            <rotation category="CEREAL" value="1"/>
-            <rotation category="LEGUME" value="1"/>
-            <rotation category="ROOT" value="1"/>
-            <rotation category="NIGHTSHADE" value="1"/>
-            <rotation category="GRASS" value="1"/>
-        </crop>
-        <crop category="ROOT">
-            <rotation category="OILSEED" value="0"/>
-            <rotation category="CEREAL" value="2"/>
-            <rotation category="LEGUME" value="1"/>
-            <rotation category="ROOT" value="1"/>
-            <rotation category="NIGHTSHADE" value="0"/>
-            <rotation category="GRASS" value="0"/>
-        </crop>
-        <crop category="NIGHTSHADE">
-            <rotation category="OILSEED" value="1"/>
-            <rotation category="CEREAL" value="1"/>
-            <rotation category="LEGUME" value="0"/>
-            <rotation category="ROOT" value="0"/>
-            <rotation category="NIGHTSHADE" value="1"/>
-            <rotation category="GRASS" value="0"/>
-        </crop>
-        <crop category="GRASS">
-            <rotation category="OILSEED" value="1"/>
-            <rotation category="CEREAL" value="2"/>
-            <rotation category="LEGUME" value="1"/>
-            <rotation category="ROOT" value="1"/>
-            <rotation category="NIGHTSHADE" value="1"/>
-            <rotation category="GRASS" value="1"/>
-        </crop>
-    </cropRotation>
+    <!--ADDITIONAL CROPS
+    <crop name="RYE"       returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="TRITICALE" returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="SPELT"     returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="ALFALFA"   returnPeriod="1" growth="0" harvest="1"/>
+    <crop name="ONION"     returnPeriod="3" growth="0" harvest="1"/>
+    <crop name="CARROT"    returnPeriod="3" growth="0" harvest="1"/>
+    <crop name="MILLET"    returnPeriod="2" growth="0" harvest="1"/>
+    <crop name="RICE"      returnPeriod="1" growth="0" harvest="1"/>
+    -->
 </crops>

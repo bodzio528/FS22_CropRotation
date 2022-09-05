@@ -39,9 +39,9 @@
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_03_01" />
             </paragraph>
-            <paragraph>
+            <!--paragraph>
                 <text text="$l10n_cropRotation_helpText_03_02" />
-            </paragraph>
+            </paragraph-->
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_03_03" />
             </paragraph>
@@ -71,13 +71,16 @@
                 <text text="$l10n_cropRotation_helpText_05_02" />
             </paragraph>
             <paragraph>
-                <image filename="gui/helplineImages02.png" uvs="0px 0px 900px 240px" aspectRatio="0.26666"/>
-            </paragraph>
-            <paragraph>
                 <text text="$l10n_cropRotation_helpText_05_03" />
             </paragraph>
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_05_04" />
+            </paragraph>
+            <paragraph>
+                <image filename="gui/helplineImages02.png" uvs="0px 0px 710px 304px" aspectRatio="0.428169"/>
+            </paragraph>
+            <paragraph>
+                <text text="$l10n_cropRotation_helpText_05_05" />
             </paragraph>
         </page>
         <page title="$l10n_cropRotation_helpTitle_06">
@@ -85,7 +88,7 @@
                 <text text="$l10n_cropRotation_helpText_06_01" />
             </paragraph>
             <paragraph>
-                <image filename="gui/helplineImages02.png" uvs="0px 240px 900px 300px" aspectRatio="0.33333"/>
+                <image filename="gui/helplineImages02.png" uvs="0px 294px 710px 254px" aspectRatio="0.357746"/>
             </paragraph>
             <paragraph>
                 <text text="$l10n_cropRotation_helpText_06_02" />

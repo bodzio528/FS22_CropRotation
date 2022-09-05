@@ -2,19 +2,17 @@
 <l10n>
     <translationContributors>Kynuska</translationContributors>
     <elements>
-        <e k="cropRotation_Category_0" v="Ležící ladem"/>
-        <e k="cropRotation_Category_1" v="Olejnatá semena"/>
-        <e k="cropRotation_Category_2" v="Obiloviny"/>
-        <e k="cropRotation_Category_3" v="Luštěniny"/>
-        <e k="cropRotation_Category_4" v="Kořenové plodiny"/>
-        <e k="cropRotation_Category_5" v="Lilek"/>
-        <e k="cropRotation_Category_6" v="Tráva"/>
+        <e k="cropRotation_fallow" v="Ležící ladem"/>
+        <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Střídání plodin"/>
-        <e k="cropRotation_hud_fieldInfo_previous" v="Předchozí"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Předchozí sklizně"/>
         <e k="cropRotation_hud_fieldInfo_perfect" v="Perfektní"/>
         <e k="cropRotation_hud_fieldInfo_good" v="Dobrý"/>
         <e k="cropRotation_hud_fieldInfo_ok" v="Ok"/>
         <e k="cropRotation_hud_fieldInfo_bad" v="Špatný"/>
+        <!-- planner gui -->
+        <e k="cropRotation_gui_planner_title" v="Střídání plodin Planner" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Střídání %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Střídání plodin"/>
         <e k="cropRotation_helpTitle_01" v="Obecné informace"/>
@@ -32,7 +30,7 @@
         <e k="cropRotation_helpText_02_02" v="Řepka, slunečnice, brambory a cukrová řepa se mohou vrátit ve třetí sezóně."/>
         <e k="cropRotation_helpText_02_03" v="Většina obilovin, sóji, cukrové třtiny a bavlny vyžaduje minimálně roční odstup."/>
         <e k="cropRotation_helpText_02_04" v="Kukuřici, trávu a topol lze pěstovat každý rok, ale farmář musí počítat se snížením výnosu z důvodu vyčerpání půdních živin."/>
-        <e k="cropRotation_helpText_03_01" v="Některé rostliny rostou lépe po jiných. Abychom to vyjádřili, plodiny byly zařazeny do několika kategorií: olejnatá semena, obiloviny, luštěniny, kořenové plodiny, lilek a tráva."/>
+        <e k="cropRotation_helpText_03_01" v="Některé rostliny rostou lépe po jiných."/>
         <e k="cropRotation_helpText_03_02" v="Plodiny v rámci jedné skupiny mají podobné vlastnosti, proto byste se měli vyvarovat výsadbě jedné po druhé na stejném pozemku."/>
         <e k="cropRotation_helpText_03_03" v="Například obiloviny a olejnatá semena rostou velmi dobře po luštěninách. Kořenové plodiny rostou dobře po obilninách. Po cukrové řepě může velmi dobře růst řepka nebo slunečnice."/>
         <e k="cropRotation_helpText_03_04" v="Dvě poslední kategorie plodin mají dominantní vliv na současný výnos."/>
@@ -40,8 +38,13 @@
         <e k="cropRotation_helpText_04_02" v="Roční pokles platí pouze v případě, že je v herních možnostech povolen sezónní růst."/>
         <e k="cropRotation_helpText_05_01" v="V tabulce s informacemi o poli je další položka s účinností střídání plodin a dvěma kategoriemi naposledy sklizených plodin."/>
         <e k="cropRotation_helpText_05_02" v="Účinnost střídání plodin je procento zisku (pokud je vyšší než 100 %) nebo ztráty (pokud je nižší než 100 %) výnosu."/>
-        <e k="cropRotation_helpText_05_03" v="Dokonalé střídání plodin umožňuje získat dalších 20 procent výnosu."/>
+        <e k="cropRotation_helpText_05_03" v="Dokonalé střídání plodin umožňuje získat dalších 15 procent výnosu."/>
         <e k="cropRotation_helpText_05_04" v="Ignorování střídání plodin může vést ke ztrátě 30 procent výnosu."/>
+        <e k="cropRotation_helpText_05_05" v="Prvky pole infobox:
+        A.aktuálně rostoucí plodina
+        B. předchozí plodiny od nejnovější po nejstarší
+        C. celkový výkon s textovým popisem a bonusem/snížením výnosu
+        D. sklizená plodina je přesměrována na první položku a poslední položka je zapomenuta." />
         <e k="cropRotation_helpText_06_01" v="V případě použití režimu precizního zemědělství se účinnost střídání plodin stává jednou ze složek konečného odhadu výnosu, který je přidán do informačního pole precizního zemědělství."/>
         <e k="cropRotation_helpText_06_02" v="Účinnost střídání plodin je nyní součástí výnosového potenciálu, vedle dusíku, pH, typu půdy, výsevku a koeficientů plevelů."/>
     </elements>

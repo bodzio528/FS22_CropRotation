@@ -2,19 +2,17 @@
 <l10n>
     <translationContributors>Bodzio528</translationContributors>
     <elements>
-        <e k="cropRotation_Category_0" v="Brachland"/>
-        <e k="cropRotation_Category_1" v="Ölsaat"/>
-        <e k="cropRotation_Category_2" v="Getreide"/>
-        <e k="cropRotation_Category_3" v="Hülsenfrucht"/>
-        <e k="cropRotation_Category_4" v="Wurzelfrucht"/>
-        <e k="cropRotation_Category_5" v="Kartoffeln"/>
-        <e k="cropRotation_Category_6" v="Gras"/>
+        <e k="cropRotation_fallow" v="Brachland"/>
+        <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Fruchtfolge"/>
-        <e k="cropRotation_hud_fieldInfo_previous" v="letzte Frucht"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Frühere Ernten"/>
         <e k="cropRotation_hud_fieldInfo_perfect" v="Perfekt"/>
         <e k="cropRotation_hud_fieldInfo_good" v="Gut"/>
         <e k="cropRotation_hud_fieldInfo_ok" v="Ok"/>
         <e k="cropRotation_hud_fieldInfo_bad" v="Schlecht"/>
+        <!-- planner gui -->
+        <e k="cropRotation_gui_planner_title" v="Fruchtfolge Planner" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Fruchtfolge %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Fruchtfolge"/>
         <e k="cropRotation_helpTitle_01" v="Allgemeines"/>
@@ -32,7 +30,7 @@
         <e k="cropRotation_helpText_02_02" v="Raps, Sonnenblumen, Kartoffeln und Zuckerrüben können in der dritten Saison zurückkehren."/>
         <e k="cropRotation_helpText_02_03" v="Die meisten Getreidearten, Sojabohnen, Zuckerrohr und Baumwolle benötigen mindestens ein Jahr Pause."/>
         <e k="cropRotation_helpText_02_04" v="Mais, Gras und Pappel können jedes Jahr angebaut werden, aber der Landwirt muss Ertragseinbußen aufgrund des Nährstoffmangels im Boden berücksichtigen."/>
-        <e k="cropRotation_helpText_03_01" v="Manche Pflanzen wachsen besser nach anderen. Um dies auszudrücken, wurden Nutzpflanzen in mehrere Kategorien eingeteilt: Ölsaaten, Getreide, Hülsenfrüchte, Wurzeln, Kartoffeln und Gräser."/>
+        <e k="cropRotation_helpText_03_01" v="Manche Pflanzen wachsen besser nach anderen."/>
         <e k="cropRotation_helpText_03_02" v="Pflanzen innerhalb einer Gruppe haben ähnliche Eigenschaften, daher sollten Sie vermeiden, sie nacheinander auf derselben Parzelle zu pflanzen."/>
         <e k="cropRotation_helpText_03_03" v="Zum Beispiel: Getreide und Ölsaaten wachsen sehr gut nach Leguminosen. Wurzeln wachsen gut nach Getreide. Raps oder Sonnenblumen können nach Zuckerrüben sehr gut wachsen."/>
         <e k="cropRotation_helpText_03_04" v="Zwei letzte Fruchtkategorien haben den dominierenden Einfluss auf den aktuellen Ertrag."/>
@@ -40,8 +38,13 @@
         <e k="cropRotation_helpText_04_02" v="Der Boden wird dann wieder in der Lage sein, selbst die anspruchsvollsten Pflanzen zu tragen."/>
         <e k="cropRotation_helpText_05_01" v="In der Feldinfobox gibt es einen zusätzlichen Eintrag mit Fruchtfolgeeffizienz und zwei zuletzt geernteten Fruchtkategorien."/>
         <e k="cropRotation_helpText_05_02" v="Die Fruchtfolgeeffizienz ist der Prozentsatz des Gewinns (oder Verlusts) des Ertrags."/>
-        <e k="cropRotation_helpText_05_03" v="Eine perfekte Fruchtfolge ermöglicht zusätzliche 20 Prozent des Ertrags."/>
+        <e k="cropRotation_helpText_05_03" v="Eine perfekte Fruchtfolge ermöglicht zusätzliche 15 Prozent des Ertrags."/>
         <e k="cropRotation_helpText_05_04" v="Das Ignorieren der Fruchtfolge kann zu 30 Prozent Ertragsverlust führen."/>
+        <e k="cropRotation_helpText_05_05" v="Feldinfobox-Elemente:
+        A. derzeit wachsende Ernte
+        B. frühere Ernten vom neusten zum ältesten
+        C. Gesamtleistung mit textueller Beschreibung und Ertragszuschlag/-abschlag
+        D. Erntegut wird zum ersten Eintrag weitergeleitet, und der letzte Eintrag wird vergessen." />
         <e k="cropRotation_helpText_06_01" v="Falls der Präzisionslandwirtschafts-Mod verwendet wird, wird die Fruchtfolgeeffizienz zu einem der Bestandteile der endgültigen Ertragsschätzung, die der Präzisionslandwirtschafts-Infobox hinzugefügt wird."/>
         <e k="cropRotation_helpText_06_02" v="Die Fruchtfolgeeffizienz ist jetzt neben Stickstoff, pH-Wert, Bodentyp, Saatmenge und Unkrautkoeffizienten ein Teil des Ertragspotenzials."/>
     </elements>

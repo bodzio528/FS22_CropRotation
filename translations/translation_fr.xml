@@ -2,19 +2,17 @@
 <l10n>
     <translationContributors>Lactic68</translationContributors>
     <elements>
-        <e k="cropRotation_Category_0" v="Jachère"/>
-        <e k="cropRotation_Category_1" v="Oléagineux"/>
-        <e k="cropRotation_Category_2" v="Céréales"/>
-        <e k="cropRotation_Category_3" v="Légumineuses"/>
-        <e k="cropRotation_Category_4" v="Racines"/>
-        <e k="cropRotation_Category_5" v="Solanacées"/>
-        <e k="cropRotation_Category_6" v="Graminées"/>
+        <e k="cropRotation_fallow" v="Jachère"/>
+        <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Rotation des cultures"/>
-        <e k="cropRotation_hud_fieldInfo_previous" v="Précèdente"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Récolte précèdente"/>
         <e k="cropRotation_hud_fieldInfo_perfect" v="Parfait"/>
         <e k="cropRotation_hud_fieldInfo_good" v="Bon"/>
         <e k="cropRotation_hud_fieldInfo_ok" v="Correct"/>
         <e k="cropRotation_hud_fieldInfo_bad" v="Mauvais"/>
+        <!-- planner gui -->
+        <e k="cropRotation_gui_planner_title" v="Rotation planner" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Rotation %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Rotation des cultures"/>
         <e k="cropRotation_helpTitle_01" v="Information générale"/>
@@ -32,7 +30,7 @@
         <e k="cropRotation_helpText_02_02" v="Le colza, le tournesol, les pommes de terre et les betteraves peuvent être replantés après la troisième saison."/>
         <e k="cropRotation_helpText_02_03" v="L'essentiel des céréales, le soja, la canne à sucre et le cotton nécessitent au moins une année complète avant de pouvoir être replantés."/>
         <e k="cropRotation_helpText_02_04" v="Le maïs, l'herbe et les peupliers pouvent être plantés chaque année mais il y aura une perte de rendement au fur et à mesure en fonction de l'appauvrissement du sol."/>
-        <e k="cropRotation_helpText_03_01" v="Certaines catégories de cultures poussent mieux après d'autres. Pour classer les cultures, plusieurs catégories sont utilisées : oléagineux, céréales, légumineuses, racines, solanacées et graminées."/>
+        <e k="cropRotation_helpText_03_01" v="Certaines catégories de cultures poussent mieux après d'autres."/>
         <e k="cropRotation_helpText_03_02" v="Les cultures dans une même catégorie ont les mêmes propriétés. C'est pourquoi il ne faudrait pas les replanter deux fois de suite dans la même parcelle."/>
         <e k="cropRotation_helpText_03_03" v="Les céréales et les oléagineux poussent par exemple très bien après des légumineuses. Les plantes racinaires croissent mieux après des céréales. Le colza ou le tournesol profitent également d'une meilleure croissance après les betteraves."/>
         <e k="cropRotation_helpText_03_04" v="Deux catégories ont une influence importante sur le rendement de la parcelle."/>
@@ -40,8 +38,13 @@
         <e k="cropRotation_helpText_04_02" v="La jachère annuelle est active uniquement avec le paramètre de croissance saisonnière actif sur votre partie."/>
         <e k="cropRotation_helpText_05_01" v="Il y a maintenant une information supplémentaire dans le tableau de résumé de la parcelle qui reprend l'efficacité de la rotation ainsi que les deux dernières catégories de cultures récoltées."/>
         <e k="cropRotation_helpText_05_02" v="L'efficacité de la rotation est exprimée en pourcentage et représente le gain ou la perte de rendement dans la parcelle par rapport à 100%."/>
-        <e k="cropRotation_helpText_05_03" v="Une rotation parfaite des cultures permet un gain de 20 pourcent de rendement."/>
+        <e k="cropRotation_helpText_05_03" v="Une rotation parfaite des cultures permet un gain de 15 pourcent de rendement."/>
         <e k="cropRotation_helpText_05_04" v="L'absence de rotation des cultures entrainera une perte de 30 pourcent de rendement."/>
+        <e k="cropRotation_helpText_05_05" v="Éléments du panneau d'information:
+        A. culture en cours de croissance
+        B. cultures précédentes de la plus récente à la plus ancienne
+        C. performance globale avec description textuelle et bonus/réduction de rendement
+        D. la récolte récoltée est transmise à la première entrée, et la dernière entrée est oubliée." />
         <e k="cropRotation_helpText_06_01" v="Lorsque le mod Precision Farming est activé, l'efficacité de la rotation entre dans le calcul final du rendement estimé. Elle est également ajoutée dans la fenêtre d'information du Precision Farming."/>
         <e k="cropRotation_helpText_06_02" v="L'efficacité de la rotation de cultures fait à présent partie du potentiel de rendement, en plus de l'azote, du pH, du type de sol, de la densité des semis et des mauvaises herbes."/>
     </elements>

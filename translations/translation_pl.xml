@@ -2,19 +2,17 @@
 <l10n>
     <translationContributors>Bodzio528</translationContributors>
     <elements>
-        <e k="cropRotation_Category_0" v="Ugór" />
-        <e k="cropRotation_Category_1" v="Oleiste" />
-        <e k="cropRotation_Category_2" v="Zboża" />
-        <e k="cropRotation_Category_3" v="Strączkowe" />
-        <e k="cropRotation_Category_4" v="Okopowe" />
-        <e k="cropRotation_Category_5" v="Psiankowate" />
-        <e k="cropRotation_Category_6" v="Trawa" />
+        <e k="cropRotation_fallow" v="Ugór" />
+        <!-- player hud display -->
         <e k="cropRotation_hud_fieldInfo_title" v="Płodozmian" />
-        <e k="cropRotation_hud_fieldInfo_previous" v="Uprawy" />
+        <e k="cropRotation_hud_fieldInfo_previous" v="Poprzednie zbiory" />
         <e k="cropRotation_hud_fieldInfo_perfect" v="Doskonale" />
         <e k="cropRotation_hud_fieldInfo_good" v="Dobrze" />
         <e k="cropRotation_hud_fieldInfo_ok" v="W porządku" />
         <e k="cropRotation_hud_fieldInfo_bad" v="Źle" />
+        <!-- planner gui -->
+        <e k="cropRotation_gui_planner_title" v="Planer płodozmianu" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Płodozmian %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Płodozmian"/>
         <e k="cropRotation_helpTitle_01" v="Informacje ogólne"/>
@@ -31,8 +29,8 @@
         <e k="cropRotation_helpText_02_01" v="Istnieje pewien minimalny czas, jaki należy zachować przed ponownym użyciem pola do uprawy danej rośliny, aby plon nie uległ obniżeniu z powodu szkodników i patogenów."/>
         <e k="cropRotation_helpText_02_02" v="Na trzeci zasier mogą powrócić: rzepak, słoneczniki, ziemniaki i buraki cukrowe."/>
         <e k="cropRotation_helpText_02_03" v="Większość zbóż oraz soja, trzcina cukrowa i bawełna mogą być uprawiane w odstępie minimum roku."/>
-        <e k="cropRotation_helpText_02_04" v="Kukurydza, trawa i topola mogą być uprawiane rok po roku, trzeba jednak liczyć się z obniżeniem plonu z powodu wyjałownia gleby."/>
-        <e k="cropRotation_helpText_03_01" v="Niektóre rośliny rosną lepiej, a niektóre gorzej w zależności od rodzaju ich poprzedników. Uprawy zostały podzielone na sześć kategorii: oleiste, zboża, motylkowe, okopowe, psiankowate i trawy."/>
+        <e k="cropRotation_helpText_02_04" v="Kukurydza, trawa i topola mogą być uprawiane rok po roku, trzeba jednak liczyć się z obniżeniem plonu z powodu wyjałowienia gleby."/>
+        <e k="cropRotation_helpText_03_01" v="Niektóre rośliny rosną lepiej, a niektóre gorzej w zależności od rodzaju ich poprzedników."/>
         <e k="cropRotation_helpText_03_02" v="Rośliny zaklasyfikowane do tej samej grupy mają podobne wymagania, toteż należy unikać uprawiania na polu roślin w obrębie kategorii bezpośrednio po sobie."/>
         <e k="cropRotation_helpText_03_03" v="I tak na przykład po roślinach motylkowych (soja) bardzo dobrze rosną zboża i rośliny oleiste. Po okopowych warto posiać rzepak lub słoneczniki. A okopowe dobrze rosną na polach po zbożach."/>
         <e k="cropRotation_helpText_03_04" v="Dwa ostatnie rodzaje upraw mają dominujący wpływ na plon obecnej."/>
@@ -40,8 +38,13 @@
         <e k="cropRotation_helpText_04_02" v="Ugorowanie ma zastosowanie wyłącznie wtedy, gdy włączony jest wzrost sezonowy w ustawieniach rozgrywki."/>
         <e k="cropRotation_helpText_05_01" v="Na panelu informacji o polu znajduje się teraz bieżąca ocena prowadzonego płodozmianu wraz z informacją o uprawach z poprzednich dwóch lat."/>
         <e k="cropRotation_helpText_05_02" v="Ocena wyrażona jest w procentowym zwiększeniu (lub zmniejszeniu) plonu."/>
-        <e k="cropRotation_helpText_05_03" v="Idealny płodozmian pozwala na zwiększenie plonu nawet o 20%."/>
+        <e k="cropRotation_helpText_05_03" v="Idealny płodozmian pozwala na zwiększenie plonu o 15%."/>
         <e k="cropRotation_helpText_05_04" v="Płodozmian źle poporowadzony może skutkować zmniejszeniem plonu nawet o 30%."/>
+        <e k="cropRotation_helpText_05_05" v="Informacje zawarte w panelu informacyjnym:
+        A. aktualna uprawa
+        B. poprzednie uprawy w kolejności od najświeższej do najstarszej
+        C. aktualna wydajność płodozmianu z opisem i procentową informacją o zwiększeniu/zmniejszeniu plonu
+        D. schemat zmianowania - zebrana uprawa zapisywana jest w miejscu ostatniego, a najstarszy wpis jest kasowany." />
         <e k="cropRotation_helpText_06_01" v="Jeśli używasz modyfikacji rolnictwo precyzyjne, informacja o płodozmianie jest dołączona do panelu informacji o rolnictwie precyzyjnym."/>
         <e k="cropRotation_helpText_06_02" v="Ocena płodozmianu jest składową potencjału plonowania, obok poziomu nawożenia azotem, odczynu pH, rodzaju gleby, gęstości zasiewu itp."/>
     </elements>

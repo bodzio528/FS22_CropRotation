@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="67">
+<modDesc descVersion="69">
     <author>Bodzio528</author>
-    <version>1.1.0.2</version>
+    <version>2.0.0.0</version>
     <title>
         <en>Crop Rotation</en>
         <de>Fruchtfolge</de>
@@ -14,119 +14,95 @@
 
 Try yourself in reality, where nitrogen and lime are not the only nutrients that plants consume during their growth.
 
-Gain up to 20% additional yield if you done it right.
+Gain up to 15% additional yield if you done it right.
 Loose even more if you fail to take good care about the soil!
 
 Key features:
-- six categories of crops: oilseed, cereal, legume, roots, nightshade and grass
 - crop-specific return period to mitigate monoculture
 - fallow support, up to two years (only with seasonal growth enabled)
 - crop rotation info added to player HUD field information box
 - detailed in-game help menu (with pictures!)
 
-Changelog 1.1.0.0:
-- added support for GEO type mods
-- performance improved
-- fixed bug with incomplete crops.xml file
-
-Changelog 1.1.0.1:
-- update french translation
+Changelog 2.0.0.0:
+- mod rewritten for modhub release
 ]]></en>
         <de><![CDATA[Der Crop Rotation-Mod bietet Anreize für den Anbau verschiedener Pflanzen, anstatt immer wieder Kartoffeln anzupflanzen.
 
 Probieren Sie es in der Realität aus, wo Stickstoff und Kalk nicht die einzigen Nährstoffe sind, die Pflanzen während ihres Wachstums verbrauchen.
 
-Gewinnen Sie bis zu 20 % Mehrertrag, wenn Sie es richtig gemacht haben.
+Gewinnen Sie bis zu 15 % Mehrertrag, wenn Sie es richtig gemacht haben.
 Verlieren Sie noch mehr, wenn Sie den Boden nicht gut pflegen!
 
 Hauptmerkmale:
-- sechs Kulturpflanzenkategorien: Ölsaaten, Getreide, Hülsenfrüchte, Wurzeln, Nachtschatten und Gräser
 - kulturspezifische Wiederkehrfrist zur Abschwächung von Monokulturen
 - Brachlandunterstützung, bis zu zwei Jahre (nur bei aktiviertem saisonalem Wachstum)
 - Informationen zur Fruchtfolge wurden dem Feldinformationsfeld des Spieler-HUD hinzugefügt
 - Detailliertes Hilfemenü im Spiel (mit Bildern!)
 
-Changelog 1.1.0.0:
-- Unterstützung für Mods vom Typ GEO hinzugefügt
-- Leistung verbessert
-- Fehler mit unvollständiger crops.xml-Datei behoben
-
-Changelog 1.1.0.1:
-- update french translation
+Changelog 2.0.0.0:
+- mod rewritten for modhub release
 ]]></de>
         <fr><![CDATA[Le mod de rotation des cultures incite à cultiver différentes cultures plutôt que de planter des pommes de terre encore et encore.
 
 Dans la réalité, l'azote et la chaux ne sont pas les seuls nutriments que les plantes consomment pendant leur croissance.
 
-Gagnez jusqu'à 20% de rendement supplémentaire si vous prenez soin d'alterner correctement les cultures.
+Gagnez jusqu'à 15% de rendement supplémentaire si vous prenez soin d'alterner correctement les cultures.
 Perdez du rendement si vous ne prenez pas bien soin du sol !
 
 Principales caractéristiques:
-- six catégories de cultures : oléagineux, céréales, légumineuses, racines, solanacées et graminées
 - intervalle avant replantage spécifique à la culture pour atténuer la monoculture
 - promotion de la jachère pour redonner au sol le temps de reconstituer ses nutriments, jusqu'à deux ans (uniquement avec la croissance saisonnière activée)
 - informations sur la rotation des cultures ajoutées dans la fenêtre d'information de la parcelle
 - menu d'aide détaillé dans le jeu (avec images !)
 
-Changelog 1.1.0.0:
-- ajout du support pour les mods de type GEO
-- performances améliorées
-- correction d'un bug avec le fichier crop.xml incomplet
-
-Changelog 1.1.0.1:
-- update french translation
+Changelog 2.0.0.0:
+- mod rewritten for modhub release
 ]]></fr>
         <pl><![CDATA[Modyfikacja Płodozmian wprowadza zachętę do zmianowania upraw w miejsce hodowli monokulturowej.
 
 Sprawdź, jak poradzisz sobie w sytuacji, gdzie azot i wapno same już nie wystarczają do zaspokojenia apetytu upraw.
 
-Możesz zyskać dodatkowe 20% plonu, jeśli poprowadzisz zmianowanie poprawnie.
+Możesz zyskać dodatkowe 15% plonu, jeśli poprowadzisz zmianowanie poprawnie.
 Możesz stracić więcej plonu, jeśli nie zadbasz o kondycję gleby!
 
 Główne cechy:
-- sześć kategorii upraw: oleiste, zboża, motylkowe, okopowe, psiankowate i trawy
 - uprawy mają określone okresy powrotu na stanowisko: trzy lata, dwa lata lub coroczne
 - możliwość zostawienia pola odłogiem, celem rewitalizacji gleby
 - dane o zmianowaniu widoczne na panelu informacji o polu
 - szczegółowy opis w menu pomocy (są obrazki!)
 
-Changelog 1.1.0.0:
-- dodano wsparcie dla modów typu GEO
-- poprawiono wydajność
-- usunięto błąd w przypadku niekompletnego pliku crops.xml
-
-Changelog 1.1.0.1:
-- zaktualizowano francuskie tłumaczenie
+Changelog 2.0.0.0:
+- mod rewritten for modhub release
 ]]></pl>
-
         <cz><![CDATA[Mod Crop Rotation nabádá uživatele ke střídání plodin namísto monokultur.
 
 Vyzkoušejte si v realitě, kde dusík a vápno nejsou jediné živiny, které rostliny během svého růstu spotřebovávají.
 
-Pokud jste udělali všechno správně, můžete získat až o 20% dodatečný výnos.
+Pokud jste udělali všechno správně, můžete získat až o 15% dodatečný výnos.
 Naopak ztráta může být ještě větší, pokud se o půdu nebudete dobře starat!
 
 Klíčové vlastnosti:
-- šest kategorií plodin: olejnatá semena, obiloviny, luskoviny, kořenové plodiny, lilek a tráva
 - návratové období specifické pro plodiny ke zmírnění monokultury
 - podpora ladem, až na dva roky (pouze s povoleným sezónním růstem)
 - informace o rotaci plodin byly přidány do informačního pole HUD hráče
 - podrobné menu nápovědy ve hře (s obrázky!)
 
-Changelog 1.1.0.0:
-- added support for GEO type mods
-- performance improved
-- fixed bug with incomplete crops.xml file
-
-Changelog 1.1.0.1:
-- update french translation
+Changelog 2.0.0.0:
+- mod rewritten for modhub release
 ]]></cz>
     </description>
+
     <iconFilename>modIcon.dds</iconFilename>
+
     <multiplayer supported="true"/>
+
     <extraSourceFiles>
         <sourceFile filename="main.lua"/>
     </extraSourceFiles>
 
     <l10n filenamePrefix="translations/translation" />
+
+    <dependencies>
+        <dependency>FS22_precisionFarming</dependency>
+    </dependencies>
 </modDesc>
