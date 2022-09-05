@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="69">
+<modDesc descVersion="68">
     <author>Bodzio528</author>
     <version>2.0.0.0</version>
     <title>
@@ -7,7 +7,7 @@
         <de>Fruchtfolge</de>
         <fr>Rotation Des Cultures</fr>
         <pl>Płodozmian</pl>
-		<cz>Střídání plodin</cz>
+        <cz>Střídání Plodin</cz>
     </title>
     <description>
         <en><![CDATA[The Crop Rotation mod introduces incentive for growing different crops rather than planting potatoes over and over again.
