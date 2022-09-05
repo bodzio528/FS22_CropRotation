@@ -1,20 +1,10 @@
-----------------------------------------------------------------------------------------------------
--- TODO:
--- try to replace it with GIANTS engine functions (not documented).
 --
--- what have I found so far:
--- self.fallowUpdater = createDensityMapUpdater("cropRotation", self.bitVectorMap, firstChannel, numChannels, minValue, maxValue, 0, 0, 0, 0, 0)
--- setDensityMapUpdaterApplyFinishedCallback(self.fallowUpdater, "onEngineStepFinished", self)
--- setDensityMapUpdaterApplyMaxTimePerFrame(self.fallowUpdater, self:getMaxUpdateTime())                        -- 1 or 1.5 when sleeping, use g_sleepManager
+-- FS22 Crop Rotation mod
 --
--- local groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels = self.mission.fieldGroundSystem:getDensityMapData(FieldDensityMap.GROUND_TYPE)
--- setDensityMapUpdaterMask(self.fallowUpdater, groundTypeMapId, groundTypeFirstChannel, groundTypeNumChannels) -- update only field ground
--- setDensityMapUpdaterEnabled(self.fallowUpdater, true)                                                        -- probably unneeded, could be usefull to pause updater under heavy stress
+-- DensityMapUpdater.lua - class for processing scheduled jobs in chunks, simulating asynchronous execution
 --
--- call prepared updater with different masks to update category to FALLOW wherever the conditions are satisfied
--- setDensityMapUpdaterNextValue(self.fallowUpdater, 0, from, to)                                               -- second argument seems to be wrong, engine refuses it, while in PrecisionFarming it works well
--- applyDensityMapUpdater(self.fallowUpdater, "onEngineStepFinishedCallback", self, self:getMaxUpdateTime())    -- schedule the work
-----------------------------------------------------------------------------------------------------
+-- Implementation of Reactor, as described in
+-- Schmidt, Douglas et al. Pattern-Oriented Software Architecture Volume 2: Patterns for Concurrent and Networked Objects.
 
 DensityMapUpdater = {}
 

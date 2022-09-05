@@ -1,3 +1,10 @@
+--
+-- FS22 - Crop Rotation mod
+--
+-- Queue.lua - wrapper around lua to model FIFO container, as described in
+-- Knuth, Donald The Art of Computer Programming, Volume 1: Fundamental Algorithms
+--
+
 Queue = {}
 
 local Queue_mt = Class(Queue)

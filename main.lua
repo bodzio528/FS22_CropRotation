@@ -3,14 +3,6 @@
 --
 -- main.lua - mod loader script
 --
--- @Author: Bodzio528
--- @Version: 2.0.0.0
-
--- Changelog:
---  v2.0.0.0 (30.08.2022):
---      - code rewrite
--- 	v1.0.0.0 (03.08.2022):
---      - Initial release
 
 local modDirectory = g_currentModDirectory
 

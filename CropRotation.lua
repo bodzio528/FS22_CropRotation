@@ -7,49 +7,10 @@
 -- @Version: 2.0.0.0
 
 -- Changelog:
---  v2.0.0.0 (30.08.2022):
+--  v2.0.0.0 (05.09.2022):
 --      - code rewrite
 -- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
-
---[[
--- TODO: check if this little piece of code is loaded properly
--- TODO: make it FS22_SoilCare mod
-PF_ValueMap = FS22_precisionFarming.ValueMap
-
-BiomassMap = {
-    MAP_NUM_CHANNELS = 3
-}
-
-BiomassMap_mt = Class(BiomassMap, PF_ValueMap)
-
-function BiomassMap.new(pfModule, customMt)
-    local self = PF_ValueMap.new(pfModule, customMt or BiomassMap_mt)
-
-    return self
-end
-
----Calculate the yield multiplier based on the soil condition
--- TODO: move to BiomassMap
-function CropRotation:getSoilConditionYieldMultiplier(v)
-
-    -- F(v) = v^3/500 - v^2/50 - v/125 + 1.15
-    --
-    -- F(perfect) = 1.15
-    -- F(good_2) = 1.125
-    -- F(good_1) = 1.07
-    -- F(ok_2) = 1.0
-    -- F(ok_1) = 0.93
-    -- F(bad_3) = 0.86
-    -- F(bad_2) = 0.815
-    -- F(bad_1) = 0.8
-
-    return 0.002 * v ^ 3 - 0.02 * v ^ 2 - 0.008 * v + 1.15
-end
-
-    -- TODO: * cropRotation:getSoilConditionYieldMultiplier()
-    -- TODO: read BiomassMap for level!
-]]
 
 CropRotation = {
     MOD_NAME = g_currentModName or "FS22_PF_CropRotation",
@@ -74,7 +35,7 @@ CropRotation.COLORS = {
     [7] = { color = {0.9910, 0.0000, 0.0000, 1}, colorBlind = {0.1000, 0.1000, 0.1000, 1}, text = "cropRotation_hud_fieldInfo_bad" }
 }
 
-CropRotation.debug = true -- false --
+CropRotation.debug = false -- true --
 
 function overwrittenStaticFunction(object, funcName, newFunc)
     local oldFunc = object[funcName]
@@ -165,14 +126,9 @@ function CropRotation:initCache()
 end
 
 function CropRotation:delete()
-    if self.map ~= 0 then
-        delete(self.map)
-    end
-
     self.densityMapUpdater:unregisterCallback("UpdateFallow")
 
     if self.densityMapUpdater ~= nil then
-        delete(self.densityMapUpdater)
         self.densityMapUpdater = nil
     end
 
@@ -466,15 +422,17 @@ function CropRotation:load()
     self:loadCropRotationMap() --
     self:loadModifiers()
 
-    local fallowFinalizer = function (target, parameters)
+    local finalizer = function (target)
         if CropRotation.debug then
-            log("CropRotation:finalizer(Fallow): job finished successfully!")
+            log("CropRotation:finalizer(): job finished successfully!")
         end
     end
 
-    self.densityMapUpdater:registerCallback("UpdateFallow", self.job_updateFallow, self, fallowFinalizer, false)
+    self.densityMapUpdater:registerCallback("UpdateFallow", self.job_updateFallow, self, finalizer)
+    self.densityMapUpdater:registerCallback("UpdateRegrow", self.job_updateRegrow, self, finalizer)
 
     self.messageCenter:subscribe(MessageType.YEAR_CHANGED, self.onYearChanged, self)
+    self.messageCenter:subscribe(MessageType.PERIOD_CHANGED, self.onPeriodChanged, self)
 end
 
 function CropRotation:onTerrainLoaded(mission, terrainId, mapFilename)
@@ -533,6 +491,12 @@ function CropRotation:onYearChanged(newYear)
     self.densityMapUpdater:schedule("UpdateFallow")
 end
 
+function CropRotation:onPeriodChanged(newPeriod)
+    log("CropRotation:onPeriodChanged(): newPeriod =", newPeriod)
+    -- TODO run it quaterly
+    self.densityMapUpdater:schedule("UpdateRegrow")
+end
+
 ------------------------------------------------
 --- Density Map Updater periodic job
 ------------------------------------------------
@@ -571,6 +535,25 @@ function CropRotation:job_updateFallow(startWorldX, startWorldZ, widthWorldX, wi
                                                     heightWorldZ / terrainSize + 0.5,
                                                     DensityCoordType.POINT_POINT_POINT)
     mapModifiers.modifierF:executeSet(0)
+end
+
+function CropRotation:job_updateRegrow(startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ)
+    local terrainSize = self.terrainSize
+    local mapModifiers = self.modifiers.map
+
+    for i, desc in pairs(self.fruitTypeManager:getFruitTypes()) do
+        if desc.regrows then
+            mapModifiers.filterR1:setValueCompareParams(DensityValueCompareType.EQUAL, i)
+            mapModifiers.modifierH:setParallelogramUVCoords(startWorldX / terrainSize + 0.5,
+                                                            startWorldZ / terrainSize + 0.5,
+                                                            widthWorldX / terrainSize + 0.5,
+                                                            widthWorldZ / terrainSize + 0.5,
+                                                            heightWorldX / terrainSize + 0.5,
+                                                            heightWorldZ / terrainSize + 0.5,
+                                                            DensityCoordType.POINT_POINT_POINT)
+            mapModifiers.modifierH:executeSet(0, mapModifiers.filterR1)
+        end
+    end
 end
 
 ------------------------------------------------
@@ -643,7 +626,7 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
     local yieldMultiplier = 1
     if prev ~= -1 or last ~= -1 then
         -- Calculate the multiplier
-        yieldMultiplier = cropRotation:getRotationYieldMultiplier(r2, r1, fruitIndex)
+        yieldMultiplier = cropRotation:getRotationYieldMultiplier(prev, last, fruitIndex)
 
         prev = last
         last = fruitIndex

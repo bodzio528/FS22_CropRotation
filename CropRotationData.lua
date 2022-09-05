@@ -5,15 +5,6 @@
 --
 -- manage static data - crop categories and properties,
 -- make contents of data/crops.xml accessible
---
--- @Author: Bodzio528
--- @Version: 2.0.0.0
---
--- Changelog:
---  v2.0.0.0 (30.08.2022):
---      - code rewrite
--- 	v1.0.0.0 (03.08.2022):
---      - Initial release
 
 CropRotationData = {}
 CropRotationData.debug = false -- true --
