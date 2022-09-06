@@ -61,7 +61,8 @@ function CropRotationData:load()
     if xmlFile then
         local cropsKey = "crops"
         if not hasXMLProperty(xmlFile, cropsKey) then
-            log(string.format("CropRotationData:load(): ERROR loading XML element '%s' failed:", cropsKey), self.xmlFilePath)
+            log(string.format("CropRotationData:load(): ERROR loading XML element '%s' failed:", cropsKey),
+                self.xmlFilePath)
             return
         end
 
@@ -82,25 +83,22 @@ function CropRotationData:load()
 
             local cropName = getXMLString(xmlFile, cropKey .. "#name"):upper()
             if cropName ~= nil then
+                local cropEnabled = Utils.getNoNil(getXMLBool(xmlFile, cropKey .. "#enabled"), true)
                 local cropReturnPeriod = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#returnPeriod"), 2)
-                local cropGrowth = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#growth"), 0)
-                local cropHarvest = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#harvest"), 1)
-
                 local goodForecrops = Utils.getNoNil(getXMLString(xmlFile, cropKey .. ".good"), ""):upper()
                 local badForecrops = Utils.getNoNil(getXMLString(xmlFile, cropKey .. ".bad"), ""):upper()
 
                 if CropRotationData.debug then
-                    log("CropRotationData:load(): DEBUG read crop ", cropName, "forecrops: good: [", goodForecrops, "] bad: [", badForecrops, "]")
+                    log(string.format("CropRotationData:load(): DEBUG read crop %s forecrops: good: [%s] bad: [%s]",
+                                      cropName, goodForecrops, badForecrops))
                 end
 
                 self.crops[cropName] = {
+                    enabled = cropEnabled,
                     returnPeriod = cropReturnPeriod,
-                    growth = cropGrowth,
-                    harvest = cropHarvest,
                     good = string.split(goodForecrops, " "),
                     bad = string.split(badForecrops, " ")
                 }
-
             else
                 log("CropRotationData:load(): ERROR XML loading failed:", self.xmlFilePath)
                 return
@@ -112,25 +110,23 @@ function CropRotationData:load()
         delete(xmlFile)
     end
 
-    for i, crop in pairs(self.crops) do
-        local fruitType = self.fruitTypeManager:getFruitTypeByName(i)
+    for cropName, cropDesc in pairs(self.crops) do
+        local fruitType = self.fruitTypeManager:getFruitTypeByName(cropName)
         if fruitType ~= nil then
             fruitType.rotation = {}
-            fruitType.rotation.enabled = true
-            fruitType.rotation.returnPeriod = crop.returnPeriod
-            fruitType.rotation.growth = crop.growth
-            fruitType.rotation.harvest = crop.harvest
+            fruitType.rotation.enabled = cropDesc.enabled
+            fruitType.rotation.returnPeriod = cropDesc.returnPeriod
 
             self.matrix[fruitType.index] = {}
 
-            for _, name in pairs(crop.good) do
+            for _, name in pairs(cropDesc.good) do
                 local forecropType = self.fruitTypeManager:getFruitTypeByName(name)
                 if forecropType ~= nil then
                     self.matrix[fruitType.index][forecropType.index] = CropRotationData.GOOD
                 end
             end
 
-            for _, name in pairs(crop.bad) do
+            for _, name in pairs(cropDesc.bad) do
                 local forecropType = self.fruitTypeManager:getFruitTypeByName(name)
                 if forecropType ~= nil then
                     self.matrix[fruitType.index][forecropType.index] = CropRotationData.BAD
@@ -142,17 +138,15 @@ function CropRotationData:load()
     -- process fruits not mentioned in crops.xml
     for k, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
         if self.crops[fruitType.name] == nil then
-            log("CropRotationData:load(): INFO fruit:", fruitType.index, fruitType.name,
-                "not mentioned in data/crops.xml file. Loading sane defaults.")
+            log(string.format("CropRotationData:load(): INFO fruit (%i): '%s' not mentioned in data/crops.xml file.",
+                              fruitType.index, fruitType.name))
 
             fruitType.rotation = {
                 enabled = false,
-                returnPeriod = 2,
-                growth = 0,
-                harvest = 0
+                returnPeriod = 2
             }
 
-            -- no good & no bad forecrops
+            -- no good and no bad forecrops
             self.matrix[fruitType.index] = {}
         end
     end
@@ -174,7 +168,7 @@ function CropRotationData:postLoad()
             log("CropRotationData:postLoad(): WARNING Empty rotation data for fruit", fruitIndex, fruitType.name)
         end
 
-        log("CropRotationData:postLoad(): DEBUG end crop rotation table for fruit:", fruitIndex,  fruitType.name)
+        log("CropRotationData:postLoad(): DEBUG end crop rotation table for fruit:", fruitIndex, fruitType.name)
     end
 
     log("CropRotationData:postLoad(): DEBUG ... done")

@@ -40,7 +40,6 @@ function cr_unload()
     end
 end
 
---sets terrain root node.set lod, culling, audio culing, creates fruit updaters, sets fruit types to menu, installs weed, DM syncing
 function cr_initTerrain(mission, terrainId, filename)
     if not isActive() then return end
 
