@@ -22,7 +22,7 @@ end
 function Queue:delete()
 end
 
----Push an element to the queue (O(1))
+-- Push an element to the queue (O(1))
 function Queue:push(value)
     if self.last then
         self.last._next = value
@@ -37,7 +37,7 @@ function Queue:push(value)
     self.size = self.size + 1
 end
 
----Pop an element from the queue (O(1))
+-- Pop an element from the queue (O(1))
 function Queue:pop()
     if not self.first then
         return

@@ -27,7 +27,7 @@ function DensityMapUpdater:new(mission, sleepManager, isDedicatedServer)
     self.sleepManager = sleepManager
 
     self.queue = Queue:new()
-    self.callbacks = {}
+    self.tasks = {}
 
     return self
 end
@@ -44,18 +44,18 @@ function DensityMapUpdater:update(dt)
         return
     end
 
-    if self.currentJob == nil then
-        self.currentJob = self.queue:pop()
+    if self.currentTask == nil then
+        self.currentTask = self.queue:pop()
 
-        if self.currentJob then
-            self.currentJob.x = 0
-            self.currentJob.z = 0
+        if self.currentTask then
+            self.currentTask.x = 0
+            self.currentTask.z = 0
 
-            log("DensityMapUpdater: INFO start processing", self.currentJob.callbackId)
+            log("DensityMapUpdater: INFO start processing", self.currentTask.taskId)
         end
     end
 
-    if self.currentJob ~= nil then
+    if self.currentTask ~= nil then
         local num = 2 * math.floor(self.mission.terrainSize / 2048)
 
         if not GS_IS_CONSOLE_VERSION then
@@ -71,8 +71,8 @@ function DensityMapUpdater:update(dt)
         end
 
         for i = 1, num do
-            if self:process(self.currentJob) == DensityMapUpdater.FINISHED then
-                self.currentJob = nil
+            if self:process(self.currentTask) == DensityMapUpdater.FINISHED then
+                self.currentTask = nil
 
                 break
             end
@@ -80,41 +80,41 @@ function DensityMapUpdater:update(dt)
     end
 end
 
-function DensityMapUpdater:schedule(callbackId)
+function DensityMapUpdater:schedule(taskId)
     if self.isServer then
-        if self.callbacks[callbackId] == nil then
-            log("DensityMapUpdater: ERROR Callback is not registered:", callbackId)
+        if self.tasks[taskId] == nil then
+            log("DensityMapUpdater: ERROR Task is not registered:", taskId)
             return
         end
 
-        log("DensityMapUpdater: INFO schedule", callbackId)
+        log("DensityMapUpdater: INFO schedule", taskId)
 
-        self.queue:push({callbackId = callbackId})
+        self.queue:push({taskId = taskId})
     end
 end
 
-function DensityMapUpdater:registerCallback(callbackId, func, target, onFinish)
-    if self.callbacks == nil then
-        self.callbacks = {}
+function DensityMapUpdater:register(taskId, func, target, onFinish)
+    if self.tasks == nil then
+        self.tasks = {}
     end
 
-    self.callbacks[callbackId] = {
+    self.tasks[taskId] = {
         target = target,
         func = func,
         onFinish = onFinish
     }
 end
 
-function DensityMapUpdater:unregisterCallback(callbackId)
-    self.callbacks[callbackId] = nil
+function DensityMapUpdater:unregister(taskId)
+    self.tasks[taskId] = nil
 end
 
 function DensityMapUpdater:process(job)
     assert(job ~= nil)
 
-    local jobDesc = self.callbacks[job.callbackId]
+    local jobDesc = self.tasks[job.taskId]
     if jobDesc == nil then
-        log("DensityMapUpdater: ERROR Tried to run unknown callback:", job.callbackId)
+        log("DensityMapUpdater: ERROR Tried to run unknown task:", job.taskId)
 
         return false
     end
