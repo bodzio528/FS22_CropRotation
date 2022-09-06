@@ -76,9 +76,12 @@ function overwrittenStaticFunction(object, funcName, newFunc)
 end
 
 function applyYieldMultiplier(multiplier, ...)
-    local args = {...}
-    args[1] = multiplier * args[1]
-    return table.unpack(args)
+    if select('#', ...) > 0 then
+        local arg = {...}
+        arg[1] = multiplier * arg[1]
+        return unpack(arg)
+    end
+    return nil
 end
 
 function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager, i18n, data, densityMapUpdater)
@@ -477,9 +480,7 @@ function CropRotation:load()
     self:loadModifiers()
 
     local finalizer = function(target)
-        if CropRotation.debug then
-            log("CropRotation:finalizer(): job finished successfully!")
-        end
+        log("DensityMapUpdater: INFO job finished!")
     end
 
     self.densityMapUpdater:register("UpdateFallow", self.task_updateFallow, self, finalizer)

@@ -94,7 +94,7 @@ function CropRotationData:load()
                 end
 
                 self.crops[cropName] = {
-                    enabled = cropEnabled
+                    enabled = cropEnabled,
                     returnPeriod = cropReturnPeriod,
                     good = string.split(goodForecrops, " "),
                     bad = string.split(badForecrops, " ")
@@ -139,7 +139,7 @@ function CropRotationData:load()
     for k, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
         if self.crops[fruitType.name] == nil then
             log(string.format("CropRotationData:load(): INFO fruit (%i): '%s' not mentioned in data/crops.xml file.",
-                              fruitType.index, fruitType.name)
+                              fruitType.index, fruitType.name))
 
             fruitType.rotation = {
                 enabled = false,
