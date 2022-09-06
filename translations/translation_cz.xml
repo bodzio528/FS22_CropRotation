@@ -12,7 +12,7 @@
         <e k="cropRotation_hud_fieldInfo_bad" v="Špatný"/>
         <!-- planner gui -->
         <e k="cropRotation_gui_planner_title" v="Střídání plodin Planner" />
-        <e k="cropRotation_gui_planner_defaultPlanName" v="Střídání %s" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Střídání plan %s" />
         <!-- help lines -->
         <e k="cropRotation_helpHeader" v="Střídání plodin"/>
         <e k="cropRotation_helpTitle_01" v="Obecné informace"/>
