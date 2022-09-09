@@ -644,6 +644,11 @@ function CropRotation.inj_densityMapUtil_updateSowingArea(superFunc, fruitIndex,
 end
 
 function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
+    if g_farmlandManager:getOwnerIdAtWorldPosition(0.5*(widthWorldX+heightWorldX), 0.5*(widthWorldZ+heightWorldZ)) ~= g_currentMission.player.farmId then
+        -- no cropRotation bonus in NPC missions
+        return superFunc(fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, destroySpray, useMinForageState, excludedSprayType, setsWeeds, limitToField)
+    end
+
     local cropRotation = g_cropRotation
     assert(cropRotation ~= nil)
 
