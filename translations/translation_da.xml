@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <translationContributors>Peter.bonde@SosDk3600</translationContributors>
+    <elements>
+        <e k="cropRotation_fallow" v="Brak"/>
+        <!-- player hud display -->
+        <e k="cropRotation_hud_fieldInfo_title" v="Sædeskifte"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Sidste høst"/>
+        <e k="cropRotation_hud_fieldInfo_perfect" v="Perfekt"/>
+        <e k="cropRotation_hud_fieldInfo_good" v="God"/>
+        <e k="cropRotation_hud_fieldInfo_ok" v="Ok"/>
+        <e k="cropRotation_hud_fieldInfo_bad" v="Dårlig"/>
+        <!-- planner gui -->
+        <e k="cropRotation_gui_planner_title" v="Sædskifteplanlægger" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Skifte %s" />
+        <!-- help lines -->
+        <e k="cropRotation_helpHeader" v="Sædeskifte"/>
+        <e k="cropRotation_helpTitle_01" v="Generel information"/>
+        <e k="cropRotation_helpTitle_02" v="Return period"/>
+        <e k="cropRotation_helpTitle_03" v="Forfrugt"/>
+        <e k="cropRotation_helpTitle_04" v="Brak"/>
+        <e k="cropRotation_helpTitle_05" v="Sædeskifte Info"/>
+        <e k="cropRotation_helpTitle_06" v="Precision Farming"/>
+        <e k="cropRotation_helpText_01_01" v="Såning af den samme afgrøde hvert år (monokultur) fører til et fald i udbyttet."/>
+        <e k="cropRotation_helpText_01_02" v="Afhængigt af jord og afgrøde varierer mængden tabt mellem 5 og 25 procent af det forventede udbytte. Forskellige afgrøder kræver forskellige elementer fra jorden for at vokse."/>
+        <e k="cropRotation_helpText_01_03" v="Sædskifte er en teknik til at veksle plantetyper med forskellige behov, hvilket giver den jordtid, der skal til for at supplere den manglende - normalt indeholdt i rester fra tidligere høst, men endnu ikke i en form, der er passende for planterne at udnytte.Sædskifte er en teknik til at veksle plantetyper med forskellige behov, hvilket giver den jordtid, der skal til for at supplere den manglende - normalt indeholdt i rester fra tidligere høst, men endnu ikke i en form, der er passende for planterne til at udnytte."/>
+        <e k="cropRotation_helpText_01_04" v="Også masser af skadedyr er tilpasset enkelt slags planter. Sædskifte forværrer deres formeringsevne, og jorden får lov til at rense sig selv for patogener, der er specifikke for en bestemt afgrødetype."/>
+        <e k="cropRotation_helpText_01_05" v="Sædskifte fungerede godt, forhindrer jorden i at miste elementer, som planter kræver for vækst, og reducerer i høj grad tilstedeværelsen af sygdomme og skadedyr. Alt dette fører direkte til højere kvalitet og kvantitet af udbytte i de efterfølgende år."/>
+        <e k="cropRotation_helpText_02_01" v="Der kræves et tidsrum mellem brug af samme mark til samme type afgrøde for at forhindre udbyttefradrag på grund af skadedyr og patogener."/>
+        <e k="cropRotation_helpText_02_02" v="Raps, solsikke, kartofler og sukkerroer kan bruges hver tredje sæson."/>
+        <e k="cropRotation_helpText_02_03" v="De fleste af korn, sojabønner, sukkerrør og bomuld kræver mindst et års mellemrum."/>
+        <e k="cropRotation_helpText_02_04" v="Majs, græs og poppel kan dyrkes hvert år, men landmanden skal tage højde for udbyttefradrag på grund af nedbrydning af jordens næringsstoffer."/>
+        <e k="cropRotation_helpText_03_01" v="Nogle planter vokser bedre lige efter andre afgrøder."/>
+        <e k="cropRotation_helpText_03_02" v="Afgrøder inden for en enkelt gruppe har lignende egenskaber, så du bør undgå at plante dem en efter en på samme mark."/>
+        <e k="cropRotation_helpText_03_03" v="For eksempel vokser korn og oliefrø meget godt efter bælgfrugter. Rodfrugter vokser godt efter korn. Raps eller solsikker kan vokse meget godt efter sukkerroer."/>
+        <e k="cropRotation_helpText_03_04" v="To sidste afgrødekategorier har den dominerende indflydelse på det nuværende udbytte."/>
+        <e k="cropRotation_helpText_04_01" v="Du kan forlade marken uden beplantning i et helt år (brak). Jord vil så genvinde evnen til at understøtte selv de mest krævende afgrøder."/>
+        <e k="cropRotation_helpText_04_02" v="Årlig braklægning gælder kun, når sæsonvækst er aktiveret i spille indstillinger."/>
+        <e k="cropRotation_helpText_05_01" v="I infoboksen er der yderligere indtastning med sædskifteeffektivitet og to tidligere afgrødekategorier."/>
+        <e k="cropRotation_helpText_05_02" v="Sædskifteeffektivitet er procentdelen af gevinst (når den er over 100 %) eller tabt (når mindre end 100 %) udbytte."/>
+        <e k="cropRotation_helpText_05_03" v="Perfekt sædskifte giver mulighed for at modtage yderligere 15 procent af udbyttet."/>
+        <e k="cropRotation_helpText_05_04" v="Ignorering af sædskifte kan resultere i, at 30 procent af udbyttet går tabt."/>
+        <e k="cropRotation_helpText_05_05" v="Info boks elementer:
+		 A. i øjeblikket voksende afgrøde
+         B. tidligere afgrøder fra nyeste til ældste
+         C. overordnet præstation med tekstbeskrivelse og udbyttebonus/reduktion
+         D. høstet afgrøde videresendes til første indgang, og den sidste indtastning glemmes." />
+        <e k="cropRotation_helpText_06_01" v="I tilfælde af at Precision Farming er i brug, bliver sædskifteeffektiviteten en af ingredienserne i den endelige udbytteestimering, tilføjet til Precision Farming informationsboksen."/>
+        <e k="cropRotation_helpText_06_02" v="Sædskifteeffektivitet er nu en del af udbyttepotentialet ved siden af nitrogen, pH, jordtype, frømængde og ukrudtskoefficienter."/>
+    </elements>
+</l10n>
