@@ -98,10 +98,10 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
     self.data = data
 
     self.mapName = "cropRotation"
-    self.mapFilePath = self.mission.missionInfo.savegameDirectory .. "/cropRotation.grle"
+    self.mapFileName = "cropRotation.grle"
 
     self.xmlName = "CropRotationXML"
-    self.xmlFilePath = self.mission.missionInfo.savegameDirectory .. "/cropRotation.xml"
+    self.xmlFileName = "cropRotation.xml"
     self.xmlRootElement = "cropRotation"
 
     self.densityMapUpdater = densityMapUpdater
@@ -417,7 +417,7 @@ function CropRotation:saveSavegame()
     assert(cropRotation ~= nil)
 
     if self.missionInfo.isValid then
-        local xmlFile = createXMLFile(cropRotation.xmlName, cropRotation.xmlFilePath, cropRotation.xmlRootElement)
+        local xmlFile = createXMLFile(cropRotation.xmlName, cropRotation:getXmlFilePath(), cropRotation.xmlRootElement)
         if xmlFile ~= nil then
             cropRotation:saveToSavegame(xmlFile)
 
@@ -431,7 +431,7 @@ function CropRotation:saveToSavegame(xmlFile)
     setXMLInt(xmlFile, "cropRotation.mapVersion", CropRotation.MAP_VERSION)
 
     if self.map ~= 0 then
-        saveBitVectorMapToFile(self.map, self.mapFilePath)
+        saveBitVectorMapToFile(self.map, self:getMapFilePath())
     end
 
     -- TODO: self.planner:saveToSavegame(xmlFile)
@@ -439,8 +439,9 @@ end
 
 function CropRotation:loadSavegame()
     if self.mission:getIsServer() and self.mission.missionInfo.savegameDirectory ~= nil then
-        if fileExists(self.xmlFilePath) then
-            local xmlFile = loadXMLFile(self.xmlName, self.xmlFilePath)
+        local xmlFilePath = self:getXmlFilePath()
+        if fileExists(xmlFilePath) then
+            local xmlFile = loadXMLFile(self.xmlName, xmlFilePath)
             if xmlFile ~= nil then
                 self:loadFromSavegame(xmlFile)
                 -- TODO: self.planner:loadFromSavegame(xmlFile)
@@ -467,6 +468,18 @@ function CropRotation:loadFromSavegame(xmlFile)
 
         log("CropRotation:loadMap(): INFO found old version of crop rotation map! Converting...")
     end
+end
+
+function CropRotation:getMapFilePath()
+    return self.mission.missionInfo.savegameDirectory .. "/" .. self.mapFileName
+
+    -- log("CropRotation:getMapFilePath(): ERROR savegame directory does not exist!")
+end
+
+function CropRotation:getXmlFilePath()
+    return self.mission.missionInfo.savegameDirectory .. "/" .. self.xmlFileName
+
+    -- log("CropRotation:getXmlFilePath(): ERROR savegame directory does not exist!")
 end
 
 ------------------------------------------------
@@ -499,8 +512,9 @@ function CropRotation:loadCropRotationMap()
     local success = false
 
     if self.mission.missionInfo.isValid then
-        if fileExists(self.mapFilePath) and not self.isNewSavegame then
-            success = loadBitVectorMapFromFile(self.map, self.mapFilePath, CropRotation.MAP_NUM_CHANNELS)
+        local mapFilePath = self:getMapFilePath()
+        if fileExists(mapFilePath) and not self.isNewSavegame then
+            success = loadBitVectorMapFromFile(self.map, mapFilePath, CropRotation.MAP_NUM_CHANNELS)
         end
     end
 

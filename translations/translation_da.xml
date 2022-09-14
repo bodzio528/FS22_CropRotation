@@ -23,7 +23,7 @@
         <e k="cropRotation_helpTitle_06" v="Precision Farming"/>
         <e k="cropRotation_helpText_01_01" v="Såning af den samme afgrøde hvert år (monokultur) fører til et fald i udbyttet."/>
         <e k="cropRotation_helpText_01_02" v="Afhængigt af jord og afgrøde varierer mængden tabt mellem 5 og 25 procent af det forventede udbytte. Forskellige afgrøder kræver forskellige elementer fra jorden for at vokse."/>
-        <e k="cropRotation_helpText_01_03" v="Sædskifte er en teknik til at veksle plantetyper med forskellige behov, hvilket giver den jordtid, der skal til for at supplere den manglende - normalt indeholdt i rester fra tidligere høst, men endnu ikke i en form, der er passende for planterne at udnytte.Sædskifte er en teknik til at veksle plantetyper med forskellige behov, hvilket giver den jordtid, der skal til for at supplere den manglende - normalt indeholdt i rester fra tidligere høst, men endnu ikke i en form, der er passende for planterne til at udnytte."/>
+        <e k="cropRotation_helpText_01_03" v="Sædskifte er en teknik til at veksle plantetyper med forskellige behov, hvilket giver den jordtid, der skal til for at supplere den manglende - normalt indeholdt i rester fra tidligere høst, men endnu ikke i en form, der er passende for planterne at udnytte."/>
         <e k="cropRotation_helpText_01_04" v="Også masser af skadedyr er tilpasset enkelt slags planter. Sædskifte forværrer deres formeringsevne, og jorden får lov til at rense sig selv for patogener, der er specifikke for en bestemt afgrødetype."/>
         <e k="cropRotation_helpText_01_05" v="Sædskifte fungerede godt, forhindrer jorden i at miste elementer, som planter kræver for vækst, og reducerer i høj grad tilstedeværelsen af sygdomme og skadedyr. Alt dette fører direkte til højere kvalitet og kvantitet af udbytte i de efterfølgende år."/>
         <e k="cropRotation_helpText_02_01" v="Der kræves et tidsrum mellem brug af samme mark til samme type afgrøde for at forhindre udbyttefradrag på grund af skadedyr og patogener."/>
@@ -41,7 +41,7 @@
         <e k="cropRotation_helpText_05_03" v="Perfekt sædskifte giver mulighed for at modtage yderligere 15 procent af udbyttet."/>
         <e k="cropRotation_helpText_05_04" v="Ignorering af sædskifte kan resultere i, at 30 procent af udbyttet går tabt."/>
         <e k="cropRotation_helpText_05_05" v="Info boks elementer:
-		 A. i øjeblikket voksende afgrøde
+         A. i øjeblikket voksende afgrøde
          B. tidligere afgrøder fra nyeste til ældste
          C. overordnet præstation med tekstbeskrivelse og udbyttebonus/reduktion
          D. høstet afgrøde videresendes til første indgang, og den sidste indtastning glemmes." />
