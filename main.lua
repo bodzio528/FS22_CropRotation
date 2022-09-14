@@ -76,12 +76,6 @@ function cr_loadMissionFinished(mission, superFunc, node)
     cropRotation:load()
 
     superFunc(mission, node)
-
-    if mission.cancelLoading then
-        return
-    end
-
-    return
 end
 
 ------------------------------------------------
