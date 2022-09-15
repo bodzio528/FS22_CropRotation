@@ -109,7 +109,7 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
     self.numFruits = math.min(31, #self.fruitTypeManager:getFruitTypes())
     self.isVisualizeEnabled = false
 
-    self.isNewSavegame = false
+    self.isNewSavegame = true
 
     overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
@@ -329,7 +329,7 @@ function CropRotation:fieldAddFruit(data, box)
 
                 box:addLine(
                     string.format("%s (%s)", cropRotation.cache.fieldInfoDisplay.title, text),
-                    string.format("%d %%", math.ceil(100.0 * crYieldMultiplier)),
+                    string.format("%d %%", math.floor(100.0 * crYieldMultiplier + 0.1)),
                     true, -- use color
                     isColorBlindMode and CropRotation.COLORS[level].colorBlind or CropRotation.COLORS[level].color
                 )
@@ -383,7 +383,7 @@ function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ
     -- update for PF's yieldChangeFunc (above)
     fieldInfo.crFactor = cropRotation:getRotationYieldMultiplier(prevIndex, lastIndex, currentIndex)
 
-    local value = string.format("%d %%", math.ceil(100.0 * fieldInfo.crFactor))
+    local value = string.format("%d %%", math.floor(100.0 * fieldInfo.crFactor + 0.1))
     local level = CropRotation.getLevelByCrFactor(fieldInfo.crFactor)
     local color = isColorBlindMode and CropRotation.COLORS[level].color or CropRotation.COLORS[level].colorBlind
 
@@ -454,17 +454,16 @@ end
 
 function CropRotation:loadFromSavegame(xmlFile)
     local mapVersionKey = "cropRotation.mapVersion"
-    if not hasXMLProperty(xmlFile, mapVersionKey) then
-        self.isNewSavegame = true
-
+    if hasXMLProperty(xmlFile, mapVersionKey) then
+        self.isNewSavegame = false
+    else
         log("CropRotation:loadMap(): WARNING old version of mod was in use! Discarding crop rotation history.")
         return
     end
 
     local mapVersionLoaded = getXMLInt(xmlFile, mapVersionKey)
     if mapVersionLoaded and mapVersionLoaded < CropRotation.MAP_VERSION then
-        self.isNewSavegame = true
-        self.convertMapFromVersion = mapVersionLoaded
+        self.mapVersionLoaded = mapVersionLoaded -- WARNING: unused, no conversion function implemented
 
         log("CropRotation:loadMap(): INFO found old version of crop rotation map! Converting...")
     end
@@ -492,6 +491,10 @@ function CropRotation:load()
     self:loadCropRotationMap() --
     self:loadModifiers()
 
+    if self.isNewSavegame then
+        self:randomInit()
+    end
+
     local finalizer = function(target)
         log("DensityMapUpdater: INFO job finished!")
     end
@@ -501,6 +504,57 @@ function CropRotation:load()
 
     self.messageCenter:subscribe(MessageType.YEAR_CHANGED, self.onYearChanged, self)
     self.messageCenter:subscribe(MessageType.PERIOD_CHANGED, self.onPeriodChanged, self)
+end
+
+-- populate map fields with random crops
+function CropRotation:randomInit()
+    log("CropRotation:randomInit(): INFO generate random forecrops for each field.")
+
+    for i, field in pairs(g_fieldManager:getFields()) do
+        -- DebugUtil.printTableRecursively(field, "", 0, 1)
+
+        local r2, r1 = 0
+
+        if field.fieldGrassMission then
+            r2 = FruitType.GRASS
+            r1 = FruitType.GRASS
+        else
+            repeat
+                r2 = math.random(#g_fruitTypeManager:getFruitTypes())
+                local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(r2)
+            until fruitDesc ~= nil and fruitDesc.rotation.enabled
+
+            repeat
+                r1 = math.random(#g_fruitTypeManager:getFruitTypes())
+                local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(r1)
+            until fruitDesc ~= nil and fruitDesc.rotation.enabled
+        end
+
+        local bits = self:encode(r2, r1, 0, 0)
+        for index = 1, table.getn(field.maxFieldStatusPartitions) do
+            local partition = field.maxFieldStatusPartitions[index]
+            local terrainSize = self.terrainSize
+
+            local x = partition.x0 / terrainSize + 0.5
+            local z = partition.z0 / terrainSize + 0.5
+            local widthX = partition.widthX / terrainSize
+            local widthZ = partition.widthZ / terrainSize
+            local heightX = partition.heightX / terrainSize
+            local heightZ = partition.heightZ / terrainSize
+
+            local modifier = self.modifiers.map.modifier
+
+            modifier:setParallelogramUVCoords(x, z, widthX, widthZ, heightX, heightZ, DensityCoordType.POINT_VECTOR_VECTOR)
+            modifier:executeSet(bits)
+        end
+        if CropRotation.debug then
+            log(string.format("CropRotation:randomInit(): DEBUG Field %d: R2: %s R1 %s (grass: %s)",
+                              field.fieldId,
+                              g_fruitTypeManager:getFruitTypeByIndex(r2).name,
+                              g_fruitTypeManager:getFruitTypeByIndex(r1).name,
+                              field.fieldGrassMission))
+        end
+    end
 end
 
 function CropRotation:onTerrainLoaded(mission, terrainId, mapFilename)
