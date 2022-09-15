@@ -4,9 +4,11 @@
 -- CropRotation.lua
 --
 -- @Author: Bodzio528
--- @Version: 2.0.0.0
+-- @Version: 2.1.0.0
 
 -- Changelog:
+--  v2.1.0.0 (16.09.2022):
+--      - crop rotation planner added
 --  v2.0.0.0 (05.09.2022):
 --      - code rewrite
 -- 	v1.0.0.0 (03.08.2022):
