@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUIProfiles>
+
+    <Profile name="multiTextOptionCR" extends="multiTextOption">
+        <Value name="margin" value="0 48px 0 24px"/>
+        <Value name="size" value="316px 48px"/>
+    </Profile>
+
+    <Profile name="multiTextOptionTextCR" extends="multiTextOptionText" with="anchorBottomCenter">
+      <!-- offset for icon -->
+      <Value name="position" value="15px 0"/>
+    </Profile>
+
+    <Profile name="multiTextOptionLabelCR" extends="multiTextOptionTitle">
+        <Value name="position" value="0px 0px" />
+    </Profile>
+
+    <Profile name="multiTextOptionIconCR" extends="baseReference" with="anchorMiddleCenter">
+        <Value name="imageUVs" value="0 0 1 1"/>
+        <Value name="size" value="40px 40px"/>
+        <Value name="position" value="0"/>
+        <Value name="margin" value="0px 0px 20px 0px"/>
+
+        <Variant name="mobile">
+            <Value name="size" value="80px 80px"/>
+            <Value name="margin" value="0px 0px 50px 0px"/>
+        </Variant>
+    </Profile>
+</GUIProfiles>

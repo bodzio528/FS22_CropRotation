@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUI name="ingameMenuCropRotationPlanner">
+   <GuiElement type="empty" profile="uiInGameMenuFrame">
+        <!-- Static page header -->
+        <GuiElement type="empty" profile="ingameMenuFrameHeaderPanel">
+            <GuiElement type="bitmap" profile="ingameMenuWeatherHeaderIcon" /> <!--TODO: change icon -->
+            <GuiElement type="text" profile="ingameMenuFrameHeaderText" text="$l10n_cropRotation_gui_planner_title"/>
+        </GuiElement>
+
+        <GuiElement type="bitmap" profile="mainMenuSettingsBox" id="mainBox">
+            <GuiElement type="bitmap" profile="topScrollClipper" name="topClipper" />
+            <GuiElement type="bitmap" profile="bottomScrollClipper" name="bottomClipper" />
+
+            <GuiElement type="scrollingLayout" profile="ingameMenuSettingsLayout" id="boxLayout" topClipperElementName="topClipper" bottomClipperElementName="bottomClipper">
+                <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[1]" focusInit="onOpen" handleFocus="true">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight" />
+                    <GuiElement type="text"   profile="multiTextOptionTextCR" id="cropText[1]" text="XYZ"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" />
+                    <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[1]"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionLabelCR" id="cropFactor[1]" text="1.14" />
+                </GuiElement>
+
+                <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[2]" handleFocus="true">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight" />
+                    <GuiElement type="text"   profile="multiTextOptionTextCR" id="cropText[2]" text="XYZ"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" />
+                    <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[2]"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionLabelCR" id="cropFactor[2]" text="1.14" />
+                </GuiElement>
+
+                <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[3]" handleFocus="true">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight" />
+                    <GuiElement type="text"   profile="multiTextOptionTextCR" id="cropText[3]" text="XYZ"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" />
+                    <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[3]"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionLabelCR" id="cropFactor[3]" text="1.13" />
+                </GuiElement>
+
+                <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[4]" handleFocus="true">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight" />
+                    <GuiElement type="text"   profile="multiTextOptionTextCR" id="cropText[4]" text="XYZ"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" />
+                    <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[4]"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionLabelCR" id="cropFactor[4]" text="1.12" />
+                </GuiElement>
+
+                <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[5]" handleFocus="true">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight" />
+                    <GuiElement type="text"   profile="multiTextOptionTextCR" id="cropText[5]" text="XYZ"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" />
+                    <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[5]"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionLabelCR" id="cropFactor[5]" text="1.11" />
+                </GuiElement>
+
+                <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[6]" handleFocus="true">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight" />
+                    <GuiElement type="text"   profile="multiTextOptionTextCR" id="cropText[6]" text="XYZ"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" />
+                    <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[6]"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionLabelCR" id="cropFactor[6]" text="1.10" />
+                </GuiElement>
+                <!--7 & 8 -->
+                <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[7]" handleFocus="true">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight" />
+                    <GuiElement type="text"   profile="multiTextOptionTextCR" id="cropText[7]" text="XYZ"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" />
+                    <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[7]"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionLabelCR" id="cropFactor[7]" text="1.10" />
+                </GuiElement>
+
+                <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[8]" handleFocus="true">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight" />
+                    <GuiElement type="text"   profile="multiTextOptionTextCR" id="cropText[8]" text="XYZ"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" />
+                    <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[8]"/>
+                    <GuiElement type="bitmap" profile="multiTextOptionLabelCR" id="cropFactor[8]" text="1.10" />
+                </GuiElement>
+
+            </GuiElement>
+
+            <GuiElement type="threePartBitmap" profile="verticalListSliderRightDocked">
+                <GuiElement type="slider" profile="verticalListSliderBar" dataElementId="boxLayout" handleFocus="false" />
+            </GuiElement>
+        </GuiElement>
+
+        <!--GuiElement type="empty" profile="ingameMenuCenterBox" id="cropRotationPlannerContainer">
+            <GuiElement type="empty" profile="ingameMenuAnimalsDetailsBox" id="detailsBox">
+
+            </GuiElement>
+        </GuiElement-->
+    </GuiElement>
+</GUI>
