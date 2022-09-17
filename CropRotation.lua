@@ -1059,10 +1059,10 @@ function CropRotation:commandPlanner(...)
     -- format the response
     for i, cropIndex in pairs(cropIndices) do
         if cropIndex == FruitType.UNKNOWN then
-            log("FALLOW", "-")
+            print(string.format("%-20s -.--", "FALLOW"))
         else
             crop = self.fruitTypeManager:getFruitTypeByIndex(cropIndex)
-            log(string.format("%-20s %1.2f", crop.name, math.ceil(100 * result[i]) / 100))
+            print(string.format("%-20s %1.2f", crop.name, math.floor(100 * result[i] + 0.1) / 100))
         end
     end
 end

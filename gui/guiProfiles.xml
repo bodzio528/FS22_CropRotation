@@ -2,7 +2,7 @@
 <GUIProfiles>
 
     <Profile name="multiTextOptionCR" extends="multiTextOption">
-        <Value name="margin" value="0 48px 0 24px"/>
+        <Value name="margin" value="0 24px 0 24px"/>
         <Value name="size" value="316px 48px"/>
     </Profile>
 
@@ -11,8 +11,15 @@
       <Value name="position" value="15px 0"/>
     </Profile>
 
-    <Profile name="multiTextOptionLabelCR" extends="multiTextOptionTitle" with="anchorBottomLeft">
-        <Value name="position" value="346px 0px" />
+    <Profile name="multiTextOptionLabelCR" extends="multiTextOptionTitle" with="anchorMiddleLeft">
+        <Value name="position" value="380px -10px" />
+
+        <Value name="textAlignment" value="right"/>
+        <Value name="textVerticalAlignment" value="bottom"/>
+        <Value name="textSize" value="18px"/>
+        <Value name="textMaxWidth" value="120px"/>
+        <Value name="textBold" value="false"/>
+        <Value name="textMaxNumLines" value="1"/>
     </Profile>
 
     <Profile name="multiTextOptionIconCR" extends="baseReference" with="anchorMiddleCenter">
