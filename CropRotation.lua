@@ -390,7 +390,7 @@ function CropRotation:updateFieldInfoDisplay(fieldInfo, startWorldX, startWorldZ
 
     local value = string.format("%d %%", math.floor(100.0 * fieldInfo.crFactor + 0.1))
     local level = CropRotation.getLevelByCrFactor(fieldInfo.crFactor)
-    local color = isColorBlindMode and CropRotation.COLORS[level].color or CropRotation.COLORS[level].colorBlind
+    local color = isColorBlindMode and CropRotation.COLORS[level].colorBlind or CropRotation.COLORS[level].color
 
     return value, color, cropRotation.cache.fieldInfoDisplay.texts[level]
 end

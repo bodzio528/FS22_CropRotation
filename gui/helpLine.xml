@@ -49,6 +49,9 @@
                 <text text="$l10n_cropRotation_helpText_03_04" />
             </paragraph>
             <paragraph>
+                <text text="$l10n_cropRotation_helpText_03_05" />
+            </paragraph>
+            <paragraph>
                 <image filename="gui/helplineImages01.png" uvs="0px 480px 900px 240px" aspectRatio="0.26666"/>
             </paragraph>
         </page>

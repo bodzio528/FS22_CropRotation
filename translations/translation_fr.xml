@@ -34,6 +34,7 @@
         <e k="cropRotation_helpText_03_02" v="Les cultures dans une même catégorie ont les mêmes propriétés. C'est pourquoi il ne faudrait pas les replanter deux fois de suite dans la même parcelle."/>
         <e k="cropRotation_helpText_03_03" v="Les céréales et les oléagineux poussent par exemple très bien après des légumineuses. Les plantes racinaires croissent mieux après des céréales. Le colza ou le tournesol profitent également d'une meilleure croissance après les betteraves."/>
         <e k="cropRotation_helpText_03_04" v="Deux catégories ont une influence importante sur le rendement de la parcelle."/>
+        <e k="cropRotation_helpText_03_05" v="Utilisez le planificateur de rotation des cultures dans le menu du jeu pour choisir l'ordre et le type de cultures pour obtenir les meilleurs résultats."/>
         <e k="cropRotation_helpText_04_01" v="Vous pouvez laisser la parcelle en jachère pendant une année afin que le sol puisse à nouveau retrouver un bon niveau de nutriments pour tout type de cultures."/>
         <e k="cropRotation_helpText_04_02" v="La jachère annuelle est active uniquement avec le paramètre de croissance saisonnière actif sur votre partie."/>
         <e k="cropRotation_helpText_05_01" v="Il y a maintenant une information supplémentaire dans le tableau de résumé de la parcelle qui reprend l'efficacité de la rotation ainsi que les deux dernières catégories de cultures récoltées."/>

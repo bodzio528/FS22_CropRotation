@@ -34,6 +34,7 @@
         <e k="cropRotation_helpText_03_02" v="Pflanzen innerhalb einer Gruppe haben ähnliche Eigenschaften, daher sollten Sie vermeiden, sie nacheinander auf derselben Parzelle zu pflanzen."/>
         <e k="cropRotation_helpText_03_03" v="Zum Beispiel: Getreide und Ölsaaten wachsen sehr gut nach Leguminosen. Wurzeln wachsen gut nach Getreide. Raps oder Sonnenblumen können nach Zuckerrüben sehr gut wachsen."/>
         <e k="cropRotation_helpText_03_04" v="Zwei letzte Fruchtkategorien haben den dominierenden Einfluss auf den aktuellen Ertrag."/>
+        <e k="cropRotation_helpText_03_05" v="Verwenden Sie den Fruchtfolgeplaner im Spielmenü, um die Reihenfolge und Art der Feldfrüchte für die besten Ergebnisse auszuwählen."/>
         <e k="cropRotation_helpText_04_01" v="Sie können das Feld auch ganzjährig unbepflanzt lassen (Brache). "/>
         <e k="cropRotation_helpText_04_02" v="Der Boden wird dann wieder in der Lage sein, selbst die anspruchsvollsten Pflanzen zu tragen."/>
         <e k="cropRotation_helpText_05_01" v="In der Feldinfobox gibt es einen zusätzlichen Eintrag mit Fruchtfolgeeffizienz und zwei zuletzt geernteten Fruchtkategorien."/>

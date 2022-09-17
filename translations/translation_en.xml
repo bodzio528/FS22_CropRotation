@@ -34,6 +34,7 @@
         <e k="cropRotation_helpText_03_02" v="Crops within single group have similar properties, thus you should avoid planting them one after another on the same plot."/>
         <e k="cropRotation_helpText_03_03" v="For instance, cereals and oilseed grow very well after legumes. Roots grow well after cereals. Rapeseeds or sunflowers can grow very well after sugar beets."/>
         <e k="cropRotation_helpText_03_04" v="Two last crop categories have the dominant influence over current yield."/>
+        <e k="cropRotation_helpText_03_05" v="Use the crop rotation planner in the game menu to choose the order and type of crops for the best results."/>
         <e k="cropRotation_helpText_04_01" v="You may leave field without planting for full year (fallow). Soil will then regain the ability to support even the most demanding crops."/>
         <e k="cropRotation_helpText_04_02" v="Yearly fallow applies only when seasonal growth is enabled in game options."/>
         <e k="cropRotation_helpText_05_01" v="In field info box, there is additional entry, with crop rotation efficiency and two previous crop categories."/>

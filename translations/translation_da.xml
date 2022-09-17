@@ -34,6 +34,7 @@
         <e k="cropRotation_helpText_03_02" v="Afgrøder inden for en enkelt gruppe har lignende egenskaber, så du bør undgå at plante dem en efter en på samme mark."/>
         <e k="cropRotation_helpText_03_03" v="For eksempel vokser korn og oliefrø meget godt efter bælgfrugter. Rodfrugter vokser godt efter korn. Raps eller solsikker kan vokse meget godt efter sukkerroer."/>
         <e k="cropRotation_helpText_03_04" v="To sidste afgrødekategorier har den dominerende indflydelse på det nuværende udbytte."/>
+        <e k="cropRotation_helpText_03_05" v="Brug afgrødeskifteplanlæggeren i spilmenuen til at vælge rækkefølgen og typen af afgrøder for de bedste resultater."/>
         <e k="cropRotation_helpText_04_01" v="Du kan forlade marken uden beplantning i et helt år (brak). Jord vil så genvinde evnen til at understøtte selv de mest krævende afgrøder."/>
         <e k="cropRotation_helpText_04_02" v="Årlig braklægning gælder kun, når sæsonvækst er aktiveret i spille indstillinger."/>
         <e k="cropRotation_helpText_05_01" v="I infoboksen er der yderligere indtastning med sædskifteeffektivitet og to tidligere afgrødekategorier."/>

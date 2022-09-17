@@ -34,6 +34,7 @@
         <e k="cropRotation_helpText_03_02" v="Plodiny v rámci jedné skupiny mají podobné vlastnosti, proto byste se měli vyvarovat výsadbě jedné po druhé na stejném pozemku."/>
         <e k="cropRotation_helpText_03_03" v="Například obiloviny a olejnatá semena rostou velmi dobře po luštěninách. Kořenové plodiny rostou dobře po obilninách. Po cukrové řepě může velmi dobře růst řepka nebo slunečnice."/>
         <e k="cropRotation_helpText_03_04" v="Dvě poslední kategorie plodin mají dominantní vliv na současný výnos."/>
+        <e k="cropRotation_helpText_03_05" v="Pomocí plánovače střídání plodin v nabídce hry vyberte pořadí a typ plodin pro dosažení nejlepších výsledků."/>
         <e k="cropRotation_helpText_04_01" v="Pole můžete nechat celý rok bez výsadby (ležet ladem). Půda pak znovu získá schopnost podporovat i ty nejnáročnější plodiny."/>
         <e k="cropRotation_helpText_04_02" v="Roční pokles platí pouze v případě, že je v herních možnostech povolen sezónní růst."/>
         <e k="cropRotation_helpText_05_01" v="V tabulce s informacemi o poli je další položka s účinností střídání plodin a dvěma kategoriemi naposledy sklizených plodin."/>
