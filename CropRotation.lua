@@ -8,11 +8,12 @@
 
 -- Changelog:
 --  v2.1.0.0 (16.09.2022):
---      - crop rotation planner added
+--      - crop rotation planner implemented
 --  v2.0.0.0 (05.09.2022):
 --      - code rewrite
 -- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
+--
 
 CropRotation = {
     MOD_NAME = g_currentModName or "FS22_CropRotation",
@@ -434,12 +435,12 @@ end
 function CropRotation:saveToSavegame(xmlFile)
     setXMLInt(xmlFile, "cropRotation.mapVersion", CropRotation.MAP_VERSION)
 
-    if self.map ~= 0 then
-        saveBitVectorMapToFile(self.map, self:getMapFilePath())
-    end
-
     if self.planner then
         self.planner:saveToSavegame(xmlFile)
+    end
+
+    if self.map ~= 0 then
+        saveBitVectorMapToFile(self.map, self:getMapFilePath())
     end
 end
 
@@ -517,8 +518,6 @@ function CropRotation:randomInit()
     log("CropRotation:randomInit(): INFO generate random forecrops for each field.")
 
     for i, field in pairs(g_fieldManager:getFields()) do
-        -- DebugUtil.printTableRecursively(field, "", 0, 1)
-
         local r2, r1 = 0
 
         if field.fieldGrassMission then

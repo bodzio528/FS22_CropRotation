@@ -61,8 +61,7 @@ function CropRotationData:load()
     if xmlFile then
         local cropsKey = "crops"
         if not hasXMLProperty(xmlFile, cropsKey) then
-            log(string.format("CropRotationData:load(): ERROR loading XML element '%s' failed:", cropsKey),
-                self.xmlFilePath)
+            log(string.format("CropRotationData:load(): ERROR loading XML element '%s' failed:", cropsKey), self.xmlFilePath)
             return
         end
 

@@ -11,8 +11,8 @@
       <Value name="position" value="15px 0"/>
     </Profile>
 
-    <Profile name="multiTextOptionLabelCR" extends="multiTextOptionTitle" with="anchorMiddleLeft">
-        <Value name="position" value="380px -10px" />
+    <Profile name="multiTextOptionLabelCR" extends="multiTextOptionTitle" with="anchorBottomLeft">
+        <Value name="position" value="400px 6px" />
 
         <Value name="textAlignment" value="right"/>
         <Value name="textVerticalAlignment" value="bottom"/>
