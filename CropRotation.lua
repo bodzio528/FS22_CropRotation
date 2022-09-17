@@ -8,11 +8,12 @@
 
 -- Changelog:
 --  v2.1.0.0 (16.09.2022):
---      - crop rotation planner added
+--      - crop rotation planner implemented
 --  v2.0.0.0 (05.09.2022):
 --      - code rewrite
 -- 	v1.0.0.0 (03.08.2022):
 --      - Initial release
+--
 
 CropRotation = {
     MOD_NAME = g_currentModName or "FS22_CropRotation",
@@ -86,7 +87,7 @@ function applyYieldMultiplier(multiplier, ...)
     return nil
 end
 
-function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager, i18n, data, densityMapUpdater)
+function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager, i18n, data, densityMapUpdater, planner)
     local self = setmetatable({}, CropRotation_mt)
 
     self.isServer = mission:getIsServer()
@@ -97,7 +98,7 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
     self.fruitTypeManager = fruitTypeManager
     self.i18n = i18n
 
-    self.data = data
+    self.data = data -- static configuration data
 
     self.mapName = "cropRotation"
     self.mapFileName = "cropRotation.grle"
@@ -112,6 +113,8 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
     self.isVisualizeEnabled = false
 
     self.isNewSavegame = true
+
+    self.planner = planner -- planner data storage
 
     overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
@@ -432,11 +435,13 @@ end
 function CropRotation:saveToSavegame(xmlFile)
     setXMLInt(xmlFile, "cropRotation.mapVersion", CropRotation.MAP_VERSION)
 
+    if self.planner then
+        self.planner:saveToSavegame(xmlFile)
+    end
+
     if self.map ~= 0 then
         saveBitVectorMapToFile(self.map, self:getMapFilePath())
     end
-
-    -- TODO: self.planner:saveToSavegame(xmlFile)
 end
 
 function CropRotation:loadSavegame()
@@ -446,7 +451,7 @@ function CropRotation:loadSavegame()
             local xmlFile = loadXMLFile(self.xmlName, xmlFilePath)
             if xmlFile ~= nil then
                 self:loadFromSavegame(xmlFile)
-                -- TODO: self.planner:loadFromSavegame(xmlFile)
+                self.planner:loadFromSavegame(xmlFile)
 
                 delete(xmlFile)
             end
@@ -513,8 +518,6 @@ function CropRotation:randomInit()
     log("CropRotation:randomInit(): INFO generate random forecrops for each field.")
 
     for i, field in pairs(g_fieldManager:getFields()) do
-        -- DebugUtil.printTableRecursively(field, "", 0, 1)
-
         local r2, r1 = 0
 
         if field.fieldGrassMission then
@@ -1050,15 +1053,15 @@ function CropRotation:commandPlanner(...)
         table.insert(cropIndices, crop.index)
     end
 
-    result = self:getRotationPlannerYieldMultipliers(cropIndices)
+    local result = self:getRotationPlannerYieldMultipliers(cropIndices)
 
     -- format the response
     for i, cropIndex in pairs(cropIndices) do
         if cropIndex == FruitType.UNKNOWN then
-            log("FALLOW", "-")
+            print(string.format("%-20s -.--", "FALLOW"))
         else
             crop = self.fruitTypeManager:getFruitTypeByIndex(cropIndex)
-            log(string.format("%-20s %1.2f", crop.name, math.ceil(100 * result[i]) / 100))
+            print(string.format("%-20s %1.2f", crop.name, math.floor(100 * result[i] + 0.1) / 100))
         end
     end
 end

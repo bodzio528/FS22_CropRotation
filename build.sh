@@ -11,4 +11,5 @@ zip -r FS22_CropRotation_update.zip \
  translations \
  main.lua \
  CropRotation.lua \
- CropRotationData.lua
+ CropRotationData.lua \
+ CropRotationPlanner.lua
