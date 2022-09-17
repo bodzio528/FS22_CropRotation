@@ -15,6 +15,7 @@ function CropRotationPlanner:new(fruitTypeManager)
     self.fruitTypeManager = fruitTypeManager
 
     self.plans = {}
+    self:create(string.format(g_i18n:getText("cropRotation_gui_planner_defaultPlanName"), "A"))
 
     return self
 end
@@ -35,9 +36,7 @@ function CropRotationPlanner:saveToSavegame(xmlFile)
             end
         end
 
-        local cropsString = table.concat(crops, " ")
-
-        setXMLString(xmlFile, planKey, cropsString)
+        setXMLString(xmlFile, planKey, table.concat(crops, " "))
     end
 
 end
@@ -45,16 +44,15 @@ end
 function CropRotationPlanner:loadFromSavegame(xmlFile)
     local plannerKey = "cropRotation.planner"
     if not hasXMLProperty(xmlFile, plannerKey) then
-        self.plans = {}
-        self:create(string.format(g_i18n:getText("cropRotation_gui_planner_defaultPlanName"), "A"))
-
-        log("CropRotationPlanner:loadFromSavegame(): INFO create empty plan in memory.")
+        log("CropRotationPlanner:loadFromSavegame(): INFO create empty crop rotation plan in memory.")
         return
     end
 
+    self.plans = {}
+
     local i = 0
     while true do
-        local planKey = string.format("%s.plan(%i)", plannerKey, i)
+        local planKey = string.format("%s.plan(%d)", plannerKey, i)
         if not hasXMLProperty(xmlFile, planKey) then
             break
         end
