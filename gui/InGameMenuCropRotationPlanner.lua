@@ -21,7 +21,8 @@ InGameMenuCropRotationPlanner = {
         CROP_TEXTS = "cropText",
         CROP_ICONS = "cropIcon",
         CROP_FACTORS = "cropFactor"
-    }
+    },
+    MAX_ROTATION_ELEMENTS = 8
 }
 InGameMenuCropRotationPlanner._mt = Class(InGameMenuCropRotationPlanner, TabbedMenuFrameElement)
 
@@ -47,27 +48,32 @@ function InGameMenuCropRotationPlanner:delete()
 end
 
 function InGameMenuCropRotationPlanner:initialize()
-    print(string.format("InGameMenuCropRotationPlanner:initialize(): called!"))
+    print(string.format("InGameMenuCropRotationPlanner:initialize(): DEBUG called!"))
 
-    for index, element in pairs(self.cropElement) do
-        element:setVisible(false)
+    self.listOfAvailableCrops = {
+        [-1] = { index = -1 },
+        [0] = { index = 0 }
+    }
 
-        if element.fruitIndex == nil then
-            element.fruitIndex = 0
-        end
+    for i, fruitDesc in pairs(g_fruitTypeManager:getFruitTypes()) do
+        if fruitDesc.rotation.enabled then
+            table.insert(self.listOfAvailableCrops, {index = i, fruitDesc = fruitDesc})
 
-        self.cropText[index]:setText(string.format("Crop %d", index))
-
-        local width = self.cropText[index]:getTextWidth()
-
-    	local fillType = g_fillTypeManager:getFillTypeByIndex(3) -- 3 = canola
-        self.cropIcon[index]:setPosition(self.cropText[index].position[1] - width * 0.5 - self.cropIcon[index].margin[3], nil)
-    	self.cropIcon[index]:setImageFilename(fillType.hudOverlayFilename)
-
-        if index > 3 then
-            element:setVisible(true)
+            log("Adding fruit " .. tostring(i) .. " b'cuz rotation is enabled.")
         end
     end
+
+    DebugUtil.printTableRecursively(self.listOfAvailableCrops, "l", 0, 1)
+
+    for index, element in pairs(self.cropElement) do
+        if element.listIndex == nil then
+            element.listIndex = -1
+            element.index = index
+        end
+    end
+
+    self:updateRotation()
+
 --
 --     self.elementToRotationPosition = {}
 --     self.stateToFruitType = {}
@@ -110,9 +116,75 @@ function InGameMenuCropRotationPlanner:initialize()
 --     self:updateRotations()
 end
 
+local function cr_skip(input)
+    result = {}
+    for i, v in pairs(input) do
+        if v ~= -1 then
+            table.insert(result, v)
+        end
+    end
+    return result
+end
 
-function InGameMenuCropRotationPlanner:updateRotations()
-    print(string.format("InGameMenuCropRotationPlanner:updateRotations(): called!"))
+local function cr_unskip(orig, input)
+    local j = 1
+    local result = {}
+    for k, v in pairs(orig) do
+        if v ~= -1 then
+            table.insert(result, string.format("%.2f", input[j]))
+            j = 1 + j
+        else
+            table.insert(result, "-")
+        end
+    end
+    return result
+end
+
+function InGameMenuCropRotationPlanner:calculateFactors()
+    -- local factors = {"1.15", "1.10", "1.05", "1.00", "0.90", "0.80", "-.--", "-.--"}
+
+    local orig = {}
+    for index, element in pairs(self.cropElement) do
+        table.insert(orig, self.listOfAvailableCrops[element.listIndex].index) -- add fruitIndex to original planner list
+    end
+
+    return cr_unskip(orig, self.cropRotation:getRotationPlannerYieldMultipliers(cr_skip(orig)))
+end
+
+function InGameMenuCropRotationPlanner:updateRotation()
+    local factors = self:calculateFactors()
+
+    for index, element in pairs(self.cropElement) do
+        -- local cropText = self.cropText[index]
+        -- local cropIcon = self.cropIcon[index]
+        -- local cropFactor = self.cropFactor[index]
+
+        if element.listIndex > 0 then
+            local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(self.listOfAvailableCrops[element.listIndex].index)
+
+            self.cropText[index]:setText(fruitDesc.fillType.title)
+
+            local width = self.cropText[index]:getTextWidth()
+
+            self.cropIcon[index]:setImageFilename(fruitDesc.fillType.hudOverlayFilename)
+            self.cropIcon[index]:setPosition(self.cropText[index].position[1] - width * 0.5 - self.cropIcon[index].margin[3], nil)
+            self.cropIcon[index]:setVisible(true)
+        else -- special cases: fallow and skipped (nothing)
+            if element.listIndex == 0 then
+                self.cropText[index]:setText(g_i18n:getText("cropRotation_fallow"))
+            else
+                self.cropText[index]:setText("--") -- skipped
+            end
+
+            self.cropIcon[index]:setVisible(false)
+        end
+
+        self.cropFactor[index]:setText(factors[index]) -- this is always valid
+
+        if index > 1 then
+            element:setVisible(self.cropElement[index - 1].listIndex >= 0)
+        end
+    end
 
 end
 ----------------------
@@ -120,21 +192,30 @@ end
 ----------------------
 
 function InGameMenuCropRotationPlanner:onValueChanged(value, element)
+    if value > 0 then -- next crop
+        element.listIndex = element.listIndex + 1
 
-    -- if element.fruitIndex ~= nil then
-    if value > 0 then
-        element.fruitIndex = element.fruitIndex + 1
-    else
-        element.fruitIndex = element.fruitIndex - 1
+        if self.listOfAvailableCrops[element.listIndex] == nil then
+            element.listIndex = -1
+
+             -- or 0, when element.next.listIndex >= 0
+            if element.index < InGameMenuCropRotationPlanner.MAX_ROTATION_ELEMENTS and self.cropElement[element.index + 1].listIndex >= 0 then
+                element.listIndex = 0
+            end
+        end
+    else -- previous crop
+        element.listIndex = element.listIndex - 1
+        if element.listIndex < 0 then
+            if element.index < InGameMenuCropRotationPlanner.MAX_ROTATION_ELEMENTS and self.cropElement[element.index + 1].listIndex >= 0 then
+                element.listIndex = #self.listOfAvailableCrops
+            end
+            if self.listOfAvailableCrops[element.listIndex] == nil then
+                element.listIndex = #self.listOfAvailableCrops
+            end
+        end
     end
 
-    print(string.format("InGameMenuCropRotationPlanner:onValueChanged(): DEBUG value: %s, element.fruitIndex: %s", value, element.fruitIndex))
-
---     local rotIndex = self.elementToRotationIndex[element]
---
---     self:updateRotation(rotIndex)
---
---     self.localStorage:setCropRotations(self:getSettings())
+    self:updateRotation()
 end
 
 --

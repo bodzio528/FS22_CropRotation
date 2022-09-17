@@ -86,7 +86,7 @@ function applyYieldMultiplier(multiplier, ...)
     return nil
 end
 
-function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager, i18n, data, densityMapUpdater)
+function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager, i18n, data, densityMapUpdater, planner)
     local self = setmetatable({}, CropRotation_mt)
 
     self.isServer = mission:getIsServer()
@@ -97,7 +97,7 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
     self.fruitTypeManager = fruitTypeManager
     self.i18n = i18n
 
-    self.data = data
+    self.data = data -- static configuration data
 
     self.mapName = "cropRotation"
     self.mapFileName = "cropRotation.grle"
@@ -112,6 +112,8 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
     self.isVisualizeEnabled = false
 
     self.isNewSavegame = true
+
+    self.planner = planner -- planner data storage
 
     overwrittenStaticFunction(FSDensityMapUtil, "updateSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
     overwrittenStaticFunction(FSDensityMapUtil, "updateDirectSowingArea", CropRotation.inj_densityMapUtil_updateSowingArea)
@@ -436,7 +438,9 @@ function CropRotation:saveToSavegame(xmlFile)
         saveBitVectorMapToFile(self.map, self:getMapFilePath())
     end
 
-    -- TODO: self.planner:saveToSavegame(xmlFile)
+    if self.planner then
+        self.planner:saveToSavegame(xmlFile)
+    end
 end
 
 function CropRotation:loadSavegame()
@@ -446,7 +450,7 @@ function CropRotation:loadSavegame()
             local xmlFile = loadXMLFile(self.xmlName, xmlFilePath)
             if xmlFile ~= nil then
                 self:loadFromSavegame(xmlFile)
-                -- TODO: self.planner:loadFromSavegame(xmlFile)
+                self.planner:loadFromSavegame(xmlFile)
 
                 delete(xmlFile)
             end
@@ -1050,7 +1054,7 @@ function CropRotation:commandPlanner(...)
         table.insert(cropIndices, crop.index)
     end
 
-    result = self:getRotationPlannerYieldMultipliers(cropIndices)
+    local result = self:getRotationPlannerYieldMultipliers(cropIndices)
 
     -- format the response
     for i, cropIndex in pairs(cropIndices) do

@@ -6,3 +6,5 @@ xcopy /b/v/y FS22_CropRotation_update.zip "%userprofile%\Documents\My Games\Farm
 
 rem make standalone mod as well
 copy /b/v/y FS22_CropRotation_update.zip FS22_CropRotation.zip
+
+echo.> "%userprofile%\Documents\My Games\FarmingSimulator2022\log.txt"

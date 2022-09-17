@@ -59,8 +59,6 @@ function cr_loadMission(mission)
     if not isActive() then return end
     assert(g_cropRotation == nil)
 
-    local cropRotationPlanner = CropRotationPlanner:new(g_fruitTypeManager) -- storage - load & save planner as xml
-
     cropRotation = CropRotation:new(mission,
                                     modDirectory,
                                     g_messageCenter,
@@ -68,23 +66,7 @@ function cr_loadMission(mission)
                                     g_i18n,
                                     CropRotationData:new(mission, modDirectory, g_fruitTypeManager),
                                     DensityMapUpdater:new(mission, g_sleepManager, g_dedicatedServer ~= nil),
-                                    cropRotationPlanner)
-
-    g_gui:loadProfiles(modDirectory .. "gui/guiProfiles.xml")
-
-	local ingameMenuCropRotationPlanner = InGameMenuCropRotationPlanner.new(g_i18n, cropRotation, cropRotationPlanner)
-
-    local pathToGuiXml = modDirectory .. "gui/InGameMenuCropRotationPlanner.xml"
-	g_gui:loadGui(pathToGuiXml,
-                  "ingameMenuCropRotationPlanner",
-                  ingameMenuCropRotationPlanner,
-                  true)
-
-	fixInGameMenu(ingameMenuCropRotationPlanner,
-                  "ingameMenuCropRotationPlanner",
-                  {0, 0, 1024, 1024},
-                  4)
-
+                                    CropRotationPlanner:new(g_fruitTypeManager))
 
     getfenv(0)["g_cropRotation"] = cropRotation -- globalize
 
@@ -97,6 +79,20 @@ function cr_loadMissionFinished(mission, superFunc, node)
     end
 
     cropRotation:load()
+
+    g_gui:loadProfiles(modDirectory .. "gui/guiProfiles.xml")
+
+    local ingameMenuCropRotationPlanner = InGameMenuCropRotationPlanner.new(g_i18n, cropRotation, cropRotation.planner)
+    local pathToGuiXml = modDirectory .. "gui/InGameMenuCropRotationPlanner.xml"
+    g_gui:loadGui(pathToGuiXml,
+                  "ingameMenuCropRotationPlanner",
+                  ingameMenuCropRotationPlanner,
+                  true)
+
+    fixInGameMenu(ingameMenuCropRotationPlanner,
+                  "ingameMenuCropRotationPlanner",
+                  {0, 0, 1024, 1024},
+                  4)
 
     superFunc(mission, node)
 end
