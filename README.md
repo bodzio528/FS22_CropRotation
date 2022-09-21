@@ -12,8 +12,10 @@ Key features:
 - crop-specific return period to mitigate monoculture
 - fallow support, up to two years (only with seasonal growth enabled)
 - detailed in-game help menu
+- in-game menu crop rotation planner
 
 Future development:
+- support for additional crops
 - biomass content in soil management
 
 ## Crop Rotation
@@ -22,7 +24,7 @@ Future development:
 
 Planting the same crop every year (monoculture) leads to reduce in yield.
 
-Depending on soil and crop the amount lost varies between 5 and 25 percent of expected yield. Different crops require different elements to take from the soil to grow.
+Depending on soil and crop type, the amount lost varies between 5 and 25 percent of expected yield. Different crops require different elements to take from the soil to grow.
 
 Crop rotation is a technique to alternate types of plants with different requirements, which gives the soil time needed to supplement the missing one - usually contained in leftovers from previous harvests, but not yet in a form appropriate for plants to utilize.
 
@@ -32,165 +34,134 @@ Crop rotation performed well, prevents soil from loosing elements plants require
 
 ### Return period
 
-There is a minimal time required between use the same plot for the same type of crop, in order to prevent yield deduction due to pests and pathogens.
+There is a minimal time that should be kept between planting the same type of crop on a given field, in order to prevent yield deduction due to pests and pathogens.
 
-Canola, sunflower, potatoes and sugar beets can return in third season.
+Canola, sunflower, potatoes and sugar beets can return in third planting season.
 
 Most of cereals, soybean, sugar cane and cotton require at least one year gap.
 
-Corn, grass and poplar can be grow every year, but farmer must take into account yield deduction due to soil nutrients depletion.
+Corn, grass and poplar can be grown every year, but farmer must take into account yield deduction due to soil nutrients depletion.
+
+Example 1: Maize (monoculture, RP1)
+
+| crop    | last year crop | previous year crop | return period | monoculture | result |
+|-|-|-|-|-|-:|
+| Maize    | Maize(ok, +0%) | Maize(ok, +0%)      | 1(ok, +0%)     | yes(-5%)    |    -5% |
+
+Example 2: Grassland (monoculture, RP1)
+
+| crop    | last year crop      | previous year crop | return period | monoculture | result |
+|-|-|-|-|-|-:|
+| Grass    | Grass(good, +10%)  | Grass(good, +5%)   | 1(ok, +0%)     | yes(-5%)    |  +10%  |
+
+Example 3: Oat (monoculture, RP2)
+
+| crop    | last year crop      | previous year crop | return period | monoculture | result |
+|-|-|-|-|-|-:|
+| Oat    | Oat(ok, +0%)  | Oat(ok, +0%)  | 2(bad, -5%)   | yes(-5%) |   -10% |
+
+Example 4: Barley (monoculture, RP2)
+
+| crop    | last year crop      | previous year crop | return period | monoculture | result |
+|-|-|-|-|-|-:|
+|Barley    | Barley(bad, -20%)  | Barley(bad, -10%)  | 2(bad, -5%)   | yes(-5%) |   -40% |
+
+Example 5: Canola (monoculture, RP3)
+
+| crop    | last year crop      | previous year crop | return period | monoculture | result |
+|-|-|-|-|-|-:|
+|Canola    | Canola(bad, -20%)  | Canola(bad, -10%)  | 3(bad, -15%)  | yes(-5%)    |   -50% |
 
 ### Forecrops
 
-Some plants grow better after another ones. To express that, crops have been divided into several categories: oilseed, cereal, legume, roots, nightshade and grass. Crops within single group have similar properties, thus you should avoid planting them one after another on the same plot.
+Some plants grow better or worse after certain forecrops. As a result, there are two lists maintained for each crop: list of good forecrops that provide yield bonus, and list of bad forecrops that reduce yield. Forecrops not listed in any of those, are neutral - they neither upgrade or degrade yield.
 
-For example: cereals and oilseed grow very well after legumes. Roots grow well after cereals. Rapeseeds or sunflowers can grow very well after sugar beets.
+Cereals and oilseed grow very well after legumes (soybean). Rootcrops (sugarbeets) grow well after cereals. Sunflowers grow very well after sugar beets.
 
-Two last crop categories have the dominant influence over current yield.
+Avoid planting canola after sunflowers, sugarbeets after corn, or sunflowers after potatoes. The yield may be greatly reduced by choosing bad forecrops in rotation.
+
+Two last crop categories have the dominant influence over current yield. The last forecrop gives 10% bonus to 20% loss, while previous year gives 5% bonus or 10% loss. Good crop rotation means keeping yields close to 100% of their potential.
+
+You can manipulate crop order to get desired results.
+
+Example 1: rotation Barley -> Soybean -> Canola
+
+| crop    | last year crop      | previous year crop  | result |
+|-|-|-|-:|
+| Barley  | Canola(good, +10%)  | Soybean(good, +5%)  |   +15% |
+| Soybean | Barley(ok, +0%)     | Canola(good, +5%)   |    +5% |
+| Canola  | Soybean(good, +10%) | Barley(good, +5%)   |   +15% |
+
+Example 2: rotation Potatoes -> Barley -> Canola
+
+| crop    | last year crop      | previous year crop | result |
+|-|-|-|-:|
+| Potatoe | Canola(good, +10%) | Barley(ok, +0%)    |   +10% |
+| Barley  | Potatoes(ok, +0%)  | Canola(good, +5%)  |    +5% |
+| Canola  | Barley(good, +10%) | Potatoes(ok, +0%)  |   +10% |
+
+Example 3: rotation Barley -> Canola
+
+| crop   | last year crop      | previous year crop | return period | result |
+|-|-|-|-|-:|
+| Barley | Canola(good, +10%) | Barley(bad, -10%)  | 2(ok, +0%) | +0% |
+| Canola | Barley(good, +10%) | Canola(bad, -10%)  | 3(bad, -5%) | -5% |
+
+Example 4: rotation Potato -> Canola -> Sunflower
+
+| crop      | last year crop     | previous year crop   | result |
+|-|-|-|-:|
+| Potato    | Sunflower(ok, +0%) | Canola(good, +5%)    |    +5% |
+| Canola    | Potato(ok, +0%)    | Sunflower(bad, -10%) |   -10% |
+| Sunflower | Canola(bad, -20%)  | Potato(bad, -10%)    |   -30% |
 
 ### Fallow
 
 You may also leave field without planting for full year (fallow). Soil will then regain the ability to support even the most demanding crops.
 
-### Crop Rotation Info
+Example 1: (medieval three-field) Wheat -> Wheat -> Fallow
+
+| crop   | last year crop     | previous year crop | return period | result |
+|-|-|-|-|-:|
+| Wheat  | Fallow(good, +10%) | Wheat(bad, -10%)   | 2(ok, +0%)     |    +0% |
+| Wheat  | Wheat(bad, -20%)   | Fallow(good, +5%)  | 2(bad, -5%)   |    -20% |
+| Fallow | Wheat              | Wheat              | --            |   --   |
+
+Fun fact: the third-on wheat yield would've been reduced by 40% if not replaced by fallow.
+
+To trigger fallow one must: harvest the yield, and do not perform sowing until full year has passed. For example: if harvest was in August 2022, then next agricultural year starts in March 2023. Do not sow until March 2024 to achieve fallow bonus.
+
+### Crop Rotation Field Info Box
 
 In field info box, there is additional entry, with crop rotation efficiency and two last harvested crop categories.
 Crop rotation efficiency is the percentage of gain (or lost) yield.
 
-> hud-standard.PNG
-
 Perfect crop rotation allows to receive additional 15 percent of yield.
 
-Ignoring soil condition may reduce yield by 30 percent.
+Ignoring crop rotation may reduce yield by 50 percent.
+![PF-Infobox](images/screen7.png "Precision Farming Infobox")
 
-### Precision Farming
+#### Precision Farming
 
 In case precision farming mod is in use, the crop rotation efficiency becomes one of the ingredients of the final yield estimation, added to precision farming info box.
 
->hud-precision.PNG
-
 Crop rotation efficiency is now a part of yield potential, next to nitrogen, pH, soil type, seed rate and weeds coefficients.
+![PF-Infobox](images/screen4.png "Precision Farming Infobox")
 
-# PL
+### Crop Rotation Data
 
-## Płodozmian
+At this moment, all data is static, means it is not possible to load additional mods that override parameters defined locally. However preparations have been made to allow such flexibility in the future.
 
-### Informacje ogólne
+Curious ones may check data/crops.xml file for details - all crop rotation information is load from there.
 
-Wieloletnie uprawianie tego samego rodzaju roślin na polu (monokultura) prowadzi do obniżenia plonów.
+In case you prefer picture over xml text (I'm not judging!), here you have some nice screenshots from my spreadsheet.
 
-W zależności od jakości gleby i uprawianej rośliny, straty mogą sięgać od 5 nawet 25 procent spodziewanego plonu.
-Dzieje się tak, gdyż różne rośliny do rozwoju potrzebują różnych proporcji pierwiastków zawartych w glebie.
+![CR-Matrix](images/cr-matrix.png "Crop Rotation Matrix")
 
-Płodozmian polega na wprowadzaniu na stanowisko (pole) roślin o odmiennych wymaganiach, co daje glebie czas potrzebny na uzupełnienie wartości odżywczych - zwykle zawartych w szczątkach roślin z poprzednich zbiorów, ale w formie jeszcze nieprzyswajalnej przez rośliny.
+![CR-Forecrops](images/cr-forecrops.png "Crop Rotation Yield Formula")
 
-Ponadto, dieta wielu szkodników jest ograniczona do konkretnego rodzaju roślin.
-Zmiana rodzaju uprawy przerywa cykl rozwojowy szkodników i pozwala glebie oczyścić się z patogenów związanych z roślinami.
+### Contributing
 
-Idealnie poprowadzony płodozmian zapobiega zmiejszeniu plonu na skutek wyjałowienia gleby z pierwiastków potrzebnych roślinom do prawidłowego wzrostu, oraz znacznie ogranicza presję patogenów chorobotwórczych i szkodników w uprawie. Prowadzi to wprost do polepszenia jakości plonów w kolejnych latach.
+Please make pull request with changes to translations, if you want to add some language or improve existing one. Remember to add your name inside `translationContributors` tag.
 
-### Okres powrotu
-
-Istnieje pewien minimalny czas, jaki należy zachować przed ponownym użyciem pola do uprawy danej rośliny, aby plon nie uległ obniżeniu z powodu szkodników i patogenów.
-
-Po trzech latach mogą powrócić: rzepak, słoneczniki, ziemniaki i buraki cukrowe.
-
-Większość zbóż oraz soja, trzcina cukrowa i bawełna mogą być uprawiane w odstępie roku.
-
-Kukurydza, trawa i topola mogą być uprawiane rok po roku, trzeba jednak liczyć się z obniżeniem plonu z powodu wyjałownia gleby.
-
-### Przedplony
-
-Niektóre rośliny rosną lepiej, a niektóre gorzej w zależności od rodzaju ich poprzedników. --[[Uprawy zostały podzielone na sześć kategorii: oleiste, zboża, motylkowe, okopowe, psiankowate i trawy.]]
-Rośliny zaklasyfikowane do tej samej grupy mają podobne wymagania, toteż należy unikać uprawiania na polu roślin w obrębie kategorii bezpośrednio po sobie.
-
-I tak na przykład po roślinach motylkowych (soja) bardzo dobrze rosną zboża i rośliny oleiste.
-Po okopowych warto posiać rzepak lub słoneczniki.
-A okopowe dobrze rosną na polach po zbożach.
-
-Dwa ostatnie rodzaje upraw mają dominujący wpływ na plon obecnej.
-
-### Ugór
-
-Pole możesz także zostawić odłogiem, czyli nie obsiewać po zbiorach przez cały następny rok (ugór). Gleba odzyska wtedy żyzność i będzie gotowa na przyjęcie najbardziej nawet wymagających upraw.
-
-### Wskaźnik płodozmianu
-
-Na panelu informacji o polu znajduje się teraz bieżąca ocena prowadzonego płodozmianu wraz z informacją o uprawach z poprzednich dwóch lat.
-Ocena wyrażona jest w procentowym zwiększeniu (lub zmniejszeniu) plonu.
-
-> hud-standard.PNG
-
-Idealny płodozmian pozwala na zwiększenie plonu nawet o 15%.
-Przez zaniechanie dbania o stan gleby plon może spaść
-
-### Rolnictwo precyzyjne
-
-Jeśli używasz modyfikacji rolnictwo precyzyjne, informacja o płodozmianie jest dołączona do panelu informacji o rolnictwie precyzyjnym.
-
-> hud-precision.PNG
-
-Ocena płodozmianu jest składową potencjału plonowania, obok poziomu nawożenia azotem, odczynu pH, rodzaju gleby, gęstości zasiewu itp.
-
-# Przykłady rotacji
-
-1. soja, pszenica, burak, słonecznik
-
-2. soja, jęczmień, rzepak
-
-# DE
-
-## Fruchtfolge
-
-### Allgemeine Information
-
-Jedes Jahr die gleiche Kultur zu pflanzen (Monokultur) führt zu Ertragseinbußen.
-
-Je nach Boden und Kultur variiert die Verlustmenge zwischen 5 und 25 Prozent des erwarteten Ertrags. Verschiedene Pflanzen benötigen unterschiedliche Elemente, die sie aus dem Boden nehmen müssen, um zu wachsen.
-
-Die Fruchtfolge ist eine Technik zum Wechseln von Pflanzenarten mit unterschiedlichen Anforderungen, die dem Boden Zeit gibt, um die fehlende zu ergänzen - normalerweise in Resten früherer Ernten enthalten, aber noch nicht in einer für Pflanzen geeigneten Form.
-
-Auch viele Schädlinge sind auf einzelne Pflanzenarten eingestellt. Die Fruchtfolge strengt ihre Vermehrungsfähigkeit an und der Boden kann sich selbst von Krankheitserregern reinigen, die für eine bestimmte Pflanzenart spezifisch sind.
-
-Die Fruchtfolge hat sich gut entwickelt, verhindert, dass der Boden Elemente verliert, die Pflanzen für das Wachstum benötigen, und reduziert das Vorhandensein von Krankheiten und Schädlingen erheblich. All dies führt direkt zu einer höheren Qualität und Quantität des Ertrags in den Folgejahren.
-
-### Zurückzukehren
-
-Zwischen der Nutzung derselben Parzelle für dieselbe Kulturart ist nur eine minimale Zeit erforderlich, um Ertragseinbußen durch Schädlinge und Krankheitserreger zu vermeiden.
-
-Raps, Sonnenblumen, Kartoffeln und Zuckerrüben können in der dritten Saison zurückkehren.
-
-Die meisten Getreidearten, Sojabohnen, Zuckerrohr und Baumwolle benötigen mindestens ein Jahr Pause.
-
-Mais, Gras und Pappel können jedes Jahr angebaut werden, aber der Landwirt muss Ertragseinbußen aufgrund des Nährstoffmangels im Boden berücksichtigen.
-
-### Vorderfrüchte
-
-Manche Pflanzen wachsen besser nach anderen. --[[Um dies auszudrücken, wurden Nutzpflanzen in mehrere Kategorien eingeteilt: Ölsaaten, Getreide, Hülsenfrüchte, Wurzeln, Nachtschatten und Gräser. Pflanzen innerhalb einer Gruppe haben ähnliche Eigenschaften, daher sollten Sie vermeiden, sie nacheinander auf derselben Parzelle zu pflanzen.]]
-
-Zum Beispiel: Getreide und Ölsaaten wachsen sehr gut nach Leguminosen. Wurzeln wachsen gut nach Getreide. Raps oder Sonnenblumen können nach Zuckerrüben sehr gut wachsen.
-
-Zwei letzte Fruchtkategorien haben den dominierenden Einfluss auf den aktuellen Ertrag.
-
-### Brache
-
-Sie können das Feld auch ganzjährig unbepflanzt lassen (Brache). Der Boden wird dann wieder in der Lage sein, selbst die anspruchsvollsten Pflanzen zu tragen.
-
-### Fruchtfolgeinfo
-
-In der Feldinfobox gibt es einen zusätzlichen Eintrag mit Fruchtfolgeeffizienz und zwei zuletzt geernteten Fruchtkategorien.
-Die Fruchtfolgeeffizienz ist der Prozentsatz des Gewinns (oder Verlusts) des Ertrags.
-
-> hud-standard.PNG
-
-
-Eine perfekte Fruchtfolge ermöglicht zusätzliche 15 Prozent des Ertrags.
-Das Ignorieren der Fruchtfolge kann zu 30 Prozent Ertragsverlust führen.
-
-### Präzisionslandwirtschaft
-
-Falls der Präzisionslandwirtschafts-Mod verwendet wird, wird die Fruchtfolgeeffizienz zu einem der Bestandteile der endgültigen Ertragsschätzung, die der Präzisionslandwirtschafts-Infobox hinzugefügt wird.
-
->hud-präzision.PNG
-
-Die Fruchtfolgeeffizienz ist jetzt neben Stickstoff, pH-Wert, Bodentyp, Saatmenge und Unkrautkoeffizienten ein Teil des Ertragspotenzials.
+If you have some idea how could I improve the mod, please contact me via GIANTS forum, nick bodzio528. I am open to suggestions.

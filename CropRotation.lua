@@ -934,21 +934,24 @@ function CropRotation:getRotationYieldMultiplier(prevIndex, lastIndex, currentIn
     local returnPeriod = self:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, currentDesc)
     local forecrops = self:getRotationForecropMultiplier(prevIndex, lastIndex, currentIndex)
 
-    return returnPeriod * forecrops
+    return forecrops + returnPeriod
 end
 
 function CropRotation:getRotationReturnPeriodMultiplier(prev, last, current)
     local returnPeriod = current.rotation.returnPeriod
 
+    -- monoculture
+    local result = 0.0 - ((current.index == last and current.index == prev) and 0.05 or 0)
+
     if returnPeriod == 3 then
-        return 1 - (current.index == last and 0.1 or 0) - (current.index == prev and 0.05 or 0)
+        return result - (current.index == last and 0.1 or 0) - (current.index == prev and 0.05 or 0)
     end
 
     if returnPeriod == 2 then
-        return 1 - ((current.index == last) and 0.05 or 0) - (current.index == prev and 0.05 or 0)
+        return result - (current.index == last and 0.05 or 0)
     end
 
-    return 1.0
+    return result
 end
 
 function CropRotation:getRotationForecropMultiplier(prevIndex, lastIndex, currentIndex)
@@ -961,8 +964,8 @@ function CropRotation:getRotationForecropMultiplier(prevIndex, lastIndex, curren
     return 0.7 + (prevFactor + lastFactor) -- <0.7 ; 1.15>
 end
 
--- input: list of crop indices: {11, 2, 3}
--- output: list of multipliers: {1.15, 1.1, 1.0}
+-- input: list of crop indices: { 11, 2, 3 }
+-- output: list of multipliers: { 1.15, 1.1, 1.0 }
 function CropRotation:getRotationPlannerYieldMultipliers(input)
     if #input < 1 then
         return {}
