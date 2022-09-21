@@ -96,16 +96,16 @@ Example 2: rotation Potatoes -> Barley -> Canola
 
 | crop    | last year crop      | previous year crop | result |
 |-|-|-|-:|
-| Potatoes  | Canola(good, +10%) | Barley(ok, +0%)    |   +10% |
-| Barley    | Potatoes(ok, +0%)  | Canola(good, +5%)  |    +5% |
-| Canola    | Barley(good, +10%) | Potatoes(ok, +0%)  |   +10% |
+| Potatoe | Canola(good, +10%) | Barley(ok, +0%)    |   +10% |
+| Barley  | Potatoes(ok, +0%)  | Canola(good, +5%)  |    +5% |
+| Canola  | Barley(good, +10%) | Potatoes(ok, +0%)  |   +10% |
 
 Example 3: rotation Barley -> Canola
 
-| crop    | last year crop      | previous year crop | return period | result |
+| crop   | last year crop      | previous year crop | return period | result |
 |-|-|-|-|-:|
-| Barley    | Canola(good, +10%) | Barley(bad, -10%)  | 2(ok, +0%) | +10% |
-| Canola    | Barley(good, +10%) | Canola(bad, -10%)  | 3(bad, -5%) | +10% |
+| Barley | Canola(good, +10%) | Barley(bad, -10%)  | 2(ok, +0%) | +0% |
+| Canola | Barley(good, +10%) | Canola(bad, -10%)  | 3(bad, -5%) | -5% |
 
 Example 4: rotation Potato -> Canola -> Sunflower
 
@@ -124,7 +124,7 @@ Example 1: (medieval three-field) Wheat -> Wheat -> Fallow
 | crop   | last year crop     | previous year crop | return period | result |
 |-|-|-|-|-:|
 | Wheat  | Fallow(good, +10%) | Wheat(bad, -10%)   | 2(ok, +0%)     |    +0% |
-| Wheat  | Wheat(bad, -20%)   | Fallow(good, +5%)  | 2(bad, -5%)   |    -5% |
+| Wheat  | Wheat(bad, -20%)   | Fallow(good, +5%)  | 2(bad, -5%)   |    -20% |
 | Fallow | Wheat              | Wheat              | --            |   --   |
 
 Fun fact: the third-on wheat yield would've been reduced by 40% if not replaced by fallow.
