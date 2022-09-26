@@ -487,6 +487,7 @@ function CropRotation:load()
     self:loadModifiers()
 
     if self.isNewSavegame then
+        log("CropRotation:load(): INFO generate forecrops for each field (new savegame).")
         self:randomInit()
     end
 
@@ -503,8 +504,6 @@ end
 
 -- populate map fields with random crops
 function CropRotation:randomInit()
-    log("CropRotation:randomInit(): INFO generate random forecrops for each field.")
-
     for i, field in pairs(g_fieldManager:getFields()) do
         local r2, r1 = 0
 

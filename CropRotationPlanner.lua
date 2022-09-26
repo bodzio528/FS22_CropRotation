@@ -61,7 +61,7 @@ function CropRotationPlanner:loadFromSavegame(xmlFile)
         local cropNames = string.split(Utils.getNoNil(getXMLString(xmlFile, planKey), ""):upper(), " ")
 
         local crops = {} -- cropIndices
-        for i, fruitName in pairs(cropNames) do
+        for j, fruitName in pairs(cropNames) do
             if fruitName == "FALLOW" then
                 table.insert(crops, 0)
             else
@@ -70,8 +70,7 @@ function CropRotationPlanner:loadFromSavegame(xmlFile)
                 if fruitDesc ~= nil then
                     table.insert(crops, fruitDesc.index)
                 else
-                    log("CropRotationPlanner:loadFromSavegame(): ERROR fruit", fruitName, "not found in fruit manager.")
-                    log("CropRotationPlanner:loadFromSavegame(): ERROR Unknown fruit specified in plan", planName, "pos", tostring(i), ":", fruitName)
+                    log("CropRotationPlanner:loadFromSavegame(): ERROR plan ", planName, "pos", tostring(j), ":", "fruit", fruitName, "not found in fruit manager.")
                     log("CropRotationPlanner:loadFromSavegame(): INFO replace unknown fruit", fruitName, "with FALLOW")
                     table.insert(crops, 0)
                 end
@@ -109,12 +108,12 @@ function CropRotationPlanner:delete(planId)
 end
 
 function CropRotationPlanner:select(planId)
-    return self.plans[planId].crops
+    return self.plans[planId]
 end
 
 function CropRotationPlanner:update(planId, crops)
     if self.plans[planId] == nil then
-        log("CropRotationPlanner:update(): ERROR new plan is requested during update? Unexpected flow.")
+        log("CropRotationPlanner:update(): ERROR new plan requested for update? Unexpected flow.")
         return
     end
     self.plans[planId].crops = crops

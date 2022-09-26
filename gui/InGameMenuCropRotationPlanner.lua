@@ -26,10 +26,8 @@ function InGameMenuCropRotationPlanner.new(i18n, crModule, planner)
     self.name = "InGameMenuCropRotationPlanner"
     self.i18n = i18n
 
-    self.cropRotation = crModule -- yield calculating functions
-    self.planner = planner -- data storage
-
-	self.planId = 1 -- TODO: multiple crop rotation plans
+    self.cropRotation = crModule
+    self.planner = planner
 
     self:registerControls(InGameMenuCropRotationPlanner.CONTROLS)
 
@@ -41,25 +39,45 @@ function InGameMenuCropRotationPlanner:delete()
 end
 
 function InGameMenuCropRotationPlanner:initialize()
-    self.listOfAvailableCrops = {
+    self.cropIndexToFruitIndexMap = {
         [-1] = { index = -1 },
         [0] = { index = 0 }
     }
 
+    self.fruitIndexToCropIndexMap = {}
+
     for i, fruitDesc in pairs(g_fruitTypeManager:getFruitTypes()) do
         if fruitDesc.rotation.enabled then
-            table.insert(self.listOfAvailableCrops, {index = i, fruitDesc = fruitDesc})
+            table.insert(self.cropIndexToFruitIndexMap, {index = i})
+            self.fruitIndexToCropIndexMap[i] = #self.cropIndexToFruitIndexMap
         end
     end
 
     -- local plans = self.planner:fetch() -- TODO populate list of rotation plans
-
+	self.planId = 1 -- TODO: selectable by user
     local plan = self.planner:select(self.planId)
+
+    -- TODO: call on plan selection change: synchronize GUI elements with stored plan
     for index, element in pairs(self.cropElement) do
-        if element.listIndex == nil then
-            element.listIndex = plan[index] or -1
+        if element.cropIndex == nil then
             element.index = index
         end
+
+        element.cropIndex = -1 -- nothing
+        if plan.crops[index] ~= nil then -- something
+            element.cropIndex = 0 -- fallow
+            if plan.crops[index] > 0 then -- crop
+                element.cropIndex = self.fruitIndexToCropIndexMap[plan.crops[index]]
+                if element.cropIndex == nil then
+                    log(string.format(
+                        "CropRotationPlanner:initialize(): WARNING plan(%d): '%s' pos: %d crop roptation disabled for fruit: %s. %s",
+                        self.planId, plan.name, element.index, g_fruitTypeManager:getFruitTypeByIndex(plan.crops[index]).name,
+                        "Most likely due to invalid entry in crop rotation planner save file. Did you remove crop definitions recently?"))
+                    element.cropIndex = 0 -- fallback to fallow
+                end
+            end
+        end
+
     end
 
     self:updateRotation()
@@ -90,84 +108,76 @@ local function cr_unskip(orig, input)
 end
 
 function InGameMenuCropRotationPlanner:calculateFactors()
-    local orig = {}
+    local data = {}
     for _, element in pairs(self.cropElement) do
-        if self.listOfAvailableCrops[element.listIndex] ~= nil then
-            table.insert(orig, self.listOfAvailableCrops[element.listIndex].index)
-        else
-            log("InGameMenuCropRotationPlanner:calculateFactors(): ERROR Fruit not available with index", element.listIndex)
-            DebugUtil.printTableRecursively(self.listOfAvailableCrops, "", 0, 1)
-
-            table.insert(orig, 0)
-        end
+        table.insert(data, self.cropIndexToFruitIndexMap[element.cropIndex].index)
     end
 
-    self.planner:update(self.planId, orig)
+    self.planner:update(self.planId, data) -- store planner data
 
-    return cr_unskip(orig, self.cropRotation:getRotationPlannerYieldMultipliers(cr_skip(orig)))
+    return cr_unskip(data, self.cropRotation:getRotationPlannerYieldMultipliers(cr_skip(data)))
 end
 
 function InGameMenuCropRotationPlanner:updateRotation()
     local factors = self:calculateFactors()
 
     for index, element in pairs(self.cropElement) do
-        -- local cropText = self.cropText[index]
-        -- local cropIcon = self.cropIcon[index]
-        -- local cropFactor = self.cropFactor[index]
+        local elementText = self.cropText[index]
+        local elementIcon = self.cropIcon[index]
 
-        if element.listIndex > 0 then
-            local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(self.listOfAvailableCrops[element.listIndex].index)
+        if element.cropIndex > 0 then
+            local fruitIndex = self.cropIndexToFruitIndexMap[element.cropIndex].index
+            local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(fruitIndex)
 
-            self.cropText[index]:setText(fruitDesc.fillType.title)
+            elementText:setText(fruitDesc.fillType.title)
 
-            local width = self.cropText[index]:getTextWidth()
+            local textWidth = elementText:getTextWidth()
 
-            self.cropIcon[index]:setImageFilename(fruitDesc.fillType.hudOverlayFilename)
-            self.cropIcon[index]:setPosition(self.cropText[index].position[1] - width * 0.5 - self.cropIcon[index].margin[3], nil)
-            self.cropIcon[index]:setVisible(true)
-        else -- special cases: fallow and skipped (nothing)
-            if element.listIndex == 0 then
-                self.cropText[index]:setText(g_i18n:getText("cropRotation_fallow"))
+            elementIcon:setImageFilename(fruitDesc.fillType.hudOverlayFilename)
+            elementIcon:setPosition(elementText.position[1] - textWidth * 0.5 - elementIcon.margin[3], nil)
+            elementIcon:setVisible(true)
+        else
+            if element.cropIndex == 0 then
+                elementText:setText(g_i18n:getText("cropRotation_fallow"))
             else
-                self.cropText[index]:setText("--") -- skipped
+                elementText:setText("--") -- "nothing"
             end
 
-            self.cropIcon[index]:setVisible(false)
+            elementIcon:setVisible(false)
         end
 
         self.cropFactor[index]:setText(factors[index]) -- this is always valid
 
         if index > 1 then
-            element:setVisible(self.cropElement[index - 1].listIndex >= 0)
+            element:setVisible(self.cropElement[index - 1].cropIndex >= 0) -- hide rotation elements after "nothing"
         end
     end
-
 end
 
 ----------------------
--- Events
+-- Event handlers
 ----------------------
 
 function InGameMenuCropRotationPlanner:onValueChanged(value, element)
     if value > 0 then -- next crop
-        element.listIndex = element.listIndex + 1
+        element.cropIndex = element.cropIndex + 1
 
-        if self.listOfAvailableCrops[element.listIndex] == nil then
-            element.listIndex = -1
+        if self.cropIndexToFruitIndexMap[element.cropIndex] == nil then
+            element.cropIndex = -1 -- "nothing"
 
-             -- or 0, when element.next.listIndex >= 0
-            if element.index < InGameMenuCropRotationPlanner.MAX_ROTATION_ELEMENTS and self.cropElement[element.index + 1].listIndex >= 0 then
-                element.listIndex = 0
+            if element.index < InGameMenuCropRotationPlanner.MAX_ROTATION_ELEMENTS and self.cropElement[element.index + 1].cropIndex >= 0 then
+                element.cropIndex = 0 -- or 0, if element.next.cropIndex >= 0
             end
         end
     else -- previous crop
-        element.listIndex = element.listIndex - 1
-        if element.listIndex < 0 then
-            if element.index < InGameMenuCropRotationPlanner.MAX_ROTATION_ELEMENTS and self.cropElement[element.index + 1].listIndex >= 0 then
-                element.listIndex = #self.listOfAvailableCrops
+        element.cropIndex = element.cropIndex - 1
+
+        if element.cropIndex < 0 then
+            if element.index < InGameMenuCropRotationPlanner.MAX_ROTATION_ELEMENTS and self.cropElement[element.index + 1].cropIndex >= 0 then
+                element.cropIndex = #self.cropIndexToFruitIndexMap
             end
-            if self.listOfAvailableCrops[element.listIndex] == nil then
-                element.listIndex = #self.listOfAvailableCrops
+            if self.cropIndexToFruitIndexMap[element.cropIndex] == nil then
+                element.cropIndex = #self.cropIndexToFruitIndexMap
             end
         end
     end

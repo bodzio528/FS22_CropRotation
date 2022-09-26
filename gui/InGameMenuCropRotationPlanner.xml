@@ -65,7 +65,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[6]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[6]" text="1.10" />
                 </GuiElement>
-                <!--7 & 8 -->
+
                 <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[7]" handleFocus="true">
                     <GuiElement type="button" profile="multiTextOptionLeft" />
                     <GuiElement type="button" profile="multiTextOptionRight" />
@@ -90,11 +90,5 @@
                 <GuiElement type="slider" profile="verticalListSliderBar" dataElementId="boxLayout" handleFocus="false" />
             </GuiElement>
         </GuiElement>
-
-        <!--GuiElement type="empty" profile="ingameMenuCenterBox" id="cropRotationPlannerContainer">
-            <GuiElement type="empty" profile="ingameMenuAnimalsDetailsBox" id="detailsBox">
-
-            </GuiElement>
-        </GuiElement-->
     </GuiElement>
 </GUI>
