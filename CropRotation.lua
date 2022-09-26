@@ -26,6 +26,7 @@ local CropRotation_mt = Class(CropRotation)
 
 CropRotation.PrecisionFarming = "FS22_precisionFarming"
 
+-- TODO: read it from configuration XML
 CropRotation.COLORS = {
     [0] = {
         color = {0.0000, 0.4341, 0.0802, 1},
@@ -110,7 +111,6 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
     self.densityMapUpdater = densityMapUpdater
 
     self.numFruits = math.min(31, #self.fruitTypeManager:getFruitTypes())
-    self.isVisualizeEnabled = false
 
     self.isNewSavegame = true
 
@@ -122,10 +122,6 @@ function CropRotation:new(mission, modDirectory, messageCenter, fruitTypeManager
 
     addConsoleCommand("crInfo", "Get crop rotation info", "commandGetInfo", self)
     addConsoleCommand("crPlanner", "Perform planner function with specified crops", "commandPlanner", self)
-
-    if CropRotation.debug then
-        addConsoleCommand("crVisualizeToggle", "Toggle Crop Rotation visualization", "commandToggleVisualize", self)
-    end
 
     if CropRotation.debug or g_addCheatCommands then -- cheats enabled
         addConsoleCommand("crFallowRun", "Run yearly fallow", "commandRunFallow", self)
@@ -185,10 +181,6 @@ function CropRotation:delete()
 
     removeConsoleCommand("crInfo")
     removeConsoleCommand("crPlanner")
-
-    if CropRotation.debug then
-        removeConsoleCommand("crVisualizeToggle", self)
-    end
 
     if CropRotation.debug or g_addCheatCommands then
         removeConsoleCommand("crFallowRun")
@@ -259,10 +251,6 @@ end
 function CropRotation:update(dt)
     if self.densityMapUpdater ~= nil then
         self.densityMapUpdater:update(dt)
-    end
-
-    if CropRotation.debug and self.isVisualizeEnabled then
-        self:visualize()
     end
 end
 
@@ -552,6 +540,7 @@ function CropRotation:randomInit()
             modifier:setParallelogramUVCoords(x, z, widthX, widthZ, heightX, heightZ, DensityCoordType.POINT_VECTOR_VECTOR)
             modifier:executeSet(bits)
         end
+
         if CropRotation.debug then
             log(string.format("CropRotation:randomInit(): DEBUG Field %d: R2: %s R1 %s (grass: %s)",
                               field.fieldId,
@@ -740,7 +729,7 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
     if fruitFilter == nil then
         -- we have missed the cache - create new filter and store inside cache for future use
         if CropRotation.debug then
-            log(string.format("CropRotation:cutFruitArea(): WARNING: function cache missed for fruit index %d", fruitIndex))
+            log(string.format("CropRotation:cutFruitArea(): WARNING function cache missed for fruit index %d", fruitIndex))
         end
 
         fruitFilter =
@@ -1040,7 +1029,7 @@ function CropRotation:commandGetInfo()
         return g_i18n:getText("cropRotation_fallow")
     end
 
-    log(string.format("crops: [last: %s(%d)] [previous: %s(%d)] bits: [Fallow: %d] [Harvest: %d]",
+    log(string.format("crops: [last: %s(%d)] [previous: %s(%d)] bits: [fallow: %d] [harvest: %d]",
         getName(last), last,
         getName(prev), prev,
         fallow,
@@ -1147,56 +1136,4 @@ function CropRotation:setHarvest(x, z, radius, bit)
         DensityCoordType.POINT_POINT_POINT
     )
     mapModifiers.modifierH:executeSet(bit)
-end
-
-function CropRotation:commandToggleVisualize()
-    self.isVisualizeEnabled = not self.isVisualizeEnabled
-end
-
-function CropRotation:visualize()
-    local mapSize = getBitVectorMapSize(self.map)
-    local terrainSize = self.mission.terrainSize
-
-    local worldToDensityMap = mapSize / terrainSize
-    local densityToWorldMap = terrainSize / mapSize
-
-    if self.map ~= 0 then
-        local x, y, z = getWorldTranslation(getCamera(0))
-
-        if self.mission.controlledVehicle ~= nil then
-            local object = self.mission.controlledVehicle
-
-            if self.mission.controlledVehicle.selectedImplement ~= nil then
-                object = self.mission.controlledVehicle.selectedImplement.object
-            end
-
-            x, y, z = getWorldTranslation(object.components[1].node)
-        end
-
-        local terrainHalfSize = terrainSize * 0.5
-        local xi = math.floor((x + terrainHalfSize) * worldToDensityMap)
-        local zi = math.floor((z + terrainHalfSize) * worldToDensityMap)
-
-        local minXi = math.max(xi - 20, 0)
-        local minZi = math.max(zi - 20, 0)
-        local maxXi = math.min(xi + 20, mapSize - 1)
-        local maxZi = math.min(zi + 20, mapSize - 1)
-
-        for zi = minZi, maxZi do
-            for xi = minXi, maxXi do
-                local v = getBitVectorMapPoint(self.map, xi, zi, 0, CropRotation.MAP_NUM_CHANNELS)
-
-                local x = (xi * densityToWorldMap) - terrainHalfSize
-                local z = (zi * densityToWorldMap) - terrainHalfSize
-                local y = getTerrainHeightAtWorldPos(self.mission.terrainRootNode, x, 0, z) + 0.05
-
-                local r2, r1, f, h = self:decode(v)
-
-                local r, g, b = 1, f, h
-
-                local text = string.format("%d,%d,%d,%d", r2, r1, f, h)
-                Utils.renderTextAtWorldPosition(x, y, z, text, getCorrectTextSize(0.015), 0, {r, g, b, 1})
-            end
-        end
-    end
 end
