@@ -66,9 +66,16 @@ function CropRotationPlanner:loadFromSavegame(xmlFile)
                 table.insert(crops, 0)
             else
                 local fruitDesc = self.fruitTypeManager:getFruitTypeByName(fruitName)
-                table.insert(crops, fruitDesc.index)
-            end
 
+                if fruitDesc ~= nil then
+                    table.insert(crops, fruitDesc.index)
+                else
+                    log("CropRotationPlanner:loadFromSavegame(): ERROR fruit", fruitName, "not found in fruit manager.")
+                    log("CropRotationPlanner:loadFromSavegame(): ERROR Unknown fruit specified in plan", planName, "pos", tostring(i), ":", fruitName)
+                    log("CropRotationPlanner:loadFromSavegame(): INFO replace unknown fruit", fruitName, "with FALLOW")
+                    table.insert(crops, 0)
+                end
+            end
         end
 
         local planId = self:create(planName)

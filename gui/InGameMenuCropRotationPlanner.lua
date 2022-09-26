@@ -91,8 +91,15 @@ end
 
 function InGameMenuCropRotationPlanner:calculateFactors()
     local orig = {}
-    for index, element in pairs(self.cropElement) do
-        table.insert(orig, self.listOfAvailableCrops[element.listIndex].index)
+    for _, element in pairs(self.cropElement) do
+        if self.listOfAvailableCrops[element.listIndex] ~= nil then
+            table.insert(orig, self.listOfAvailableCrops[element.listIndex].index)
+        else
+            log("InGameMenuCropRotationPlanner:calculateFactors(): ERROR Fruit not available with index", element.listIndex)
+            DebugUtil.printTableRecursively(self.listOfAvailableCrops, "", 0, 1)
+
+            table.insert(orig, 0)
+        end
     end
 
     self.planner:update(self.planId, orig)
