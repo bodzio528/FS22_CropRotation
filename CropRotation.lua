@@ -452,7 +452,7 @@ function CropRotation:loadFromSavegame(xmlFile)
     if hasXMLProperty(xmlFile, mapVersionKey) then
         self.isNewSavegame = false
     else
-        log("CropRotation:loadMap(): WARNING old version of mod was in use! Discarding crop rotation history.")
+        log("CropRotation:loadFromSavegame(): WARNING old version of mod was in use! Discarding crop rotation history.")
         return
     end
 
@@ -460,7 +460,7 @@ function CropRotation:loadFromSavegame(xmlFile)
     if mapVersionLoaded and mapVersionLoaded < CropRotation.MAP_VERSION then
         self.mapVersionLoaded = mapVersionLoaded -- WARNING: unused, no conversion function implemented
 
-        log("CropRotation:loadMap(): INFO found old version of crop rotation map! Converting...")
+        log("CropRotation:loadFromSavegame(): INFO found old version of crop rotation map! Converting...")
     end
 end
 
@@ -486,7 +486,7 @@ function CropRotation:load()
     self:loadCropRotationMap() --
     self:loadModifiers()
 
-    if self.isNewSavegame then
+    if self.isNewSavegame and self.mission:getIsServer() then
         log("CropRotation:load(): INFO generate forecrops for each field (new savegame).")
         self:randomInit()
     end
