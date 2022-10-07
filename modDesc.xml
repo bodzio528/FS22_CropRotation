@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <modDesc descVersion="69">
     <author>Bodzio528</author>
-    <version>2.1.0.3</version>
+    <version>2.2.0.0</version>
     <title>
         <en>Crop Rotation</en>
         <de>Fruchtfolge</de>
@@ -28,6 +28,9 @@ Changelog 2.1.0.3:
 - Crop Rotation planner added
 - Precision Farming DLC is not required anymore
 - small update to yield factors (up to 5% difference)
+
+Changelog 2.2.0.0:
+- support for custom fruit types
 ]]></en>
         <de><![CDATA[Der Crop Rotation-Mod bietet Anreize für den Anbau verschiedener Pflanzen, anstatt immer wieder Kartoffeln anzupflanzen.
 
@@ -47,6 +50,9 @@ Changelog 2.1.0.3:
 - Crop Rotation planner added
 - Precision Farming DLC is not required anymore
 - small update to yield factors (up to 5% difference)
+
+Changelog 2.2.0.0:
+- support for custom fruit types
 ]]></de>
         <fr><![CDATA[Le mod de rotation des cultures incite à cultiver différentes cultures plutôt que de planter des pommes de terre encore et encore.
 
@@ -66,6 +72,9 @@ Changelog 2.1.0.3:
 - Crop Rotation planner added
 - Precision Farming DLC is not required anymore
 - small update to yield factors (up to 5% difference)
+
+Changelog 2.2.0.0:
+- support for custom fruit types
 ]]></fr>
         <pl><![CDATA[Modyfikacja Płodozmian wprowadza zachętę do zmianowania upraw w miejsce hodowli monokulturowej.
 
@@ -85,6 +94,9 @@ Changelog 2.1.0.3:
 - Crop Rotation planner added
 - Precision Farming DLC is not required anymore
 - small update to yield factors (up to 5% difference)
+
+Changelog 2.2.0.0:
+- support for custom fruit types
 ]]></pl>
         <cz><![CDATA[Mod Crop Rotation nabádá uživatele ke střídání plodin namísto monokultur.
 
@@ -104,6 +116,9 @@ Changelog 2.1.0.3:
 - Crop Rotation planner added
 - Precision Farming DLC is not required anymore
 - small update to yield factors (up to 5% difference)
+
+Changelog 2.2.0.0:
+- support for custom fruit types
 ]]></cz>
     </description>
 
