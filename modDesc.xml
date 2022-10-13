@@ -14,8 +14,8 @@
 
 Try yourself in reality, where nitrogen and lime are not the only nutrients that plants consume during their growth.
 
-Gain up to 15% additional yield if you done it right.
-Loose even more if you fail to take good care about the soil!
+Gain up to 15% additional yield if done right.
+Loose even more if you fail to take good care of the soil!
 
 Key features:
 - crop-specific return period to mitigate monoculture
@@ -29,24 +29,24 @@ Changelog 2.1.0.3:
 - Precision Farming DLC is not required anymore
 - small update to yield factors (up to 5% difference)
 ]]></en>
-        <de><![CDATA[Der Crop Rotation-Mod bietet Anreize für den Anbau verschiedener Pflanzen, anstatt immer wieder Kartoffeln anzupflanzen.
+        <de><![CDATA[Der Fruchtfolge-Mod bietet Anreize für den Anbau verschiedener Pflanzen, anstatt immer wieder Kartoffeln anzubauen.
 
-Probieren Sie es in der Realität aus, wo Stickstoff und Kalk nicht die einzigen Nährstoffe sind, die Pflanzen während ihres Wachstums verbrauchen.
+Versuche dich an der Realität, wo Stickstoff und Kalk nicht die einzigen Nährstoffe sind, die Pflanzen während ihres Wachstums verbrauchen.
 
-Gewinnen Sie bis zu 15 % Mehrertrag, wenn Sie es richtig gemacht haben.
-Verlieren Sie noch mehr, wenn Sie den Boden nicht gut pflegen!
+Gewinne bis zu 15 % Mehrertrag, wenn du es richtig machst.
+Verliere noch mehr, wenn du den Boden nicht gut pflegst!
 
 Hauptmerkmale:
-- kulturspezifische Wiederkehrfrist zur Abschwächung von Monokulturen
+- kulturspezifische Anbaupausen zur Verhinderung von Monokulturen
 - Brachlandunterstützung, bis zu zwei Jahre (nur bei aktiviertem saisonalem Wachstum)
-- Informationen zur Fruchtfolge wurden dem Feldinformationsfeld des Spieler-HUD hinzugefügt
+- Informationen zur Fruchtfolge wurden der Feldinformationsbox des Spieler-HUD hinzugefügt
 - Detailliertes Hilfemenü im Spiel (mit Bildern!)
 - Fruchtfolgeplaner zur Visualisierung des potenziellen Ertrags
 
 Changelog 2.1.0.3:
-- Crop Rotation planner added
-- Precision Farming DLC is not required anymore
-- small update to yield factors (up to 5% difference)
+- Fruchtfolgeplaner hinzugefügt
+- Precision Farming DLC wird nicht mehr benötigt
+- kleines Update der Ertragsparameter (bis zu 5% Unterschied)
 ]]></de>
         <fr><![CDATA[Le mod de rotation des cultures incite à cultiver différentes cultures plutôt que de planter des pommes de terre encore et encore.
 
