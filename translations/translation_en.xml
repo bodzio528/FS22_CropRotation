@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
-    <translationContributors>Bodzio528</translationContributors>
+    <translationContributors>Bodzio528, endradon</translationContributors>
     <elements>
         <e k="cropRotation_fallow" v="Fallow"/>
         <!-- player hud display -->
@@ -17,36 +17,36 @@
         <e k="cropRotation_helpHeader" v="Crop Rotation"/>
         <e k="cropRotation_helpTitle_01" v="General information"/>
         <e k="cropRotation_helpTitle_02" v="Return period"/>
-        <e k="cropRotation_helpTitle_03" v="Forecrops"/>
+        <e k="cropRotation_helpTitle_03" v="Previous crops"/>
         <e k="cropRotation_helpTitle_04" v="Fallow"/>
         <e k="cropRotation_helpTitle_05" v="Crop Rotation Info"/>
         <e k="cropRotation_helpTitle_06" v="Precision Farming"/>
-        <e k="cropRotation_helpText_01_01" v="Planting the same crop every year (monoculture) leads to reduce in yield."/>
-        <e k="cropRotation_helpText_01_02" v="Depending on soil and crop the amount lost varies between 5 and 25 percent of expected yield. Different crops require different elements to take from the soil to grow."/>
-        <e k="cropRotation_helpText_01_03" v="Crop rotation is a technique to alternate types of plants with different requirements, which gives the soil time needed to supplement the missing one - usually contained in leftovers from previous harvests, but not yet in a form appropriate for plants to utilize."/>
-        <e k="cropRotation_helpText_01_04" v="Also lots of pests are adjusted to single kind of plants. Crop rotation severe their multiplication ability and soil is allowed to clean itself from pathogens specific to particular crop type."/>
-        <e k="cropRotation_helpText_01_05" v="Crop rotation performed well, prevents soil from loosing elements that plants require for growth, and greatly reduce diseases and pests presence. All this leads directly to higher quality and quantity of yield in subsequent years."/>
-        <e k="cropRotation_helpText_02_01" v="There is a timespan required between use the same plot for the same type of crop, in order to prevent yield deduction due to pests and pathogens."/>
-        <e k="cropRotation_helpText_02_02" v="Canola, sunflower, potatoes and sugar beets can return in third season."/>
-        <e k="cropRotation_helpText_02_03" v="Most of cereals, soybean, sugar cane and cotton require at least one year gap."/>
-        <e k="cropRotation_helpText_02_04" v="Corn, grass and poplar can be grow every year, but farmer must take into account yield deduction due to soil nutrients depletion."/>
-        <e k="cropRotation_helpText_03_01" v="Some plants grow better after another ones."/>
-        <e k="cropRotation_helpText_03_02" v="Crops within single group have similar properties, thus you should avoid planting them one after another on the same plot."/>
-        <e k="cropRotation_helpText_03_03" v="For instance, cereals and oilseed grow very well after legumes. Roots grow well after cereals. Rapeseeds or sunflowers can grow very well after sugar beets."/>
-        <e k="cropRotation_helpText_03_04" v="Two last crop categories have the dominant influence over current yield."/>
-        <e k="cropRotation_helpText_03_05" v="Use the crop rotation planner in the game menu to choose the order and type of crops for the best results."/>
-        <e k="cropRotation_helpText_04_01" v="You may leave field without planting for full year (fallow). Soil will then regain the ability to support even the most demanding crops."/>
+        <e k="cropRotation_helpText_01_01" v="Planting the same crop every year (monoculture or monocropping) leads to a reduction in yield."/>
+        <e k="cropRotation_helpText_01_02" v="Depending on the type of soil and crop the amount lost varies between 5 and 25 percent of the expected yield. Different crops require different nutrients in the soil to grow."/>
+        <e k="cropRotation_helpText_01_03" v="Crop rotation is a system of growing different types of plants with different requirements on the same field across multiple seasons. This gives the soil the time needed to supplement missing nutrients that are usually contained in leftovers from previous harvests, but are not yet in a form appropriate for plants to utilize."/>
+        <e k="cropRotation_helpText_01_04" v="Pests and pathogens tend to be specialized for a specific kind of plant. Rotating crops decreases the likelyhood of pests and diseases surviving between growth cycles and infecting the next crop by removing their hosts and allowing the soil to clean itself from pathogens specific to particular crop types."/>
+        <e k="cropRotation_helpText_01_05" v="Crop rotation performed well, prevents soil from loosing nutrients that plants require for growth, and greatly reduce disease and pest presence. All this leads directly to higher quality and quantity of yield in subsequent years."/>
+        <e k="cropRotation_helpText_02_01" v="To prevent yield losses due to pests and pathogens a certain time period should be maintained between planting the same type of crop in a given field"/>
+        <e k="cropRotation_helpText_02_02" v="Canola, sunflower, potatoes and sugar beets can return after two growth periods."/>
+        <e k="cropRotation_helpText_02_03" v="Most cereals, soybeans, sugar cane and cotton require at least a one year gap."/>
+        <e k="cropRotation_helpText_02_04" v="Corn, grass and poplar can be grown every year, but a yield reduction due to the depletion of nutrients in the soil must be taken into account."/>
+        <e k="cropRotation_helpText_03_01" v="Some plants grow better or worse after others."/>
+        <e k="cropRotation_helpText_03_02" v="Crops within the same group have similar demands, thus you should avoid planting them one after another in the same field."/>
+        <e k="cropRotation_helpText_03_03" v="For instance, cereals and oilseeds grow very well after legumes. Roots grow well after cereals. Canola or sunflowers can grow very well after sugar beets."/>
+        <e k="cropRotation_helpText_03_04" v="The two previous crop categories have the dominant effect on the current yield."/>
+        <e k="cropRotation_helpText_03_05" v="For best results the crop rotation planner in the game menu can be used to choose the order and type of crops."/>
+        <e k="cropRotation_helpText_04_01" v="A field may also be left fallow, without planting for full year. The soil will then regain the ability to support even the most demanding crops."/>
         <e k="cropRotation_helpText_04_02" v="Yearly fallow applies only when seasonal growth is enabled in game options."/>
-        <e k="cropRotation_helpText_05_01" v="In field info box, there is additional entry, with crop rotation efficiency and two previous crop categories."/>
-        <e k="cropRotation_helpText_05_02" v="Crop rotation efficiency is the percentage of gain (when over 100%) or lost (when less than 100%) yield."/>
-        <e k="cropRotation_helpText_05_03" v="Perfect crop rotation allows to receive additional 15 percent of yield."/>
+        <e k="cropRotation_helpText_05_01" v="In the field info box additional entry show the crop rotation efficiency and two previous crops."/>
+        <e k="cropRotation_helpText_05_02" v="Crop rotation efficiency is the percentage of increase (when over 100%) or decrease (when less than 100%) in yield."/>
+        <e k="cropRotation_helpText_05_03" v="Perfect crop rotation allows to receive an additional 15 percent of yield."/>
         <e k="cropRotation_helpText_05_04" v="Ignoring crop rotation may result in 30 percent of yield lost."/>
         <e k="cropRotation_helpText_05_05" v="Field info box elements:
         A. currently growing crop
         B. previous crops from newest to oldest
-        C. overall performance with textual description and yield bonus/reduction
-        D. harvested crop is forwarded to first entry, and the last entry is forget." />
-        <e k="cropRotation_helpText_06_01" v="In case precision farming mod is in use, the crop rotation efficiency becomes one of the ingredients of the final yield estimation, added to precision farming info box."/>
-        <e k="cropRotation_helpText_06_02" v="Crop rotation efficiency is now a part of yield potential, next to nitrogen, pH, soil type, seed rate and weeds coefficients."/>
+        C. overall performance with description and yield bonus/loss
+        D. After harvest the harvested crop is placed in the first entry of the previous crops and the last entry is forgotten." />
+        <e k="cropRotation_helpText_06_01" v="If the Precision Farming mod is in use, the crop rotation efficiency becomes one of the ingredients of the final yield estimation, and is added to the Precision Farming info box."/>
+        <e k="cropRotation_helpText_06_02" v="Crop rotation efficiency is now part of the yield potential alongside the variables nitrogen, pH, soil type, seed rate and weeds"/>
     </elements>
 </l10n>
