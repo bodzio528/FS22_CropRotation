@@ -8,6 +8,7 @@
         <fr>Rotation Des Cultures</fr>
         <pl>Płodozmian</pl>
         <cz>Střídání Plodin</cz>
+        <it>Rotazione delle Colture</it>
     </title>
     <description>
         <en><![CDATA[The Crop Rotation mod introduces incentive for growing different crops rather than planting potatoes over and over again.
@@ -105,6 +106,25 @@ Changelog 2.1.0.3:
 - Precision Farming DLC is not required anymore
 - small update to yield factors (up to 5% difference)
 ]]></cz>
+        <it><![CDATA[La mod Rotazione delle Colture introduce incentivi per coltivare colture diverse piuttosto che piantare patate più e più volte.
+
+Mettiti alla prova come nella realtà, dove l'azoto e la calce non sono gli unici nutrienti che le piante consumano durante la loro crescita.
+
+Guadagna fino al 15% di rendimento in più se lo hai fatto bene.
+Perdi ancora di più se non ti prendi cura del suolo!
+
+Caratteristiche principali:
+- periodo di ritorno specifico della coltura per mitigare la monocoltura
+- sostegno all'incolto, fino a due anni (solo con crescita stagionale abilitata)
+- informazioni sulla rotazione delle colture aggiunte alla casella delle informazioni sul campo dell'HUD del giocatore
+- dettagliato menu di aiuto in gioco (con immagini!)
+- pianificatore di rotazione delle colture per visualizzare la resa potenziale
+
+Registro delle modifiche 2.1.0.3:
+- Aggiunto il pianificatore di rotazione delle colture
+- Il DLC Precision Farming non è più richiesto
+- piccolo aggiornamento ai fattori di rendimento (differenza fino al 5%)
+]]></it>
     </description>
 
     <iconFilename>modIcon.dds</iconFilename>
