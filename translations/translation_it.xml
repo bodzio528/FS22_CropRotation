@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <translationContributors>Roby1164</translationContributors>
+    <elements>
+        <e k="cropRotation_fallow" v="Incolto"/>
+        <!-- player hud display -->
+        <e k="cropRotation_hud_fieldInfo_title" v="Rotazione delle colture"/>
+        <e k="cropRotation_hud_fieldInfo_previous" v="Raccolto Precedente"/>
+        <e k="cropRotation_hud_fieldInfo_perfect" v="Perfetto"/>
+        <e k="cropRotation_hud_fieldInfo_good" v="Buono"/>
+        <e k="cropRotation_hud_fieldInfo_ok" v="Ok"/>
+        <e k="cropRotation_hud_fieldInfo_bad" v="Cattivo"/>
+        <!-- planner gui -->
+        <e k="cropRotation_gui_planner_title" v="Pianificatore di rotazione delle colture" />
+        <e k="cropRotation_gui_planner_defaultPlanName" v="Rotazione %s" />
+        <!-- help lines -->
+        <e k="cropRotation_helpHeader" v="Rotazione delle colture"/>
+        <e k="cropRotation_helpTitle_01" v="Informazione Generale"/>
+        <e k="cropRotation_helpTitle_02" v="Periodo di rotazione"/>
+        <e k="cropRotation_helpTitle_03" v="Aiuto Rotazione"/>
+        <e k="cropRotation_helpTitle_04" v="Incolto"/>
+        <e k="cropRotation_helpTitle_05" v="Info sulla rotazione delle colture"/>
+        <e k="cropRotation_helpTitle_06" v="Precision Farming"/>
+        <e k="cropRotation_helpText_01_01" v="Piantare la stessa coltura ogni anno (monocoltura) porta a una riduzione della resa."/>
+        <e k="cropRotation_helpText_01_02" v="A seconda del terreno e del raccolto, la quantità persa varia tra il 5 e il 25 percento della resa prevista. Colture diverse richiedono elementi diversi da prelevare dal terreno per crescere."/>
+        <e k="cropRotation_helpText_01_03" v="La rotazione delle colture è una tecnica per alternare tipi di piante con esigenze diverse, che dà al terreno il tempo necessario per integrare quello mancante - solitamente contenuto negli avanzi dei raccolti precedenti, ma non ancora in una forma adatta per l'utilizzo da parte delle piante."/>
+        <e k="cropRotation_helpText_01_04" v="Anche molti parassiti sono adattati a un singolo tipo di piante. La rotazione delle colture riduce la loro capacità di moltiplicazione e consente al suolo di ripulirsi da agenti patogeni specifici di un particolare tipo di coltura."/>
+        <e k="cropRotation_helpText_01_05" v="La rotazione delle colture è ben eseguita, impedisce al suolo di perdere gli elementi di cui le piante hanno bisogno per crescere e riduce notevolmente la presenza di malattie e parassiti. Tutto ciò porta direttamente a una maggiore qualità e quantità di resa negli anni successivi."/>
+        <e k="cropRotation_helpText_02_01" v="C'è un intervallo di tempo necessario tra l'utilizzo dello stesso appezzamento per lo stesso tipo di coltura, al fine di evitare la riduzione della resa dovuta a parassiti e agenti patogeni."/>
+        <e k="cropRotation_helpText_02_02" v="Canola, girasole, patate e barbabietole da zucchero possono tornare nella terza stagione."/>
+        <e k="cropRotation_helpText_02_03" v="La maggior parte dei cereali, soia, canna da zucchero e cotone richiedono almeno un anno di intervallo."/>
+        <e k="cropRotation_helpText_02_04" v="Il mais, l'erba e il pioppo possono essere coltivati ogni anno, ma l'agricoltore deve tenere conto della riduzione della resa dovuta all'esaurimento dei nutrienti del suolo."/>
+        <e k="cropRotation_helpText_03_01" v="Alcune piante crescono meglio dopo altre."/>
+        <e k="cropRotation_helpText_03_02" v="Le colture all'interno di un singolo gruppo hanno proprietà simili, quindi dovresti evitare di piantarle una dopo l'altra sullo stesso appezzamento."/>
+        <e k="cropRotation_helpText_03_03" v="Ad esempio, cereali e semi oleosi crescono molto bene dopo i legumi. Le radici crescono bene dopo i cereali. I semi di colza o i girasoli possono crescere molto bene dopo le barbabietole da zucchero."/>
+        <e k="cropRotation_helpText_03_04" v="Le due ultime categorie di colture hanno l'influenza dominante sulla resa attuale."/>
+        <e k="cropRotation_helpText_03_05" v="Usa il pianificatore di rotazione delle colture nel menu di gioco per scegliere l'ordine e il tipo di colture per ottenere i migliori risultati."/>
+        <e k="cropRotation_helpText_04_01" v="Puoi lasciare il campo senza piantare per tutto l'anno (incolto). Il suolo riacquisterà quindi la capacità di sostenere anche le colture più esigenti."/>
+        <e k="cropRotation_helpText_04_02" v="I'incolto annuale si applica solo quando la crescita stagionale è abilitata nelle opzioni di gioco."/>
+        <e k="cropRotation_helpText_05_01" v="Nella casella delle informazioni sul campo è presente una voce aggiuntiva, con l'efficienza della rotazione delle colture e due categorie di colture precedenti."/>
+        <e k="cropRotation_helpText_05_02" v="L'efficienza di rotazione delle colture è la percentuale di resa guadagnata (se superiore al 100%) o persa (se inferiore al 100%)."/>
+        <e k="cropRotation_helpText_05_03" v="La perfetta rotazione delle colture consente di ricevere un ulteriore 15 percento di resa."/>
+        <e k="cropRotation_helpText_05_04" v="Ignorare la rotazione delle colture può comportare la perdita del 30% del raccolto."/>
+        <e k="cropRotation_helpText_05_05" v="Elementi della casella informativa del campo:
+        A. raccolto attualmente in crescita
+        B. raccolti precedenti dal più nuovo al più vecchio
+        C. rendimento complessivo con descrizione testuale e premio/riduzione di rendimento
+        D. il raccolto raccolto viene inoltrato alla prima voce e l'ultima voce viene dimenticata." />
+        <e k="cropRotation_helpText_06_01" v="Nel caso in cui sia in uso la modalità di agricoltura di precisione, l'efficienza della rotazione delle colture diventa uno degli ingredienti della stima della resa finale, aggiunta alla casella informativa dell'agricoltura di precisione."/>
+        <e k="cropRotation_helpText_06_02" v="L'efficienza della rotazione delle colture fa ora parte del potenziale di resa, accanto ai coefficienti di azoto, pH, tipo di suolo, tasso di semina e infestanti."/>
+    </elements>
+</l10n>
