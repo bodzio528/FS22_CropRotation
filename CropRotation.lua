@@ -917,39 +917,55 @@ end
 -----------------------------------
 
 function CropRotation:getRotationYieldMultiplier(prevIndex, lastIndex, currentIndex)
+    local multipliers = self:getRotationYieldMultipliers(prevIndex, lastIndex, currentIndex)
+    return multipliers.factor
+end
+
+function CropRotation:getRotationYieldMultipliers(prevIndex, lastIndex, currentIndex)
     local currentDesc = self.fruitTypeManager:getFruitTypeByIndex(currentIndex)
 
-    local returnPeriod = self:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, currentDesc)
-    local forecrops = self:getRotationForecropMultiplier(prevIndex, lastIndex, currentIndex)
+    local returnPeriodFactor, monocultureFactor = self:getRotationReturnPeriodMultiplier(prevIndex, lastIndex, currentDesc)
+    local prevCropFactor, lastCropFactor = self:getRotationForecropMultiplier(prevIndex, lastIndex, currentIndex)
 
-    return forecrops + returnPeriod
+    return {
+        factor = 1.0 + prevCropFactor + lastCropFactor + returnPeriodFactor + monocultureFactor,
+        prevCropFactor = prevCropFactor,
+        lastCropFactor = lastCropFactor,
+        returnPeriodFactor = returnPeriodFactor,
+        monocultureFactor = monocultureFactor,
+    }
 end
 
 function CropRotation:getRotationReturnPeriodMultiplier(prev, last, current)
     local returnPeriod = current.rotation.returnPeriod
 
-    -- monoculture
-    local result = 0.0 - ((current.index == last and current.index == prev) and 0.05 or 0)
+    -- monoculture [-0.05;0]
+    local monocultureFactor = 0.0 - ((current.index == last and current.index == prev) and 0.05 or 0)
+    
+    -- return period [-0.15;0]
+    local returnPeriodFactor = 0.0
 
     if returnPeriod == 3 then
-        return result - (current.index == last and 0.1 or 0) - (current.index == prev and 0.05 or 0)
+        returnPeriodFactor = 0.0 - (current.index == last and 0.1 or 0) - (current.index == prev and 0.05 or 0)
     end
 
     if returnPeriod == 2 then
-        return result - (current.index == last and 0.05 or 0)
+        returnPeriodFactor = 0.0 - (current.index == last and 0.05 or 0)
     end
 
-    return result
+    return returnPeriodFactor, monocultureFactor
 end
 
 function CropRotation:getRotationForecropMultiplier(prevIndex, lastIndex, currentIndex)
     local prevValue = self.data:getRotationForecropValue(prevIndex, currentIndex)
     local lastValue = self.data:getRotationForecropValue(lastIndex, currentIndex)
 
-    local prevFactor = -0.025 * prevValue ^ 2 + 0.125 * prevValue -- <0.0 ; 0.15>
-    local lastFactor = -0.05 * lastValue ^ 2 + 0.25 * lastValue -- <0.0 ; 0.30>
+    -- prev crop factor [-0.1;0.05]
+    local prevFactor = -0.025 * prevValue ^ 2 + 0.125 * prevValue - 0.1
+    -- last crop factor [-0.2;0.1]
+    local lastFactor = -0.05 * lastValue ^ 2 + 0.25 * lastValue - 0.2
 
-    return 0.7 + (prevFactor + lastFactor) -- <0.7 ; 1.15>
+    return prevFactor, lastFactor
 end
 
 -- input: list of crop indices: { 11, 2, 3 }
@@ -965,9 +981,15 @@ function CropRotation:getRotationPlannerYieldMultipliers(input)
             lastPos = 1 + math.fmod((pos + #input - 1) - 1, #input)
             prevPos = 1 + math.fmod((pos + #input - 1) - 2, #input)
 
-            table.insert(result, self:getRotationYieldMultiplier(input[prevPos], input[lastPos], current))
+            table.insert(result, self:getRotationYieldMultipliers(input[prevPos], input[lastPos], current))
         else
-            table.insert(result, 0.0)
+            table.insert(result, {
+                factor = 1,
+                prevCropFactor = 0,
+                lastCropFactor = 0,
+                returnPeriodFactor = 0,
+                monocultureFactor = 0,
+            })
         end
     end
 

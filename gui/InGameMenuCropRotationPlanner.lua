@@ -13,7 +13,8 @@ InGameMenuCropRotationPlanner = {
         CROP_ELEMENTS = "cropElement",
         CROP_TEXTS = "cropText",
         CROP_ICONS = "cropIcon",
-        CROP_FACTORS = "cropFactor"
+        CROP_FACTORS = "cropFactor",
+        CROP_FACTORS_MULTIPLIERS = "cropFactorModifiers",
     },
     MAX_ROTATION_ELEMENTS = 8
 }
@@ -98,10 +99,10 @@ local function cr_unskip(orig, input)
     local result = {}
     for k, v in pairs(orig) do
         if v ~= -1 then
-            table.insert(result, string.format("%.2f", input[j]))
+            table.insert(result, input[j])
             j = 1 + j
         else
-            table.insert(result, "-")
+            table.insert(result, nil)
         end
     end
     return result
@@ -124,6 +125,8 @@ function InGameMenuCropRotationPlanner:updateRotation()
     for index, element in pairs(self.cropElement) do
         local elementText = self.cropText[index]
         local elementIcon = self.cropIcon[index]
+        local elementFactor = self.cropFactor[index]
+        local cropFactorModifiers = self.cropFactorModifiers[index]
 
         if element.cropIndex > 0 then
             local fruitIndex = self.cropIndexToFruitIndexMap[element.cropIndex].index
@@ -136,6 +139,21 @@ function InGameMenuCropRotationPlanner:updateRotation()
             elementIcon:setImageFilename(fruitDesc.fillType.hudOverlayFilename)
             elementIcon:setPosition(elementText.position[1] - textWidth * 0.5 - elementIcon.margin[3], nil)
             elementIcon:setVisible(true)
+
+            elementFactor:setText(string.format("%d %%", math.floor(100.0 * factors[index].factor + 0.1)))
+
+            local modifiers = {}
+            if factors[index].lastCropFactor ~= 0 or factors[index].prevCropFactor ~= 0 then
+                table.insert(modifiers, string.format("%+d %% / %+d %% (previous crops)", math.floor(100 * factors[index].lastCropFactor + 0.1), math.floor(100 * factors[index].prevCropFactor + 0.1)))
+            end
+            if factors[index].returnPeriodFactor ~= 0 then
+                table.insert(modifiers, string.format("%+d %% (return period)", math.floor(100 * factors[index].returnPeriodFactor + 0.1)))
+            end
+            if factors[index].monocultureFactor ~= 0 then
+                table.insert(modifiers, string.format("%+d %% (monoculture)", math.floor(100 * factors[index].monocultureFactor + 0.1)))
+            end
+
+            cropFactorModifiers:setText(table.concat(modifiers, "   "))
         else
             if element.cropIndex == 0 then
                 elementText:setText(g_i18n:getText("cropRotation_fallow"))
@@ -144,9 +162,10 @@ function InGameMenuCropRotationPlanner:updateRotation()
             end
 
             elementIcon:setVisible(false)
-        end
 
-        self.cropFactor[index]:setText(factors[index]) -- this is always valid
+            elementFactor:setText("--")
+            cropFactorModifiers:setText("")
+        end
 
         if index > 1 then
             element:setVisible(self.cropElement[index - 1].cropIndex >= 0) -- hide rotation elements after "nothing"

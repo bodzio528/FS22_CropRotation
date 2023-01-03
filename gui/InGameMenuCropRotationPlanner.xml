@@ -19,6 +19,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionBg" />
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[1]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[1]" text="1.14" />
+                    <GuiElement type="text" profile="multiTextOptionSubLabelCR" id="cropFactorModifiers[1]" text="" />
                 </GuiElement>
 
                 <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[2]" handleFocus="true">
@@ -28,6 +29,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionBg" />
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[2]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[2]" text="1.14" />
+                    <GuiElement type="text" profile="multiTextOptionSubLabelCR" id="cropFactorModifiers[2]" text="" />
                 </GuiElement>
 
                 <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[3]" handleFocus="true">
@@ -37,6 +39,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionBg" />
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[3]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[3]" text="1.13" />
+                    <GuiElement type="text" profile="multiTextOptionSubLabelCR" id="cropFactorModifiers[3]" text="" />
                 </GuiElement>
 
                 <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[4]" handleFocus="true">
@@ -46,6 +49,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionBg" />
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[4]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[4]" text="1.12" />
+                    <GuiElement type="text" profile="multiTextOptionSubLabelCR" id="cropFactorModifiers[4]" text="" />
                 </GuiElement>
 
                 <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[5]" handleFocus="true">
@@ -55,6 +59,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionBg" />
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[5]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[5]" text="1.11" />
+                    <GuiElement type="text" profile="multiTextOptionSubLabelCR" id="cropFactorModifiers[5]" text="" />
                 </GuiElement>
 
                 <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[6]" handleFocus="true">
@@ -64,6 +69,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionBg" />
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[6]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[6]" text="1.10" />
+                    <GuiElement type="text" profile="multiTextOptionSubLabelCR" id="cropFactorModifiers[6]" text="" />
                 </GuiElement>
 
                 <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[7]" handleFocus="true">
@@ -73,6 +79,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionBg" />
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[7]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[7]" text="1.10" />
+                    <GuiElement type="text" profile="multiTextOptionSubLabelCR" id="cropFactorModifiers[7]" text="" />
                 </GuiElement>
 
                 <GuiElement type="multiTextOption" profile="multiTextOptionCR" onClick="onValueChanged" id="cropElement[8]" handleFocus="true">
@@ -82,6 +89,7 @@
                     <GuiElement type="bitmap" profile="multiTextOptionBg" />
                     <GuiElement type="bitmap" profile="multiTextOptionIconCR" id="cropIcon[8]"/>
                     <GuiElement type="text" profile="multiTextOptionLabelCR" id="cropFactor[8]" text="1.10" />
+                    <GuiElement type="text" profile="multiTextOptionSubLabelCR" id="cropFactorModifiers[8]" text="" />
                 </GuiElement>
 
             </GuiElement>
