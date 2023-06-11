@@ -132,8 +132,9 @@ Registro delle modifiche 2.1.0.3:
     <multiplayer supported="true"/>
 
     <extraSourceFiles>
+        <sourceFile filename="loadCustomLocalization/loadCustomLocalizationClientside.lua" />
         <sourceFile filename="main.lua"/>
     </extraSourceFiles>
-
+    <!-- Please see comment at the top in this modDesc.XML, about how to make your own local translation file, that must be placed in folder [..]/modSettings/FS22_CropRotation/ -->
     <l10n filenamePrefix="translations/translation" />
 </modDesc>
