@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUI name="ingameMenuCR">
+    <GuiElement type="ingameMap" id="ingameMap" profile="ingameMapOverview" cursorId="mapCursor" onClickMap="onClickMap" onDrawPostIngameMap="onDrawPostIngameMap" onDrawPostIngameMapHotspots="onDrawPostIngameMapHotspots" onClickHotspot="onClickHotspot" />
+    <GuiElement type="bitmap" profile="ingameMapCursor" id="mapCursor" visible="false" />
+
+    <GuiElement type="empty" profile="precisionFarmingHeaderPanel">
+        <GuiElement type="text" profile="ingameMenuFrameHeaderText" text="$l10n_ui_header"/>
+    </GuiElement>
+
+    <!-- Area with no overlapping UI elements -->
+    <GuiElement type="empty" profile="ingameMenuMapSafeArea" id="safeArea" />
+
+    <!-- gradient background -->
+    <GuiElement type="bitmap" profile="ingameMenuMapFilterBackground" id="filterBoxBackground">
+        <!-- Filter box -->
+        <GuiElement type="empty" profile="ingameMenuMapFilterBox" id="filterBox">
+            <GuiElement type="text" profile="ingameMenuMapFilterHeader" text="$l10n_ui_mapOverviewHeader" />
+
+            <GuiElement type="empty" profile="ingameMenuMapFilterContents">
+                <GuiElement type="multiTextOption" profile="ingameMenuMapOverviewSelector" onClick="onClickMapOverviewSelector" id="mapOverviewSelector">
+                    <GuiElement type="button" profile="multiTextOptionLeft" />
+                    <GuiElement type="button" profile="multiTextOptionRight"/>
+                    <GuiElement type="text"   profile="multiTextOptionText" textMaxWidth="184px" />
+                    <GuiElement type="bitmap" profile="multiTextOptionBg" size="224px 48px" />
+                </GuiElement>
+
+                <GuiElement type="empty" profile="ingameMenuMapFilterPaging">
+                    <GuiElement type="boxLayout" profile="ingameMenuMapFilterOptionPage" id="mapOverviewSoilBox">
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[1]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[1]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[1]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButtonAlt" id="valueMapFilterButton[2]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[2]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[2]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[3]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[3]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[3]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButtonAlt" id="valueMapFilterButton[4]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[4]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[4]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[5]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[5]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[5]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButtonAlt" id="valueMapFilterButton[6]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[6]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[6]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[7]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[7]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[7]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButtonAlt" id="valueMapFilterButton[8]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[8]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[8]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[9]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[9]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[9]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButtonAlt" id="valueMapFilterButton[10]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[10]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[10]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[11]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[11]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[11]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButtonAlt" id="valueMapFilterButton[12]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[12]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[12]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[13]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[13]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[13]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButtonAlt" id="valueMapFilterButton[14]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[14]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[14]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[15]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[15]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[15]"/>
+                        </GuiElement>
+                        <GuiElement type="button" profile="ingameMenuMapFilterDynamicButton" id="valueMapFilterButton[16]">
+                            <GuiElement type="text" profile="ingameMenuMapFilterDynamicText" id="valueMapFilterText[16]" text="Value"/>
+                            <GuiElement type="bitmap" profile="ingameMenuMapFilterDynamicColorLarge" id="valueMapFilterColor[16]"/>
+                        </GuiElement>
+                    </GuiElement>
+                </GuiElement>
+            </GuiElement>
+        </GuiElement>
+    </GuiElement>
+
+    <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingHelpBackground" id="helpButtonBackground">
+        <GuiElement type="button" profile="ingameMenuPrecisionFarmingHelpButton" id="helpButton" text="$l10n_ui_help" onClick="onClickButtonHelp"/>
+    </GuiElement>
+
+    <GuiElement type="empty" profile="precisionFarmingContentBase">
+        <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingLabBackground" id="laboratoryWindow">
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingLabIcon" />
+            <GuiElement type="text" profile="ingameMenuPrecisionFarmingLabHeader" text="$l10n_ui_laboratory"/>
+            <GuiElement type="text" profile="ingameMenuPrecisionFarmingLabInfo" text="$l10n_ui_laboratory_idle" id="laboratoryInfoText"/>
+        </GuiElement>
+
+        <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvBackground" id="envScoreWindow" clipping="true">
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreIcon" />
+            <GuiElement type="text" profile="ingameMenuPrecisionFarmingLabHeader" text="$l10n_ui_environmentalScore"/>
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreGradientBarBase" id="envScoreBarStatic"/>
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreGradientBar" id="envScoreBarDynamic"/>
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreGradientBarIndicator" id="envScoreBarIndicator"/>
+            <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreNumber" text="55" id="envScoreBarNumber"/>
+
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreSeparator" position="20px -130px" />
+
+            <GuiElement type="empty" position="20px -145px">
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionTitle" id="envScoreDistributionText[1]" position="0px -0px"   text="Phosphagen:" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionTitle" id="envScoreDistributionText[2]" position="0px -30px"  text="Liming:" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionTitle" id="envScoreDistributionText[3]" position="0px -60px"  text="Weed Control:" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionTitle" id="envScoreDistributionText[4]" position="0px -90px"  text="Soil Sampling:" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionTitle" id="envScoreDistributionText[5]" position="0px -120px" text="Tillage:" />
+
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBarBackground" id="envScoreDistributionBarBackground[1]" position="130px -8px" />
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBarBackground" id="envScoreDistributionBarBackground[2]" position="130px -38px" />
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBarBackground" id="envScoreDistributionBarBackground[3]" position="130px -68px" />
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBarBackground" id="envScoreDistributionBarBackground[4]" position="130px -98px" />
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBarBackground" id="envScoreDistributionBarBackground[5]" position="130px -128px" />
+
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBar" id="envScoreDistributionBar[1]" position="130px -8px" />
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBar" id="envScoreDistributionBar[2]" position="130px -38px" />
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBar" id="envScoreDistributionBar[3]" position="130px -68px" />
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBar" id="envScoreDistributionBar[4]" position="130px -98px" />
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreDistributionBar" id="envScoreDistributionBar[5]" position="130px -128px" />
+
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionValue" id="envScoreDistributionValue[1]" position="308px -0px"   text="30" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionValue" id="envScoreDistributionValue[2]" position="308px -30px"  text="15" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionValue" id="envScoreDistributionValue[3]" position="308px -60px"  text="30" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionValue" id="envScoreDistributionValue[4]" position="308px -90px"  text="15" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreDistributionValue" id="envScoreDistributionValue[5]" position="308px -120px" text="10" />
+            </GuiElement>
+
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingEnvScoreSeparator" position="20px -310px" />
+
+            <GuiElement type="text" profile="ingameMenuPrecisionFarmingEnvScoreInfo" text="" id="envScoreInfoText"/>
+        </GuiElement>
+
+        <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingStatsBackground" id="economicAnalysisWindow">
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingStatsIcon" />
+            <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsHeader" text="$l10n_ui_economicAnalysis"/>
+            <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsHeaderField" id="economicAnalysisHeaderField" text="$l10n_ui_economicAnalysisHeaderField"/>
+            <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsHeaderValues" id="economicAnalysisHeaderValues" text="$l10n_ui_economicAnalysisHeaderValuesPeriod"/>
+
+            <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingStatsSeparator" position="20px -125px" />
+
+            <!-- Left column -->
+            <GuiElement type="empty" profile="ingameMenuPrecisionFarmingStatsContent">
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -24px"  text="$l10n_ui_economicAnalysisSoilSamples" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -48px"  text="$l10n_ui_economicAnalysisLime" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -72px"  text="$l10n_ui_economicAnalysisFertilizer" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -96px"  text="$l10n_ui_economicAnalysisLiquidFertilizer" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -120px" text="$l10n_ui_economicAnalysisManure" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -144px" text="$l10n_ui_economicAnalysisLiquidManure" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -168px" text="$l10n_ui_economicAnalysisSeeds" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -192px" text="$l10n_ui_economicAnalysisHerbicide" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -216px" text="$l10n_ui_economicAnalysisFuel" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -240px" text="$l10n_ui_economicAnalysisVehicleMaintenance" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -264px" text="$l10n_ui_economicAnalysisAIHelperCosts" />
+
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -24px"   id="statAmountText[1]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -48px"   id="statAmountText[2]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -72px"   id="statAmountText[3]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -96px"   id="statAmountText[4]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -120px"  id="statAmountText[5]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -144px"  id="statAmountText[6]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -168px"  id="statAmountText[7]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -192px"  id="statAmountText[8]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -216px"  id="statAmountText[9]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -240px"  id="statAmountText[10]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -264px"  id="statAmountText[11]" text="" />
+
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -24px"   id="statCostText[1]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -48px"   id="statCostText[2]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -72px"   id="statCostText[3]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -96px"   id="statCostText[4]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -120px"  id="statCostText[5]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -144px"  id="statCostText[6]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -168px"  id="statCostText[7]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -192px"  id="statCostText[8]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -216px"  id="statCostText[9]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -240px"  id="statCostText[10]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -264px"  id="statCostText[11]" text="0" />
+
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -24px"   id="statPercentageText[1]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -48px"   id="statPercentageText[2]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -72px"   id="statPercentageText[3]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -96px"   id="statPercentageText[4]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -120px"  id="statPercentageText[5]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -144px"  id="statPercentageText[6]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -168px"  id="statPercentageText[7]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -192px"  id="statPercentageText[8]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -216px"  id="statPercentageText[9]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -240px"  id="statPercentageText[10]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -264px"  id="statPercentageText[11]" text="" />
+            </GuiElement>
+
+            <GuiElement type="empty" profile="ingameMenuPrecisionFarmingStatsContent" position="20px -402px" size="406px 179px">
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingStatsSeparator" position="0px -3px" />
+
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -24px"   text="$l10n_ui_economicAnalysisYield" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsAmount"      position="0px -24px"   id="statAmountText[12]" text="" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -24px"   id="statCostText[12]" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -24px" id="statPercentageText[12]" text="" />
+
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingStatsSeparator" position="0px -44px" />
+
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -72px"   text="$l10n_ui_economicAnalysisTotalCosts" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -72px"   id="statTotalCostText" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -72px" id="statTotalCostPercentageText" text="" />
+
+
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitle"       position="0px -96px"   text="$l10n_ui_economicAnalysisTotalEarnings" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPrice"       position="0px -96px"   id="statTotalEarningsText" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -96px" id="statTotalEarningsPercentageText" text="" />
+
+                <GuiElement type="bitmap" profile="ingameMenuPrecisionFarmingStatsSeparator" position="0px -116px" />
+
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsTitleTotal"  position="0px -138px"   text="$l10n_ui_economicAnalysisTotal" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsPriceTotal"  position="0px -138px"   id="statTotalText" text="0" />
+                <GuiElement type="text" profile="ingameMenuPrecisionFarmingStatsChangePos"   position="356px -138px" id="statTotalPercentageText" text="" />
+
+                <GuiElement type="button" profile="ingameMenuPrecisionFarmingStatsResetButton" text="$l10n_ui_economicAnalysisReset" id="buttonResetStats" onClick="onClickButtonResetStats"/>
+                <GuiElement type="button" profile="ingameMenuPrecisionFarmingStatsSwitchButton" text="$l10n_ui_economicAnalysisButtonPeriod" id="buttonSwitchValues" onClick="onClickButtonSwitchValues"/>
+            </GuiElement>
+        </GuiElement>
+    </GuiElement>
+
+    <!-- gradient background -->
+    <GuiElement type="bitmap" profile="ingameMenuMapButtonsBackground" />
+
+    <GuiElement type="flowLayout" profile="buttonBoxDockedOnScreen">
+        <GuiElement type="button" profile="buttonBack" onClick="onClickBack" text="$l10n_button_back" id="buttonBack" />
+        <GuiElement type="button" profile="buttonCancel" text="$l10n_ui_resetYield" onClick="onClickAdditionalFuncButton" id="buttonAdditionalFunc" />
+
+        <GuiElement type="inputGlyph" profile="shopConfigInputGlyph" id="mapMoveGlyph" />
+        <GuiElement type="text" profile="shopConfigInputGlyphText" textAutoWidth="true" id="mapMoveGlyphText" />
+        <GuiElement type="inputGlyph" profile="shopConfigInputGlyph" id="mapZoomGlyph" />
+        <GuiElement type="text" profile="shopConfigInputGlyphText" textAutoWidth="true" id="mapZoomGlyphText" />
+
+        <GuiElement type="button" profile="buttonSelectMap" text="$l10n_button_select" id="buttonSelectIngame" />
+    </GuiElement>
+</GUI>

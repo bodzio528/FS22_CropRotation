@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="69">
+<modDesc descVersion="76">
     <author>Bodzio528</author>
-    <version>2.1.0.3</version>
+    <version>2.5.0.1</version>
     <title>
         <en>Crop Rotation</en>
         <de>Fruchtfolge</de>
         <fr>Rotation Des Cultures</fr>
         <pl>Płodozmian</pl>
         <cz>Střídání Plodin</cz>
-        <it>Rotazione delle Colture</it>
+        <it>Rotazione Delle Colture</it>
     </title>
     <description>
         <en><![CDATA[The Crop Rotation mod introduces incentive for growing different crops rather than planting potatoes over and over again.
@@ -24,6 +24,13 @@ Key features:
 - crop rotation info added to player HUD field information box
 - detailed in-game help menu (with pictures!)
 - crop rotation planner to visualize potential yield
+
+Changelog 2.5.0.1:
+- fixed critical issue when seasonal growth is enabled
+
+Changelog 2.5.0.0:
+- fixed multiplayer sync issue
+- WARNING: crop history will be lost after upgrade on old saves
 
 Changelog 2.1.0.3:
 - Crop Rotation planner added
@@ -44,6 +51,13 @@ Hauptmerkmale:
 - Detailliertes Hilfemenü im Spiel (mit Bildern!)
 - Fruchtfolgeplaner zur Visualisierung des potenziellen Ertrags
 
+Changelog 2.5.0.1:
+- fixed critical issue when seasonal growth is enabled
+
+Changelog 2.5.0.0:
+- Multiplayer-Synchronisationsproblem behoben
+- WARNUNG: Ernteverlauf wird nach dem Upgrade bei alten Spielständen verloren gehen
+
 Changelog 2.1.0.3:
 - Fruchtfolgeplaner hinzugefügt
 - Precision Farming DLC wird nicht mehr benötigt
@@ -63,14 +77,21 @@ Principales caractéristiques:
 - menu d'aide détaillé dans le jeu (avec images !)
 - planificateur de rotation des cultures pour montrer le rendement potentiel
 
+Changelog 2.5.0.1:
+- Correction d'un problème critique lorsque la croissance saisonnière est activée
+
+Changelog 2.5.0.0:
+- bug multijoueur corrigé
+- REMARQUE: l'historique des cultures sera supprimé lors de la mise à jour
+
 Changelog 2.1.0.3:
 - Crop Rotation planner added
 - Precision Farming DLC is not required anymore
 - small update to yield factors (up to 5% difference)
 ]]></fr>
-        <pl><![CDATA[Modyfikacja Płodozmian wprowadza zachętę do zmianowania upraw w miejsce hodowli monokulturowej.
+        <pl><![CDATA[Modyfikacja Płodozmian wprowadza zachętę do zmianowania upraw zamiast stosowania monokultur.
 
-Sprawdź, jak poradzisz sobie w sytuacji, gdzie azot i wapno same już nie wystarczają do zaspokojenia apetytu upraw.
+Sprawdź, czy poradzisz sobie w sytuacji, gdzie azot i wapno same już nie wystarczają do zaspokojenia apetytu upraw.
 
 Możesz zyskać dodatkowe 15% plonu, jeśli poprowadzisz zmianowanie poprawnie.
 Możesz stracić więcej plonu, jeśli nie zadbasz o kondycję gleby!
@@ -81,6 +102,13 @@ Główne cechy:
 - dane o zmianowaniu widoczne na panelu informacji o polu
 - szczegółowy opis w menu pomocy (są obrazki!)
 - planer płodozmianu pozwalający określić potencjalne plony
+
+Changelog 2.5.0.1:
+- naprawiono krytyczny problem, przy włączonym wzroście sezonowym
+
+Changelog 2.5.0.0:
+- poprawiono błąd synchronizacji w trybie wieloosobowym
+- UWAGA: historia upraw zostanie usunięta podczas aktualizacji
 
 Changelog 2.1.0.3:
 - Crop Rotation planner added
@@ -101,6 +129,13 @@ Klíčové vlastnosti:
 - podrobné menu nápovědy ve hře (s obrázky!)
 - plánovač střídání plodin pro vizualizaci potenciálního výnosu
 
+Changelog 2.5.0.1:
+- opraven kritický problém, když je povolen sezónní růst
+
+Changelog 2.5.0.0:
+- opravena chyba pro více hráčů
+- POZNÁMKA: Historie plodin bude během aktualizace smazána
+
 Changelog 2.1.0.3:
 - Crop Rotation planner added
 - Precision Farming DLC is not required anymore
@@ -120,6 +155,13 @@ Caratteristiche principali:
 - dettagliato menu di aiuto in gioco (con immagini!)
 - pianificatore di rotazione delle colture per visualizzare la resa potenziale
 
+Changelog 2.5.0.1:
+- risolto problema critico quando è abilitata la crescita stagionale
+
+Changelog 2.5.0.0:
+- bug multiplayer risolto
+- NOTA: la cronologia delle colture verrà eliminata durante l'aggiornamento
+
 Registro delle modifiche 2.1.0.3:
 - Aggiunto il pianificatore di rotazione delle colture
 - Il DLC Precision Farming non è più richiesto
@@ -127,13 +169,14 @@ Registro delle modifiche 2.1.0.3:
 ]]></it>
     </description>
 
-    <iconFilename>modIcon.dds</iconFilename>
+    <iconFilename>icon_cropRotation.dds</iconFilename>
 
     <multiplayer supported="true"/>
 
     <extraSourceFiles>
-        <sourceFile filename="main.lua"/>
+        <sourceFile filename="CropRotation.lua"/>
     </extraSourceFiles>
 
     <l10n filenamePrefix="translations/translation" />
+
 </modDesc>

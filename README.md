@@ -30,7 +30,7 @@ Crop rotation is a technique to alternate types of plants with different require
 
 Also lots of pests are adjusted to single kind of plants. Crop rotation severe their multiplication ability and soil is allowed to clean itself from pathogens specific to particular crop type.
 
-Crop rotation performed well, prevents soil from loosing elements plants require for growth, and greatly reduce diseases and pests presence. All this leads directly to higher quality and quantity of yield in subsequent years.
+Crop rotation performed well prevents soil from loosing elements plants require for growth and greatly reduces diseases and pests presence. All this leads directly to higher quality and quantity of yield in subsequent years.
 
 ### Return period
 
@@ -40,77 +40,77 @@ Canola, sunflower, potatoes and sugar beets can return in third planting season.
 
 Most of cereals, soybean, sugar cane and cotton require at least one year gap.
 
-Corn, grass and poplar can be grown every year, but farmer must take into account yield deduction due to soil nutrients depletion.
+Corn, grass and poplar can be grown every year, but farmer must take into account yield reduction due to soil nutrients depletion.
 
 Example 1: Maize (monoculture, RP1)
 
-| crop    | last year crop | previous year crop | return period | monoculture | result |
-|-|-|-|-|-|-:|
-| Maize    | Maize(ok, +0%) | Maize(ok, +0%)      | 1(ok, +0%)     | yes(-5%)    |    -5% |
+| crop    | last year crop      | previous year crop | return period | monoculture | result |
+|---------|---------------------|--------------------|---------------|-------------|-------:|
+| Maize   | Maize(ok, +0%)      | Maize(ok, +0%)     | 1(ok, +0%)    | yes(-5%)    |    -5% |
 
 Example 2: Grassland (monoculture, RP1)
 
 | crop    | last year crop      | previous year crop | return period | monoculture | result |
-|-|-|-|-|-|-:|
-| Grass    | Grass(good, +10%)  | Grass(good, +5%)   | 1(ok, +0%)     | yes(-5%)    |  +10%  |
+|---------|---------------------|--------------------|---------------|-------------|-------:|
+| Grass   |  Grass(good, +10%)  | Grass(good, +5%)   | 1(ok, +0%)    | yes(-5%)    |   +10% |
 
 Example 3: Oat (monoculture, RP2)
 
 | crop    | last year crop      | previous year crop | return period | monoculture | result |
-|-|-|-|-|-|-:|
-| Oat    | Oat(ok, +0%)  | Oat(ok, +0%)  | 2(bad, -5%)   | yes(-5%) |   -10% |
+|---------|---------------------|--------------------|---------------|-------------|-------:|
+| Oat     | Oat(ok, +0%)        | Oat(ok, +0%)       | 2(bad, -5%)   | yes(-5%)    |   -10% |
 
 Example 4: Barley (monoculture, RP2)
 
 | crop    | last year crop      | previous year crop | return period | monoculture | result |
-|-|-|-|-|-|-:|
-|Barley    | Barley(bad, -20%)  | Barley(bad, -10%)  | 2(bad, -5%)   | yes(-5%) |   -40% |
+|---------|---------------------|--------------------|---------------|-------------|-------:|
+| Barley  | Barley(bad, -20%)   | Barley(bad, -10%)  | 2(bad, -5%)   | yes(-5%)    |   -40% |
 
 Example 5: Canola (monoculture, RP3)
 
 | crop    | last year crop      | previous year crop | return period | monoculture | result |
-|-|-|-|-|-|-:|
-|Canola    | Canola(bad, -20%)  | Canola(bad, -10%)  | 3(bad, -15%)  | yes(-5%)    |   -50% |
+|---------|---------------------|--------------------|---------------|-------------|-------:|
+| Canola  | Canola(bad, -20%)   | Canola(bad, -10%)  | 3(bad, -15%)  | yes(-5%)    |   -50% |
 
 ### Forecrops
 
-Some plants grow better or worse after certain forecrops. As a result, there are two lists maintained for each crop: list of good forecrops that provide yield bonus, and list of bad forecrops that reduce yield. Forecrops not listed in any of those, are neutral - they neither upgrade or degrade yield.
+Some plants grow better after certain and worse after other forecrops. As a result, there are two lists maintained for each crop: list of good forecrops that provide yield bonus, and list of bad forecrops that reduce yield. Forecrops not listed in any of those, are neutral - they neither upgrade or degrade yield.
 
 Cereals and oilseed grow very well after legumes (soybean). Rootcrops (sugarbeets) grow well after cereals. Sunflowers grow very well after sugar beets.
 
 Avoid planting canola after sunflowers, sugarbeets after corn, or sunflowers after potatoes. The yield may be greatly reduced by choosing bad forecrops in rotation.
 
-Two last crop categories have the dominant influence over current yield. The last forecrop gives 10% bonus to 20% loss, while previous year gives 5% bonus or 10% loss. Good crop rotation means keeping yields close to 100% of their potential.
+Two last crops have the dominant influence over current yield. The last forecrop gives 10% bonus to 20% loss, while previous year gives 5% bonus or 10% loss. Good crop rotation is when farmer keeps yields close to 100% of their potential.
 
 You can manipulate crop order to get desired results.
 
-Example 1: rotation Barley -> Soybean -> Canola
-
-| crop    | last year crop      | previous year crop  | result |
-|-|-|-|-:|
-| Barley  | Canola(good, +10%)  | Soybean(good, +5%)  |   +15% |
-| Soybean | Barley(ok, +0%)     | Canola(good, +5%)   |    +5% |
-| Canola  | Soybean(good, +10%) | Barley(good, +5%)   |   +15% |
-
-Example 2: rotation Potatoes -> Barley -> Canola
+Example 1: rotation Barley &rarr; Soybean &rarr; Canola
 
 | crop    | last year crop      | previous year crop | result |
-|-|-|-|-:|
-| Potatoe | Canola(good, +10%) | Barley(ok, +0%)    |   +10% |
-| Barley  | Potatoes(ok, +0%)  | Canola(good, +5%)  |    +5% |
-| Canola  | Barley(good, +10%) | Potatoes(ok, +0%)  |   +10% |
+|---------|---------------------|--------------------|-------:|
+| Barley  | Canola(good, +10%)  | Soybean(good, +5%) |   +15% |
+| Soybean | Barley(ok, +0%)     | Canola(good, +5%)  |    +5% |
+| Canola  | Soybean(good, +10%) | Barley(good, +5%)  |   +15% |
 
-Example 3: rotation Barley -> Canola
+Example 2: rotation Potatoes &rarr; Barley &rarr; Canola
 
-| crop   | last year crop      | previous year crop | return period | result |
-|-|-|-|-|-:|
-| Barley | Canola(good, +10%) | Barley(bad, -10%)  | 2(ok, +0%) | +0% |
-| Canola | Barley(good, +10%) | Canola(bad, -10%)  | 3(bad, -5%) | -5% |
+| crop    | last year crop      | previous year crop | result |
+|---------|---------------------|--------------------|-------:|
+| Potatoe | Canola(good, +10%)  | Barley(ok, +0%)    |   +10% |
+| Barley  | Potatoes(ok, +0%)   | Canola(good, +5%)  |    +5% |
+| Canola  | Barley(good, +10%)  | Potatoes(ok, +0%)  |   +10% |
 
-Example 4: rotation Potato -> Canola -> Sunflower
+Example 3: rotation Barley &rarr; Canola
+
+| crop   | last year crop       | previous year crop | return period | result |
+|--------|----------------------|--------------------|---------------|-------:|
+| Barley | Canola(good, +10%)   | Barley(bad, -10%)  | 2(ok, +0%)    |    +0% |
+| Canola | Barley(good, +10%)   | Canola(bad, -10%)  | 3(bad, -5%)   |    -5% |
+
+Example 4: rotation Potato &rarr; Canola &rarr; Sunflower
 
 | crop      | last year crop     | previous year crop   | result |
-|-|-|-|-:|
+|-----------|--------------------|----------------------|-------:|
 | Potato    | Sunflower(ok, +0%) | Canola(good, +5%)    |    +5% |
 | Canola    | Potato(ok, +0%)    | Sunflower(bad, -10%) |   -10% |
 | Sunflower | Canola(bad, -20%)  | Potato(bad, -10%)    |   -30% |
@@ -119,15 +119,20 @@ Example 4: rotation Potato -> Canola -> Sunflower
 
 You may also leave field without planting for full year (fallow). Soil will then regain the ability to support even the most demanding crops.
 
-Example 1: (medieval three-field) Wheat -> Wheat -> Fallow
+Example 1: (medieval two-field cultivation) Wheat &rarr; Fallow
 
 | crop   | last year crop     | previous year crop | return period | result |
-|-|-|-|-|-:|
-| Wheat  | Fallow(good, +10%) | Wheat(bad, -10%)   | 2(ok, +0%)     |    +0% |
-| Wheat  | Wheat(bad, -20%)   | Fallow(good, +5%)  | 2(bad, -5%)   |    -20% |
-| Fallow | Wheat              | Wheat              | --            |   --   |
+|--------|--------------------|--------------------|---------------|-------:|
+| Wheat  | Fallow(good, +10%) | Wheat(bad, -10%)   | 2(ok, +0%)    |    +0% |
+| Fallow | Wheat              | Wheat              | N/A           |    N/A |
 
-Fun fact: the third-on wheat yield would've been reduced by 40% if not replaced by fallow.
+Example 2: (improved three-field cultivation) Wheat (for humans) &rarr; Oats (for horses) &rarr; Fallow (for soil)
+
+| crop   | last year crop     | previous year crop | return period | result |
+|--------|--------------------|--------------------|---------------|-------:|
+| Wheat  | Fallow(good, +10%) | Oats(good, +5%)    | 2(ok, +0%)    |   +15% |
+| Oats   | Wheat(good, +10%)  | Fallow(good, +5%)  | 2(ok, +0%)    |   +15% |
+| Fallow | Oats               | Wheat              | N/A           |    N/A |
 
 To trigger fallow one must: harvest the yield, and do not perform sowing until full year has passed. For example: if harvest was in August 2022, then next agricultural year starts in March 2023. Do not sow until March 2024 to achieve fallow bonus.
 

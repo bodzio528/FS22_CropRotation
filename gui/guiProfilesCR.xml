@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUIProfiles>
+    <Presets>
+        <Preset name="pf_colorMainUI" value="0.0227 0.5346 0.8519 1.0"/>
+        <Preset name="pf_colorWhite" value="1 1 1 1"/>
+
+        <Preset name="pf_colorListRowBackground" value="0.3140 0.8069 1.0000 0.02" />
+        <Preset name="pf_colorListHeaderBackground" value="0 0 0 0.35" />
+    </Presets>
+
+    <Profile name="precisionFarmingHeaderPanel" extends="emptyPanel" with="anchorTopLeft">
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="topLeft"/>
+        <Value name="position" value="100px -30px"/>
+        <Value name="size" value="50px 200px"/>
+    </Profile>
+
+    <Profile name="precisionFarmingBaseUi" extends="emptyPanel" >
+        <Value name="screenAlign" value=""/>
+        <Value name="positionOrigin" value=""/>
+        <Value name="position" value="0px 0px"/>
+        <Value name="size" value="1920px 856px"/>
+    </Profile>
+
+    <Profile name="precisionFarmingContentBase" extends="emptyPanel" with="anchorMiddleLeft">
+        <Value name="screenAlign" value="middleLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+        <Value name="position" value="0px 0px"/>
+        <Value name="size" value="1920px 690px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingHeaderIcon" extends="ingameMenuAnimalsHeaderIcon" >
+        <Value name="imageUVs" value="0 0 1 1" />
+        <Value name="imageFilename" value="dataS/menu/main_logo_en.png" />
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingLabBackground" extends="baseReference">
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="topLeft"/>
+        <Value name="position" value="100px -20px"/>
+        <Value name="size" value="400px 90px"/>
+
+        <Value name="imageColor" value="0.018 0.016 0.015 0.6"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingLabHeader" extends="ingameMenuFrameHeaderText" with="anchorTopLeft">
+        <Value name="position" value="58px -5px"/>
+        <Value name="size" value="338px 48px"/>
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+        <Value name="textSize" value="25px"/>
+        <Value name="textBold" value="true"/>
+        <Value name="textUpperCase" value="true"/>
+        <Value name="textLayoutMode" value="resize"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingLabInfo" extends="ingameMenuFrameHeaderText" with="anchorTopLeft">
+        <Value name="position" value="5px -37px"/>
+        <Value name="size" value="380px 64px"/>
+        <Value name="textSize" value="17px"/>
+        <Value name="textBold" value="false"/>
+        <Value name="textUpperCase" value="false"/>
+        <Value name="textLayoutMode" value="resize"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingLabIcon" extends="baseReference" with="anchorTopLeft">
+        <Value name="position" value="5px -5px"/>
+        <Value name="size" value="48px 48px"/>
+        <Value name="imageColor" value="$preset_pf_colorMainUI" />
+        <Value name="imageFocusedColor" value="$preset_pf_colorWhite" />
+        <Value name="imageFilename" value="g_pfUIElements"/>
+        <Value name="imageUVs" value="0px 0px 64px 64px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvBackground" extends="baseReference">
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="topLeft"/>
+        <Value name="position" value="100px 80px"/>
+        <Value name="size" value="400px 130px"/>
+
+        <Value name="imageColor" value="0.018 0.016 0.015 0.6"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreIcon" extends="ingameMenuPrecisionFarmingLabIcon" with="anchorTopLeft">
+        <Value name="imageUVs" value="512px 64px 64px 64px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreGradientBar" extends="baseReference" with="anchorTopLeft">
+        <Value name="imageFilename" value="g_pfUIElements"/>
+        <Value name="imageUVs" value="193px 30px 254px 5px"/>
+        <Value name="imageColor" value="1.000 1.000 1.000 1"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+        <Value name="position" value="20px -85px"/>
+        <Value name="size" value="360px 25px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreGradientBarBase" extends="ingameMenuPrecisionFarmingEnvScoreGradientBar" with="anchorTopLeft">
+        <Value name="imageColor" value="0.3 0.3 0.3 1"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreGradientBarIndicator" extends="baseReference" with="anchorTopLeft">
+        <Value name="imageUVs" value="10px 1010px 4px 4px"/>
+        <Value name="imageColor" value="1.000 1.000 1.000 1"/>
+        <Value name="positionOrigin" value="middleCenter"/>
+        <Value name="position" value="30px -80px"/>
+        <Value name="size" value="2px 35px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreNumber" extends="ingameMenuFrameHeaderText" with="anchorTopLeft">
+        <Value name="size" value="30px 30px" />
+        <Value name="position" value="20px -50px"/>
+        <Value name="textSize" value="20px"/>
+        <Value name="textBold" value="true"/>
+        <Value name="textAlignment" value="center"/>
+        <Value name="positionOrigin" value="bottomCenter"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreDistributionTitle" extends="ingameMenuFrameHeaderText" with="anchorTopLeft">
+        <Value name="size" value="120px 30px" />
+        <Value name="position" value="20px -55px"/>
+        <Value name="textSize" value="15px"/>
+        <Value name="textBold" value="false"/>
+        <Value name="textAlignment" value="right"/>
+        <Value name="textMaxWidth" value="120px"/>
+        <Value name="textLayoutMode" value="resize"/>
+        <Value name="positionOrigin" value="bottomCenter"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreDistributionValue" extends="ingameMenuFrameHeaderText" with="anchorTopLeft">
+        <Value name="size" value="60px 30px" />
+        <Value name="position" value="20px -55px"/>
+        <Value name="textSize" value="20px"/>
+        <Value name="textBold" value="false"/>
+        <Value name="textAlignment" value="center"/>
+        <Value name="positionOrigin" value="bottomCenter"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreDistributionBar" extends="baseReference" with="anchorTopLeft">
+        <Value name="imageUVs" value="10px 1010px 4px 4px"/>
+        <Value name="imageColor" value="$preset_pf_colorMainUI"/>
+        <Value name="positionOrigin" value="middleCenter"/>
+        <Value name="position" value="30px -85px"/>
+        <Value name="size" value="100px 15px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreDistributionBarBackground" extends="ingameMenuPrecisionFarmingEnvScoreDistributionBar" with="anchorTopLeft">
+        <Value name="imageColor" value="0.2 0.2 0.2 0.3"/>
+        <Value name="size" value="180px 15px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreSeparator" extends="lineSeparator" with="anchorTopLeft">
+        <Value name="size" value="360px 1px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingEnvScoreInfo" extends="ingameMenuFrameHeaderText" with="anchorTopLeft">
+        <Value name="position" value="10px -311px"/>
+        <Value name="size" value="380px 39px" />
+        <Value name="textSize" value="15px"/>
+        <Value name="textBold" value="false"/>
+        <Value name="textUpperCase" value="false"/>
+        <Value name="textMaxWidth" value="380px"/>
+        <Value name="textLayoutMode" value="resize"/>
+        <Value name="textAlignment" value="center"/>
+        <Value name="textVerticalAlignment" value="middle"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingHelpBackground" extends="baseReference" with="anchorTopRight">
+        <Value name="imageColor" value="0.018 0.016 0.015 0.9"/>
+        <Value name="frameThickness" value="1dp 1dp 1dp 1dp"/>
+
+        <Value name="screenAlign" value="topRight"/>
+        <Value name="positionOrigin" value="topRight"/>
+        <Value name="position" value="-127px -47px"/>
+        <Value name="size" value="150px 50px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingHelpButton" extends="ingameMenuSettingsPauseButton" with="anchorTopLeft">
+        <Value name="size" value="150px 50px"/>
+        <Value name="position" value="0px 0px"/>
+
+        <Value name="textSize" value="18px"/>
+        <Value name="textMaxWidth" value="120px"/>
+        <Value name="textResizeWidth" value="120px"/>
+        <Value name="handleFocus" value="true"/>
+        <Value name="iconFilename" value="g_iconsUIFilename"/>
+        <Value name="iconUVs" value="0px 65px 65px 65px"/>
+        <Value name="iconSize" value="40px 40px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingHelpButtonConsole" extends="ingameMenuPrecisionFarmingHelpButton">
+        <Value name="inputAction" value="TOGGLE_STORE"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsBackground" extends="baseReference">
+        <Value name="screenAlign" value="middleLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+        <Value name="position" value="100px 0px"/>
+        <Value name="size" value="446px 692px"/>
+
+        <Value name="imageColor" value="0.018 0.016 0.015 0.9"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsHeader" extends="ingameMenuPrecisionFarmingLabHeader">
+        <Value name="position" value="0px -5px"/>
+        <Value name="size" value="446px 48px"/>
+        <Value name="textAlignment" value="center"/>
+        <Value name="textBold" value="false"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsHeaderField" extends="ingameMenuPrecisionFarmingLabHeader">
+        <Value name="position" value="0px -45px"/>
+        <Value name="size" value="446px 48px"/>
+        <Value name="textSize" value="20px"/>
+        <Value name="textAlignment" value="center"/>
+        <Value name="textBold" value="false"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsIcon" extends="ingameMenuPrecisionFarmingLabIcon">
+        <Value name="imageUVs" value="320px 64px 64px 64px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsHeaderValues" extends="ingameMenuPrecisionFarmingStatsHeaderField">
+        <Value name="position" value="0px -75px"/>
+        <Value name="textSize" value="14px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsContent" extends="emptyPanel" with="anchorTopLeft">
+        <Value name="position" value="20px -120px" />
+        <Value name="size" value="430px 800px"/>
+        <Value name="imageColor" value="1 0 0 0.3"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsSeparator" extends="lineSeparator" with="anchorTopLeft">
+        <Value name="size" value="406px 1px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsTitle" extends="textDefault" with="anchorTopLeft">
+        <Value name="size" value="275px 13px"/>
+        <Value name="textSize" value="14px"/>
+        <Value name="textBold" value="true"/>
+        <Value name="textUpperCase" value="true"/>
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+    </Profile>
+    <Profile name="ingameMenuPrecisionFarmingStatsTitleTotal" extends="ingameMenuPrecisionFarmingStatsTitle">
+        <Value name="textSize" value="18px"/>
+    </Profile>
+    <Profile name="ingameMenuPrecisionFarmingStatsAmount" extends="textDefault" with="anchorTopLeft">
+        <Value name="size" value="275px 13px"/>
+        <Value name="textSize" value="14px"/>
+        <Value name="textOffset" value="0px 1px"/>
+        <Value name="margin" value="5px 0px 0px 0px"/>
+        <Value name="textAlignment" value="right"/>
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+    </Profile>
+    <Profile name="ingameMenuPrecisionFarmingStatsPrice" extends="ingameMenuPrecisionFarmingStatsAmount">
+        <Value name="size" value="350px 13px"/>
+    </Profile>
+    <Profile name="ingameMenuPrecisionFarmingStatsPriceTotal" extends="ingameMenuPrecisionFarmingStatsPrice">
+        <Value name="textSize" value="18px"/>
+        <Value name="textColor" value="0.9910 0.3865 0.0100 1"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsChange" extends="textDefault" with="anchorTopLeft">
+        <Value name="size" value="65px 13px"/>
+        <Value name="textResizeWidth" value="65px"/>
+        <Value name="textSize" value="12px"/>
+        <Value name="textOffset" value="0px 1px"/>
+        <Value name="margin" value="5px 0px 0px 0px"/>
+        <Value name="textAlignment" value="left"/>
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsChangePos" extends="ingameMenuPrecisionFarmingStatsChange">
+        <Value name="textColor" value="0.3763 0.6038 0.0782 1"/>
+    </Profile>
+    <Profile name="ingameMenuPrecisionFarmingStatsChangeNeg" extends="ingameMenuPrecisionFarmingStatsChange">
+        <Value name="textColor" value="0.8069 0.0097 0.0097 1"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsSwitchButton" extends="ingameMenuSettingsNativeHelpButton" with="anchorTopLeft">
+        <Value name="size" value="406px 40px"/>
+        <Value name="position" value="0px -170px"/>
+
+        <Value name="textSize" value="18px"/>
+        <Value name="textMaxWidth" value="350px"/>
+        <Value name="textResizeWidth" value="350px"/>
+        <Value name="handleFocus" value="false"/>
+        <Value name="iconFilename" value="g_pfUIElements"/>
+        <Value name="iconUVs" value="128px 64px 64px 64px"/>
+    </Profile>
+    <Profile name="ingameMenuPrecisionFarmingStatsSwitchButtonConsole" extends="ingameMenuPrecisionFarmingStatsSwitchButton" >
+        <Value name="inputAction" value="MENU_ACTIVATE"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingStatsResetButton" extends="ingameMenuPrecisionFarmingStatsSwitchButton" >
+        <Value name="position" value="0px -230px"/>
+        <Value name="iconFilename" value="g_baseUIFilename"/>
+        <Value name="iconUVs" value="102px 342px 36px 36px"/>
+    </Profile>
+    <Profile name="ingameMenuPrecisionFarmingStatsResetButtonConsole" extends="ingameMenuPrecisionFarmingStatsResetButton">
+        <Value name="inputAction" value="MENU_EXTRA_1"/>
+    </Profile>
+
+    <Profile name="precisionFarmingBuyInfoBase" extends="emptyPanel" with="anchorTopLeft">
+        <Value name="position" value="100px -35px"/>
+        <Value name="size" value="400px 400px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoBackground" extends="baseReference">
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="topLeft"/>
+        <Value name="position" value="0px 0px"/>
+        <Value name="size" value="360px 336px"/>
+
+        <Value name="imageColor" value="0.018 0.016 0.015 0.9"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyHeader" extends="ingameMenuPrecisionFarmingLabHeader">
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="topLeft"/>
+        <Value name="position" value="0px -45px"/>
+        <Value name="size" value="360px 48px"/>
+        <Value name="textSize" value="20px"/>
+        <Value name="textAlignment" value="center"/>
+        <Value name="textBold" value="false"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyIcon" extends="ingameMenuPrecisionFarmingLabIcon">
+        <Value name="imageUVs" value="192px 64px 64px 64px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoSeparator" extends="lineSeparator" with="anchorTopLeft">
+        <Value name="size" value="320px 2px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfo" extends="emptyPanel" with="anchorTopLeft">
+        <Value name="position" value="20px -95px"/>
+        <Value name="size" value="320px 179px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoTitle" extends="textDefault" with="anchorTopLeft">
+        <Value name="size" value="320px 13px"/>
+        <Value name="textSize" value="16px"/>
+        <Value name="textBold" value="true"/>
+        <Value name="textUpperCase" value="true"/>
+        <Value name="screenAlign" value="topCenter"/>
+        <Value name="positionOrigin" value="middleCenter"/>
+        <Value name="textAlignment" value="center"/>
+    </Profile>
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoSubTitle" extends="ingameMenuPrecisionFarmingFieldBuyInfoTitle" with="anchorTopLeft">
+        <Value name="size" value="110px 13px"/>
+        <Value name="textSize" value="14px"/>
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+        <Value name="textBold" value="false"/>
+        <Value name="textAlignment" value="right"/>
+        <Value name="size" value="115px 13px"/>
+        <Value name="textLayoutMode" value="resize"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoBar" extends="baseReference" with="anchorTopLeft">
+        <Value name="imageUVs" value="10px 1010px 4px 4px"/>
+        <Value name="imageColor" value="1.000 0.016 0.015 1"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+        <Value name="size" value="120px 15px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoBarYieldBackground" extends="ingameMenuPrecisionFarmingFieldBuyInfoBar">
+        <Value name="imageColor" value="0.1 0.1 0.1 0.2"/>
+        <Value name="size" value="320px 25px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoBarYieldBase" extends="ingameMenuPrecisionFarmingFieldBuyInfoBar">
+        <Value name="imageColor" value="0.1 0.1 0.1 0.6"/>
+        <Value name="size" value="256px 25px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoBarYieldNegative" extends="ingameMenuPrecisionFarmingFieldBuyInfoBar">
+        <Value name="imageColor" value="1 0.1 0.1 1"/>
+        <Value name="size" value="0px 25px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoBarYieldPositive" extends="ingameMenuPrecisionFarmingFieldBuyInfoBar">
+        <Value name="imageColor" value="0.1 1.0 0.1 1"/>
+        <Value name="size" value="0px 25px"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoYieldPercentage" extends="textDefault" with="anchorTopLeft">
+        <Value name="size" value="50px 13px"/>
+        <Value name="textSize" value="14px"/>
+        <Value name="textOffset" value="0px 1px"/>
+        <Value name="textAlignment" value="center"/>
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+    </Profile>
+
+    <Profile name="ingameMenuPrecisionFarmingFieldBuyInfoAmount" extends="textDefault" with="anchorTopLeft">
+        <Value name="size" value="50px 13px"/>
+        <Value name="textSize" value="14px"/>
+        <Value name="textOffset" value="0px 0px"/>
+        <Value name="margin" value="0px 0px 0px 0px"/>
+        <Value name="textAlignment" value="left"/>
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="middleLeft"/>
+    </Profile>
+
+    <Profile name="precisionFarmingShopConfigInfoBase" extends="emptyPanel" with="anchorBottomLeft">
+        <Value name="position" value="0px 0px"/>
+        <Value name="size" value="200px 400px"/>
+    </Profile>
+
+    <Profile name="precisionFarmingShopConfigInfoBackground" extends="baseReference">
+        <Value name="screenAlign" value="bottomLeft"/>
+        <Value name="positionOrigin" value="bottomLeft"/>
+        <Value name="position" value="400px 0px"/>
+        <Value name="size" value="600px 175px"/>
+
+        <Value name="imageColor" value="0.314 0.807 1 0.08" />
+    </Profile>
+
+    <Profile name="precisionFarmingShopConfigInfoIcon" extends="ingameMenuPrecisionFarmingLabIcon">
+        <Value name="size" value="48px 48px"/>
+        <Value name="imageUVs" value="448px 64px 64px 64px"/>
+    </Profile>
+
+    <Profile name="precisionFarmingShopConfigInfoHeader" extends="textDefault" with="anchorTopLeft">
+        <Value name="size" value="570px 30px"/>
+        <Value name="position" value="60px -13px"/>
+        <Value name="textSize" value="28px" />
+        <Value name="textBold" value="true"/>
+        <Value name="textAlignment" value="left"/>
+    </Profile>
+
+    <Profile name="precisionFarmingShopConfigInfoText" extends="textDefault" with="anchorTopLeft">
+        <Value name="size" value="590px 13px"/>
+        <Value name="position" value="8px -55px"/>
+        <Value name="textSize" value="17px"/>
+        <Value name="textBold" value="false"/>
+        <Value name="textAlignment" value="left"/>
+        <Value name="textMaxNumLines" value="12"/>
+        <Value name="screenAlign" value="topLeft"/>
+        <Value name="positionOrigin" value="topLeft"/>
+        <Value name="textVerticalAlignment" value="top"/>
+    </Profile>
+
+    <Profile name="precisionFarmingHelpFrameSeedRateBase" extends="emptyPanel" with="anchorTopLeft">
+        <Value name="position" value="0px 0px"/>
+        <Value name="size" value="850px 600px"/>
+    </Profile>
+
+    <Profile name="precisionFarmingSeedRateRowBackground" extends="ingameMenuVehicleRowBackground">
+        <Value name="imageColor" value="$preset_pf_colorListRowBackground"/>
+    </Profile>
+    <Profile name="precisionFarmingSeedRateRowBackgroundAlternate" extends="precisionFarmingSeedRateRowBackground" with="alternateRow" />
+
+    <Profile name="precisionFarmingSeedRateRowVehicleCell" extends="ingameMenuVehicleRowVehicleCell">
+        <Value name="fitToContent" value="false"/>
+        <Value name="handleFocus" value="false"/>
+        <Value name="size" value="200px 40.75px"/>
+        <Value name="textMaxWidth" value="200px"/>
+        <Value name="textColor" value="$preset_pf_colorWhite"/>
+
+        <Value name="textSize" value="16px"/>
+        <Value name="textUpperCase" value="false" />
+        <Value name="textBold" value="true"/>
+        <Value name="textOffset" value="30px 0px"/>
+
+        <Value name="iconSize" value="0"/>
+    </Profile>
+    <Profile name="precisionFarmingSeedRateRowVehicleCellHeader" extends="precisionFarmingSeedRateRowVehicleCell">
+        <Value name="textSize" value="18px"/>
+        <Value name="textUpperCase" value="true" />
+    </Profile>
+
+    <Profile name="precisionFarmingSeedRateRowAttributeCell" extends="ingameMenuVehicleRowVehicleCell">
+        <Value name="size" value="162px 40.75px"/>
+        <Value name="textBold" value="false"/>
+        <Value name="textAlignment" value="center"/>
+        <Value name="textVerticalAlignment" value="middle"/>
+        <Value name="textColor" value="$preset_pf_colorWhite"/>
+        <Value name="textMaxWidth" value="186px"/>
+        <Value name="textUpperCase" value="false" />
+        <Value name="textOffset" value="0px 0px"/>
+        <Value name="textSize" value="16px"/>
+    </Profile>
+    <Profile name="precisionFarmingSeedRateRowAttributeCellHeader" extends="precisionFarmingSeedRateRowAttributeCell">
+        <Value name="textBold" value="true"/>
+        <Value name="textUpperCase" value="true" />
+        <Value name="textSize" value="18px"/>
+    </Profile>
+</GUIProfiles>

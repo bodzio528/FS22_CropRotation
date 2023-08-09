@@ -53,8 +53,10 @@ function InGameMenuCropRotationPlanner:initialize()
         end
     end
 
-    -- local plans = self.planner:fetch() -- TODO populate list of rotation plans
-	self.planId = 1 -- TODO: selectable by user
+    local plans = self.planner:fetch() -- TODO populate list of rotation plans
+    if #plans < 1 then self.planner:create("Default", 0) end
+
+	self.planId = 0 -- TODO: selectable by user
     local plan = self.planner:select(self.planId)
 
     -- TODO: call on plan selection change: synchronize GUI elements with stored plan

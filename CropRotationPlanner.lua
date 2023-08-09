@@ -9,112 +9,134 @@
 CropRotationPlanner = {}
 CropRotationPlanner_mt = Class(CropRotationPlanner)
 
-function CropRotationPlanner:new(fruitTypeManager)
+function CropRotationPlanner:new(crModule)
     local self = setmetatable({}, CropRotationPlanner_mt)
 
-    self.fruitTypeManager = fruitTypeManager
-
-    self.plans = {}
-    self:create(string.format(g_i18n:getText("cropRotation_gui_planner_defaultPlanName"), "A"))
+    self.crModule = crModule
+    self.crModule.log:debug("CropRotationPlanner:new()")
 
     return self
 end
 
-function CropRotationPlanner:saveToSavegame(xmlFile)
-    for i, plan in pairs(self.plans) do
-        local planKey = string.format("cropRotation.planner.plan(%d)", i - 1)
-        setXMLString(xmlFile, planKey .. "#name", plan.name)
-
-        local crops = {}
-        for k, cropIndex in pairs(plan.crops) do
-            if cropIndex > 0 then
-                table.insert(crops, self.fruitTypeManager:getFruitTypeByIndex(cropIndex).name)
-            else
-                if cropIndex == 0 then
-                    table.insert(crops, "FALLOW")
-                end
-            end
-        end
-
-        setXMLString(xmlFile, planKey, table.concat(crops, " "))
-    end
-
-end
-
-function CropRotationPlanner:loadFromSavegame(xmlFile)
-    local plannerKey = "cropRotation.planner"
-    if not hasXMLProperty(xmlFile, plannerKey) then
-        log("CropRotationPlanner:loadFromSavegame(): INFO create empty crop rotation plan in memory.")
-        return
-    end
+function CropRotationPlanner:initialize()
+    self.crModule.log:debug("CropRotationPlanner:initialize()")
 
     self.plans = {}
+    self.farmlandMapping = {}
+
+    -- self:create("Plan A", 0)
+end
+
+function CropRotationPlanner:serialize(plan)
+    local crops = {}
+    for _, cropIndex in pairs(plan) do
+        if cropIndex > 0 then
+            table.insert(crops, g_fruitTypeManager:getFruitTypeByIndex(cropIndex).name)
+        else
+            if cropIndex == 0 then
+                table.insert(crops, "FALLOW")
+            end
+        end
+    end
+    return table.concat(crops, " ")
+end
+
+function CropRotationPlanner:saveToXMLFile(xmlFile, key)
+    self.crModule.log:debug("CropRotationPlanner:saveToXMLFile(): key="..key..")")
+
+    local plannerKey = key..".planner"
+    for i, plan in pairs(self.plans) do
+        local planKey = string.format(plannerKey..".plan(%d)", i - 1)
+        xmlFile:setString(planKey .. "#name", plan.name)
+        xmlFile:setInt(planKey .. "#farmlandId", plan.farmlandId or 0)
+        xmlFile:setString(planKey, self:serialize(plan.crops))
+    end
+end
+
+function CropRotationPlanner:deserialize(cropNames)
+    local crops = {} -- cropIndices
+    for j, fruitName in pairs(cropNames) do
+        if fruitName == "FALLOW" then
+            table.insert(crops, 0)
+        else
+            local fruitDesc = g_fruitTypeManager:getFruitTypeByName(fruitName)
+
+            if fruitDesc ~= nil then
+                table.insert(crops, fruitDesc.index)
+            else
+                self.crModule.log:info("CropRotationPlanner:deserialize(): replace unknown fruit "..fruitName.."with FALLOW")
+                table.insert(crops, 0)
+            end
+        end
+    end
+    return crops
+end
+
+function CropRotationPlanner:loadFromItemsXML(xmlFile, key)
+    self.crModule.log:debug("CropRotationPlanner:loadFromItemsXML(): key="..key)
+    
+    local plannerKey = key..".planner"
+    if not xmlFile:hasProperty(plannerKey) then
+        local name = string.format(g_i18n:getText("cropRotation_gui_planner_defaultPlanName"), "A")
+        self:create(name, 0)
+        return -- nothing to do
+    end
+
+    self.plans = {} -- clear old plans
+    self.farmlandMapping = {} -- clear farmland mapping
 
     local i = 0
     while true do
-        local planKey = string.format("%s.plan(%d)", plannerKey, i)
-        if not hasXMLProperty(xmlFile, planKey) then
+        local planKey = string.format(plannerKey..".plan(%d)", i)
+        if not xmlFile:hasProperty(planKey) then
             break
         end
 
-        local planName = Utils.getNoNil(getXMLString(xmlFile, planKey .. "#name"), "Default Plan Name")
-        local cropNames = string.split(Utils.getNoNil(getXMLString(xmlFile, planKey), ""):upper(), " ")
+        local planName = Utils.getNoNil(xmlFile:getString(planKey .. "#name"), "Default Plan Name")
+        local planId = Utils.getNoNil(xmlFile:getInt(planKey .. "#farmlandId"), 0)
+        local cropNames = string.split(Utils.getNoNil(xmlFile:getString(planKey), ""):upper(), " ")
+        local crops = self:deserialize(cropNames)
 
-        local crops = {} -- cropIndices
-        for j, fruitName in pairs(cropNames) do
-            if fruitName == "FALLOW" then
-                table.insert(crops, 0)
-            else
-                local fruitDesc = self.fruitTypeManager:getFruitTypeByName(fruitName)
-
-                if fruitDesc ~= nil then
-                    table.insert(crops, fruitDesc.index)
-                else
-                    log("CropRotationPlanner:loadFromSavegame(): ERROR plan ", planName, "pos", tostring(j), ":", "fruit", fruitName, "not found in fruit manager.")
-                    log("CropRotationPlanner:loadFromSavegame(): INFO replace unknown fruit", fruitName, "with FALLOW")
-                    table.insert(crops, 0)
-                end
-            end
-        end
-
-        local planId = self:create(planName)
-        self:update(planId, crops)
-
+        self:create(planName, planId, crops)
         i = i + 1
     end
 end
 
 ----------------------
--- PUBLIC API
+-- PUBLIC INTERFACE
 ----------------------
 
 function CropRotationPlanner:fetch()
     return self.plans
 end
 
-function CropRotationPlanner:create(planName)
+-- planId == farmlandId
+function CropRotationPlanner:create(planName, farmlandId, crops)
     local idx = #self.plans + 1
     self.plans[idx] = {
         name = planName,
-        crops = {}
+        farmlandId = farmlandId,
+        crops = crops or {}
     }
-    return idx
+    self.farmlandMapping[farmlandId] = idx
+    return farmlandId
 end
 
-function CropRotationPlanner:delete(planId)
-    self.plans[planId] = nil
-
+function CropRotationPlanner:delete(farmlandId)
+    self.plans[self.farmlandMapping[farmlandId]] = nil
+    self.farmlandMapping[farmlandId] = nil
     return self:fetch()
 end
 
-function CropRotationPlanner:select(planId)
-    return self.plans[planId]
+function CropRotationPlanner:select(farmlandId)
+    return self.plans[self.farmlandMapping[farmlandId]]
 end
 
-function CropRotationPlanner:update(planId, crops)
-    if self.plans[planId] == nil then
-        log("CropRotationPlanner:update(): ERROR new plan requested for update? Unexpected flow.")
+function CropRotationPlanner:update(farmlandId, crops)
+    local idx = self.farmlandMapping[farmlandId]
+    if self.plans[idx] == nil then
+        self.crModule.log:error("CropRotationPlanner:update(): new plan requested for update? Unexpected flow.")
         return
     end
-    self.plans[planId].crops = crops
+    self.plans[idx].crops = crops
 end

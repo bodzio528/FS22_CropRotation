@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<ingameMenuCRFrameReference>
+    <GuiElement type="frameReference" ref="ingameMenuCR" name="ingameMenuCR" id="pageCR"/>
+</ingameMenuCRFrameReference>

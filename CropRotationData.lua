@@ -6,34 +6,37 @@
 -- manage static data - crop categories and properties,
 -- make contents of data/crops.xml accessible
 
-CropRotationData = {}
-CropRotationData.debug = false -- true --
+CropRotationData = {
+    MOD_DIRECTORY = g_currentModDirectory
+}
 
 CropRotationData.BAD = 0
+CropRotationData.NEUTRAL = 1
 CropRotationData.GOOD = 2
 
 local CropRotationData_mt = Class(CropRotationData)
 
-function CropRotationData:new(mission, modDirectory, fruitTypeManager)
-    local self = setmetatable({}, CropRotationData_mt)
+function CropRotationData:new(crModule, customMt)
+    local self = setmetatable({}, customMt or CropRotationData_mt)
 
-    self.mission = mission
-    self.fruitTypeManager = fruitTypeManager
+    self.crModule = crModule
+    self.crModule.log:debug("CropRotationData:new() debug prints enabled - expect high amount of messages at startup.")
 
-    self.xmlFilePath = Utils.getFilename("data/crops.xml", modDirectory)
-
-    self.crops = {}
     self.matrix = {}
-
-    if CropRotationData.debug then
-        log("CropRotationData:new(): DEBUG prints enabled - expect high amount of messages at startup.")
-    end
 
     return self
 end
 
+function CropRotationData:initialize()
+    self.crModule.log:debug("CropRotationData:initialize()")
+
+    self.fruitTypeManager = g_fruitTypeManager
+end
+
 function CropRotationData:delete()
-    self.crops = nil
+    self.crModule.log:debug("CropRotationData:delete() kthxbye!")
+
+    self.matrix = nil
 end
 
 function CropRotationData:loadFromSavegame(xmlFile)
@@ -48,68 +51,89 @@ function CropRotationData:getRotationForecropValue(past, current)
         return CropRotationData.GOOD
     end
 
-    return self.matrix[current][past] or 1.0
+    if self.matrix[current] then
+        return self.matrix[current][past] or CropRotationData.NEUTRAL
+    end
+
+    return CropRotationData.NEUTRAL
 end
 
 ----------------------------------------------------------------------
 --- LOADING DATA FROM crops.xml
 ----------------------------------------------------------------------
 
---load data from file and build the necessary tables for crop rotation
-function CropRotationData:load()
-    local xmlFile = loadXMLFile("xml", self.xmlFilePath)
+function CropRotationData:loadFromXML(xmlFile, key, baseDirectory, cropsXmlFileName, mapFilename)
+    self.crModule.log:debug("CropRotationData:loadFromXML() path: " .. cropsXmlFileName)
+
     if xmlFile then
-        local cropsKey = "crops"
-        if not hasXMLProperty(xmlFile, cropsKey) then
-            log(string.format("CropRotationData:load(): ERROR loading XML element '%s' failed:", cropsKey), self.xmlFilePath)
-            return
+        local crops, overwrite = self:parseCropsXml(xmlFile, key, cropsXmlFileName)
+
+        if crops then
+            self:process(crops, overwrite, cropsXmlFileName)
         end
-
-        local overwriteData = Utils.getNoNil(getXMLBool(xmlFile, cropsKey .. "#overwrite"), false)
-        if overwriteData then
-            if CropRotationData.debug then
-                log("CropRotationData:load(): DEBUG overwrite crops data with file", self.xmlFilePath)
-            end
-            self.crops = {}
-        end
-
-        local i = 0
-        while true do
-            local cropKey = string.format("%s.crop(%i)", cropsKey, i)
-            if not hasXMLProperty(xmlFile, cropKey) then
-                break
-            end
-
-            local cropName = getXMLString(xmlFile, cropKey .. "#name"):upper()
-            if cropName ~= nil then
-                local cropEnabled = Utils.getNoNil(getXMLBool(xmlFile, cropKey .. "#enabled"), true)
-                local cropReturnPeriod = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#returnPeriod"), 2)
-                local goodForecrops = Utils.getNoNil(getXMLString(xmlFile, cropKey .. ".good"), ""):upper()
-                local badForecrops = Utils.getNoNil(getXMLString(xmlFile, cropKey .. ".bad"), ""):upper()
-
-                if CropRotationData.debug then
-                    log(string.format("CropRotationData:load(): DEBUG read crop %s forecrops: good: [%s] bad: [%s]",
-                                      cropName, goodForecrops, badForecrops))
-                end
-
-                self.crops[cropName] = {
-                    enabled = cropEnabled,
-                    returnPeriod = cropReturnPeriod,
-                    good = string.split(goodForecrops, " "),
-                    bad = string.split(badForecrops, " ")
-                }
-            else
-                log("CropRotationData:load(): ERROR XML loading failed:", self.xmlFilePath)
-                return
-            end
-
-            i = i + 1
-        end
-
-        delete(xmlFile)
     end
 
-    for cropName, cropDesc in pairs(self.crops) do
+    -- optional: load crops.xml from different locations
+end
+
+--load data from file and build the necessary tables for crop rotation
+function CropRotationData:parseCropsXml(xmlFile, cropsKey, cropsXmlFileName)
+    self.crModule.log:debug("CropRotationData:parseCropsXml()")
+
+    if not hasXMLProperty(xmlFile, cropsKey) then
+        self.crModule.log:error("CropRotationData:parseCropsXml(): loading XML element '" .. cropsKey .. "' failed: " .. cropsXmlFileName)
+        return
+    end
+
+    local crops = {}
+    local overwrite = Utils.getNoNil(getXMLBool(xmlFile, cropsKey .. "#overwrite"), false)
+    if overwrite then
+        self.crModule.log:debug("CropRotationData:parseCropsXml(): overwrite crops data with file " .. cropsXmlFileName)
+    end
+
+    local i = 0
+    while true do
+        local cropKey = string.format("%s.crop(%i)", cropsKey, i)
+        if not hasXMLProperty(xmlFile, cropKey) then
+            break
+        end
+
+        local cropName = getXMLString(xmlFile, cropKey .. "#name"):upper()
+        if cropName ~= nil then
+            local cropEnabled = Utils.getNoNil(getXMLBool(xmlFile, cropKey .. "#enabled"), true)
+            local cropReturnPeriod = Utils.getNoNil(getXMLInt(xmlFile, cropKey .. "#returnPeriod"), 2)
+            local goodForecrops = Utils.getNoNil(getXMLString(xmlFile, cropKey .. ".good"), ""):upper()
+            local badForecrops = Utils.getNoNil(getXMLString(xmlFile, cropKey .. ".bad"), ""):upper()
+
+            self.crModule.log:debug(string.format("CropRotationData:parseCropsXml(): reading crop %s forecrops: good: [%s] bad: [%s]", cropName, goodForecrops, badForecrops))
+            
+            crops[cropName] = {
+                enabled = cropEnabled,
+                returnPeriod = cropReturnPeriod,
+                good = string.split(goodForecrops, " "),
+                bad = string.split(badForecrops, " ")
+            }
+        else
+            self.crModule.log:error("CropRotationData:parseCropsXml():  loading XML element '"..cropKey .. "#name' failed: " .. cropsXmlFileName)
+            return crops, overwrite
+        end
+
+        i = i + 1
+    end
+
+    return crops, overwrite
+end
+
+function CropRotationData:process(crops, overwrite, cropsXmlFileName)
+    self.crModule.log:debug("CropRotationData:process()")
+
+    if overwrite then
+        self.crModule.log:debug('CropRotationData:process(): overwrite crop rotation matrix by discarding entries created so far')
+        self.matrix = {}
+    end
+
+    -- write crop rotation data to fruitTypeManager and compose local matrix
+    for cropName, cropDesc in pairs(crops) do
         local fruitType = self.fruitTypeManager:getFruitTypeByName(cropName)
         if fruitType ~= nil then
             fruitType.rotation = {}
@@ -136,9 +160,8 @@ function CropRotationData:load()
 
     -- process fruits not mentioned in crops.xml
     for k, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
-        if self.crops[fruitType.name] == nil then
-            log(string.format("CropRotationData:load(): INFO fruit (%i): '%s' not mentioned in data/crops.xml file.",
-                              fruitType.index, fruitType.name))
+        if crops[fruitType.name] == nil then
+            self.crModule.log:info(string.format("CropRotationData:process(): fruit (%i): '%s' not mentioned in file %s", fruitType.index, fruitType.name, cropsXmlFileName))
 
             fruitType.rotation = {
                 enabled = false,
@@ -156,19 +179,20 @@ end
 ----------------------------------------------------------------------
 
 function CropRotationData:postLoad()
-    log("CropRotationData:postLoad(): DEBUG list fruits in use ...")
+    self.crModule.log:debug("CropRotationData:postLoad(): list fruits in rotation ...")
 
     for fruitIndex, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
-        log("CropRotationData:postLoad(): DEBUG begin crop rotation table for fruit:", fruitIndex, fruitType.name)
-
         if fruitType.rotation ~= nil then
-            DebugUtil.printTableRecursively(fruitType.rotation, "", 0, 1)
+            if fruitType.rotation.enabled then
+                self.crModule.log:debug(string.format("ENABLED fruit(%d): %s RP=%d", fruitIndex, fruitType.name, fruitType.rotation.returnPeriod))
+            else
+                self.crModule.log:debug(string.format("DISABLED fruit(%d): %s", fruitIndex, fruitType.name))
+            end
         else
-            log("CropRotationData:postLoad(): WARNING Empty rotation data for fruit", fruitIndex, fruitType.name)
+            local s = string.format("INVALID fruit(%d): %s", fruitIndex, fruitType.name)
+            self.crModule.log:warning(s)
         end
-
-        log("CropRotationData:postLoad(): DEBUG end crop rotation table for fruit:", fruitIndex, fruitType.name)
     end
 
-    log("CropRotationData:postLoad(): DEBUG ... done")
+    self.crModule.log:debug("CropRotationData:postLoad(): ... done")
 end
