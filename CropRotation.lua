@@ -650,14 +650,16 @@ end
 
 FSBaseMission.initTerrain = Utils.appendedFunction(FSBaseMission.initTerrain, postInitTerrain)
 
-function loadCropRotationHelpLine(...)
-    g_cropRotation.log:debug("loadCropRotationHelpLine()")
-
-    g_helpLineManager:loadFromXML(Utils.getFilename("gui/helpLine.xml", g_cropRotation.MOD_DIRECTORY))
-    return true
+function CropRotation:loadMapDataHelpLineManager(superFunc, ...)
+	local ret = superFunc(self, ...)
+	if ret then
+		self:loadFromXML(Utils.getFilename("gui/helpLine.xml", g_cropRotation.MOD_DIRECTORY))
+		return true
+	end
+	return false
 end
 
-HelpLineManager.loadMapData = Utils.appendedFunction(HelpLineManager.loadMapData, loadCropRotationHelpLine)
+HelpLineManager.loadMapData = Utils.overwrittenFunction( HelpLineManager.loadMapData, CropRotation.loadMapDataHelpLineManager)
 
 ------------------------------------------------
 --- Vanilla Player HUD Updater
