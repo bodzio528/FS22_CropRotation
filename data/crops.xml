@@ -7,15 +7,15 @@
     [ ] harvest [kg/ha] - biomass left in soil after harvest
  -->
     <crop name="BARLEY"     returnPeriod="2">
-        <good>OAT CANOLA MAIZE SOYBEAN SUNFLOWER SUGARBEET</good> <!-- good forecrops -->
+        <good>OAT CANOLA MAIZE SOYBEAN SUNFLOWER SUGARBEET BEETROOT</good> <!-- good forecrops -->
         <bad>BARLEY</bad> <!-- bad forecrops -->
     </crop>
     <crop name="OAT"        returnPeriod="2">
-        <good>WHEAT MAIZE SOYBEAN SUNFLOWER</good>
+        <good>WHEAT MAIZE SOYBEAN SUNFLOWER PARSNIP</good>
         <bad></bad>
     </crop>
     <crop name="WHEAT"      returnPeriod="2">
-        <good>OAT CANOLA MAIZE SOYBEAN POTATO SUGARBEET</good>
+        <good>OAT CANOLA MAIZE SOYBEAN POTATO SUGARBEET BEETROOT</good>
         <bad>WHEAT</bad>
     </crop>
     <crop name="CANOLA"     returnPeriod="3">
@@ -23,7 +23,7 @@
         <bad>CANOLA SUNFLOWER</bad>
     </crop>
     <crop name="MAIZE"      returnPeriod="1">
-        <good>OAT CANOLA SOYBEAN SUNFLOWER POTATO SUGARBEET GRASS</good>
+        <good>OAT CANOLA SOYBEAN SUNFLOWER POTATO SUGARBEET GRASS BEETROOT</good>
         <bad></bad>
     </crop>
     <crop name="SOYBEAN"    returnPeriod="2">
@@ -40,7 +40,7 @@
     </crop>
     <crop name="SUGARBEET"  returnPeriod="3">
         <good>BARLEY OAT WHEAT SOYBEAN</good>
-        <bad>CANOLA MAIZE SUGARBEET</bad>
+        <bad>CANOLA MAIZE SUGARBEET BEETROOT</bad>
     </crop>
     <crop name="POPLAR"     returnPeriod="1">
         <good></good>
@@ -83,9 +83,19 @@
         <good>CANOLA CARROT SUGARBEET WHEAT BARLEY MAIZE OAT</good>
         <bad>ONION POTATO</bad>        
     </crop>
-    <crop name="CARROT"    returnPeriod="3">
+    <crop name="CARROT"    returnPeriod="2">
         <good>MAIZE ONION WHEAT BARLEY OAT</good>
         <bad>SUGARBEET CARROT POTATO</bad>
+    </crop>
+    
+    <crop name="BEETROOT"    returnPeriod="3">
+        <good>BARLEY OAT WHEAT SOYBEAN</good>
+        <bad>CANOLA MAIZE SUGARBEET BEETROOT</bad>
+    </crop>
+    
+    <crop name="PARSNIP"    returnPeriod="2">
+        <good>MAIZE ONION WHEAT BARLEY OAT</good>
+        <bad>SUGARBEET CARROT POTATO PARSNIP</bad>
     </crop>
     <!-- <crop name="MILLET"    returnPeriod="2"/> -->
     <!-- <crop name="RICE"      returnPeriod="1"/> -->
