@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<modDesc descVersion="76">
+<modDesc descVersion="75">
     <author>Bodzio528</author>
-    <version>2.5.0.1</version>
+    <version>2.5.0.2</version>
     <title>
         <en>Crop Rotation</en>
         <de>Fruchtfolge</de>
@@ -24,6 +24,9 @@ Key features:
 - crop rotation info added to player HUD field information box
 - detailed in-game help menu (with pictures!)
 - crop rotation planner to visualize potential yield
+
+Changelog 2.5.0.2:
+- added premium expansion crops to rotation table: carrot, beetroot and parsnip
 
 Changelog 2.5.0.1:
 - fixed critical issue when seasonal growth is enabled
@@ -51,6 +54,9 @@ Hauptmerkmale:
 - Detailliertes Hilfemenü im Spiel (mit Bildern!)
 - Fruchtfolgeplaner zur Visualisierung des potenziellen Ertrags
 
+Changelog 2.5.0.2:
+- added premium expansion crops to rotation table: carrot, beetroot and parsnip
+
 Changelog 2.5.0.1:
 - fixed critical issue when seasonal growth is enabled
 
@@ -76,6 +82,9 @@ Principales caractéristiques:
 - informations sur la rotation des cultures ajoutées dans la fenêtre d'information de la parcelle
 - menu d'aide détaillé dans le jeu (avec images !)
 - planificateur de rotation des cultures pour montrer le rendement potentiel
+
+Changelog 2.5.0.2:
+- added premium expansion crops to rotation table: carrot, beetroot and parsnip
 
 Changelog 2.5.0.1:
 - Correction d'un problème critique lorsque la croissance saisonnière est activée
@@ -103,8 +112,11 @@ Główne cechy:
 - szczegółowy opis w menu pomocy (są obrazki!)
 - planer płodozmianu pozwalający określić potencjalne plony
 
+Changelog 2.5.0.2:
+- dodano nowe uprawy do podstawowej tabeli płodozmianu: marchew, buraki i pasterniak
+
 Changelog 2.5.0.1:
-- naprawiono krytyczny problem, przy włączonym wzroście sezonowym
+- naprawiono krytyczny problem przy włączonym wzroście sezonowym
 
 Changelog 2.5.0.0:
 - poprawiono błąd synchronizacji w trybie wieloosobowym
@@ -154,6 +166,9 @@ Caratteristiche principali:
 - informazioni sulla rotazione delle colture aggiunte alla casella delle informazioni sul campo dell'HUD del giocatore
 - dettagliato menu di aiuto in gioco (con immagini!)
 - pianificatore di rotazione delle colture per visualizzare la resa potenziale
+
+Changelog 2.5.0.2:
+- added premium expansion crops to rotation table: carrot, beetroot and parsnip
 
 Changelog 2.5.0.1:
 - risolto problema critico quando è abilitata la crescita stagionale
