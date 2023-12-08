@@ -848,7 +848,7 @@ end
 
 function CropRotation.inj_densityMapUtil_updateSowingArea(superFunc, fruitIndex, startWorldX, startWorldZ, widthWorldX, widthWorldZ, heightWorldX, heightWorldZ, fieldGroundType, angle, growthState, blockedSprayTypeIndex)
     local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(fruitIndex)
-    if fruitDesc and fruitDesc.rotation.enabled then
+    if fruitDesc and fruitDesc.rotation and fruitDesc.rotation.enabled then
         local modifiers = g_cropRotation.modifiers
 
         local terrainSize = g_currentMission.terrainSize or 1024
@@ -1089,7 +1089,10 @@ function CropRotation:getRotationYieldMultiplier(prevIndex, lastIndex, currentIn
 end
 
 function CropRotation:getRotationReturnPeriodMultiplier(prev, last, current)
-    local returnPeriod = current.rotation.returnPeriod
+    local returnPeriod = 3
+    if current.rotation then
+        returnPeriod = current.rotation.returnPeriod
+    end
 
     -- monoculture
     local result = 0.0 - ((current.index == last and current.index == prev) and 0.05 or 0)

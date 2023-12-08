@@ -47,7 +47,7 @@ function InGameMenuCropRotationPlanner:initialize()
     self.fruitIndexToCropIndexMap = {}
 
     for i, fruitDesc in pairs(g_fruitTypeManager:getFruitTypes()) do
-        if fruitDesc ~= nil and fruitDesc.rotation ~= nil then
+        if fruitDesc and fruitDesc.rotation then
             if fruitDesc.rotation.enabled then
                 table.insert(self.cropIndexToFruitIndexMap, {index = i})
                 self.fruitIndexToCropIndexMap[i] = #self.cropIndexToFruitIndexMap
@@ -81,7 +81,6 @@ function InGameMenuCropRotationPlanner:initialize()
                 end
             end
         end
-
     end
 
     self:updateRotation()

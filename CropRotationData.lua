@@ -128,7 +128,7 @@ function CropRotationData:process(crops, overwrite, cropsXmlFileName)
     self.crModule.log:debug("CropRotationData:process()")
 
     if overwrite then
-        self.crModule.log:debug('CropRotationData:process(): overwrite crop rotation matrix by discarding entries created so far')
+        self.crModule.log:debug('CropRotationData:process(): overwrite crop rotation matrix (discard entries created so far)')
         self.matrix = {}
     end
 
@@ -179,20 +179,19 @@ end
 ----------------------------------------------------------------------
 
 function CropRotationData:postLoad()
-    self.crModule.log:debug("CropRotationData:postLoad(): list fruits in rotation ...")
+    self.crModule.log:info("CropRotationData:postLoad(): list fruits in rotation ...")
 
     for fruitIndex, fruitType in pairs(self.fruitTypeManager:getFruitTypes()) do
         if fruitType.rotation ~= nil then
             if fruitType.rotation.enabled then
-                self.crModule.log:debug(string.format("ENABLED fruit(%d): %s RP=%d", fruitIndex, fruitType.name, fruitType.rotation.returnPeriod))
+                self.crModule.log:info(string.format("ENABLED fruit(%d): %s RP=%d", fruitIndex, fruitType.name, fruitType.rotation.returnPeriod))
             else
-                self.crModule.log:debug(string.format("DISABLED fruit(%d): %s", fruitIndex, fruitType.name))
+                self.crModule.log:info(string.format("DISABLED fruit(%d): %s", fruitIndex, fruitType.name))
             end
         else
-            local s = string.format("INVALID fruit(%d): %s", fruitIndex, fruitType.name)
-            self.crModule.log:warning(s)
+            self.crModule.log:warning(string.format("INVALID fruit(%d): %s", fruitIndex, fruitType.name))
         end
     end
 
-    self.crModule.log:debug("CropRotationData:postLoad(): ... done")
+    self.crModule.log:info("CropRotationData:postLoad(): ... done")
 end
