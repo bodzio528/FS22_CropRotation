@@ -104,6 +104,7 @@ function CropRotation:initialize()
 
         self.isVisualizeEnabled = false
         addConsoleCommand("crVisualize", "Toggle Crop Rotation visualization", "commandToggleVisualize", self)
+        addConsoleCommand("crRandomInit", "Initialize NPC fields to random value", "commandRandomInit", self)
     end
 end
 
@@ -295,6 +296,7 @@ function CropRotation:deleteMap()
             removeConsoleCommand("crHarvestClear")
 
             removeConsoleCommand("crVisualizeToggle")
+            removeConsoleCommand("crRandomInit")
         end
 
         self.densityMapUpdater:unregister("UpdateFallow")
@@ -363,7 +365,7 @@ function CropRotation:update(dt)
             end
         end
 
-        if CropRotation.DEBUG and self.isVisualizeEnabled then
+        if self.isVisualizeEnabled then
             self:visualize()
         end
 
@@ -461,6 +463,8 @@ function CropRotation:randomInit()
     self.log:debug("CropRotation:randomInit()")
 
     local terrainSize = g_currentMission.terrainSize or 1024
+    
+    self.log:debug(string.format("CropRotation:randomInit(): terrainSize = %d", terrainSize))
 
     -- initialize random forecrop generator
     local keys = {}
@@ -483,7 +487,6 @@ function CropRotation:randomInit()
             r1 = keys[math.random(#keys)]
         end
 
-        -- local bits = self:encode(r2, r1, 0, 0)
         for index = 1, table.getn(field.maxFieldStatusPartitions) do
             local partition = field.maxFieldStatusPartitions[index]
 
@@ -922,7 +925,7 @@ function CropRotation.inj_densityMapUtil_cutFruitArea(superFunc, fruitIndex, sta
         --     cropRotation.modifiers.map.filterH
         -- )
 
-        local terrainSize = g_currentMission.terrainSize
+        local terrainSize = g_currentMission.terrainSize or 1024
         cropRotation.modifiers.harvest.modifier:setParallelogramUVCoords(
             startWorldX  / terrainSize + 0.5,
             startWorldZ  / terrainSize + 0.5,
@@ -1384,10 +1387,12 @@ function CropRotation:setPrev(x,z,radius,index)
     modifier:executeSet(index)
 end
 
+function CropRotation:commandRandomInit()
+    self:randomInit()
+end
+
 function CropRotation:commandToggleVisualize()
-    if CropRotation.DEBUG then
-        self.isVisualizeEnabled = not self.isVisualizeEnabled
-    end
+    self.isVisualizeEnabled = not self.isVisualizeEnabled
 end
 
 

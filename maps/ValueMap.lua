@@ -1,5 +1,6 @@
 ValueMap = {
-    MOD_NAME = g_currentModName
+    MOD_NAME = g_currentModName,
+    DEFAULT_MAP_SIZE = 1024
 }
 local ValueMap_mt = Class(ValueMap)
 

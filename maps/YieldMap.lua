@@ -56,8 +56,8 @@ function YieldMap:loadFromXML(xmlFile, key, baseDirectory, configFileName, mapFi
     self:debug("loadFromXML("..key..")")
 
     key = key .. ".yieldMap"
-    self.sizeX = getXMLInt(xmlFile, key .. "#sizeX") or 1024
-    self.sizeY = getXMLInt(xmlFile, key .. "#sizeY") or 1024
+    self.sizeX = getXMLInt(xmlFile, key .. "#sizeX") or ValueMap.DEFAULT_MAP_SIZE
+    self.sizeY = getXMLInt(xmlFile, key .. "#sizeY") or ValueMap.DEFAULT_MAP_SIZE
     self.numChannels = getXMLInt(xmlFile, key .. "#numChannels") or 5
     self.bitVectorMap = self:loadSavedBitVectorMap(self.name, self.filename, self.numChannels, self.sizeX)
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
-<cropRotation> <!-- mimic PrecisionFarming.xml -->
+<cropRotation> <!-- mimicking PrecisionFarming.xml -->
     <colors>
         <color level="0" color="0.0000 0.4341 0.0802 1" colorBlind="1.0000 1.0000 0.1000 1" text="cropRotation_hud_fieldInfo_perfect"/>
         <color level="1" color="0.0331 0.4564 0.0513 1" colorBlind="0.9250 0.9250 0.1000 1" text="cropRotation_hud_fieldInfo_good"/>
@@ -11,7 +11,8 @@
         <color level="7" color="0.9910 0.0000 0.0000 1" colorBlind="0.1000 0.1000 0.1000 1" text="cropRotation_hud_fieldInfo_bad"/>
     </colors>
 
-    <coverMap lockChannel="0" fallowChannel="1" harvestChannel="2"/>
-
-    <yieldMap sizeX="1024" sizeY="1024" numChannels="6" /> <!--TODO: change name to cropsMap-->
+    <!-- value maps -->
+    <coverMap sizeX="1024" sizeY="1024" lockChannel="0" fallowChannel="1" harvestChannel="2"/>
+    
+	<yieldMap sizeX="1024" sizeY="1024" numChannels="6" />
 </cropRotation>

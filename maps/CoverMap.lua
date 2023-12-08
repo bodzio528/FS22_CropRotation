@@ -52,8 +52,8 @@ end
 
 function CoverMap:loadFromXML(xmlFile, key, baseDirectory, configFileName, mapFilename)
     key = key .. ".coverMap"
-    self.sizeX = getXMLInt(xmlFile, key .. "#sizeX") or 1024
-    self.sizeY = getXMLInt(xmlFile, key .. "#sizeY") or 1024
+    self.sizeX = getXMLInt(xmlFile, key .. "#sizeX") or ValueMap.DEFAULT_MAP_SIZE
+    self.sizeY = getXMLInt(xmlFile, key .. "#sizeY") or ValueMap.DEFAULT_MAP_SIZE
     self.lockChannel = getXMLInt(xmlFile, key .. "#lockChannel") or 0
     self.fallowChannel = getXMLInt(xmlFile, key .. "#fallowChannel") or 1
     self.harvestChannel = getXMLInt(xmlFile, key .. "#harvestChannel") or 2
