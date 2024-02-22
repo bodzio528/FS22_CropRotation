@@ -252,7 +252,7 @@ function CropRotation:unloadMapData()
 end
 
 function CropRotation:initTerrain(mission, terrainId, filename)
-    self.log:debug("CropRotation:initTerrain("..filename..")")
+    self.log:debug("CropRotation:initTerrain(mission = "..tostring(mission)..", terrainId = "..tostring(terrainId)..", filename="..filename..")")
 
     for i = 1, #self.valueMaps do
         self.valueMaps[i]:initTerrain(mission, terrainId, filename)
@@ -517,11 +517,11 @@ function CropRotation:onNewSavegame()
     self.log:debug("  isClient: "..tostring(g_currentMission.getIsClient()))
     self.log:debug("  isMultiplayer: "..tostring(g_currentMission.missionDynamicInfo.isMultiplayer))
     self.log:debug("  isDedicatedServer: "..tostring(g_dedicatedServer ~= nil))
-
+--[[
     if g_currentMission:getIsServer() then
         self:randomInit()
     end
-
+--]]
     local spGame = {
         missionDynamicInfo = {
             isMultiplayer = false,
