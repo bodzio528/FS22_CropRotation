@@ -12,7 +12,7 @@
     </colors>
 
     <!-- value maps -->
-    <coverMap sizeX="1024" sizeY="1024" lockChannel="0" fallowChannel="1" harvestChannel="2"/>
+    <coverMap sizeX="4096" sizeY="4096" lockChannel="0" fallowChannel="1" harvestChannel="2"/>
     
-	<yieldMap sizeX="1024" sizeY="1024" numChannels="6" />
+	<yieldMap sizeX="4096" sizeY="4096" numChannels="6" />
 </cropRotation>
