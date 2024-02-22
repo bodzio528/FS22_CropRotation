@@ -189,7 +189,7 @@ function CropRotationData:postLoad()
                 self.crModule.log:info(string.format("DISABLED fruit(%d): %s", fruitIndex, fruitType.name))
             end
         else
-            self.crModule.log:warning(string.format("INVALID fruit(%d): %s", fruitIndex, fruitType.name))
+            self.crModule.log:warn(string.format("INVALID fruit(%d): %s", fruitIndex, fruitType.name))
         end
     end
 
